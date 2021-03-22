@@ -3,7 +3,17 @@
   "version": "1.0.0",
   "description": "A GraphQL implementation for intereacting with EOSIO based smart contract blockchains.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
+    "prepare:jsdoc": "jsdoc-md",
+    "prepare:prettier": "prettier --write readme.md && prettier --write changelog.md",
+    "test": "npm run test:size && npm run test:eslint && npm run test:prettier && npm run test:api",
+    "test:size": "size-limit",
+    "test:api": "coverage-node -r hard-rejection/register test/index.test.mjs",
+    "test:eslint": "eslint .",
+    "test:prettier": "prettier -c .",
+    "prepublishOnly": "npm test"
+  },
   "files": [
     "public",
     "private"
