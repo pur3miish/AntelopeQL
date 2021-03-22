@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg  viewBox="0 0 680 900" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>SmartQL</title>
+    <g stroke="#4a5568" stroke-width="5" fill="none" fill-rule="evenodd">
+    <polygon stroke="#4a5568" stroke-width="30" points="338.5 50 145.979866 299.468182 60 671.913636 338.5 823 617 671.913636 531.020134 299.468182"></polygon>
+    <polyline stroke="#4a5568" stroke-width="30" points="146 299 338.5 823 531 299"></polyline>
+    <circle fill="hsl(189, 59%, 56%)" cx="339" cy="60" r="60"></circle>
+    <circle fill="hsl(189, 59%, 56%)" cx="339" cy="831" r="60"></circle>
+    <circle fill="hsl(189, 59%, 56%)" cx="617" cy="680" r="60"></circle>
+    <circle fill="hsl(189, 59%, 56%)" cx="539" cy="310" r="60"></circle>
+    <circle fill="hsl(189, 59%, 56%)" cx="60" cy="680" r="60"></circle>
+    <circle fill="hsl(189, 59%, 56%)" cx="146" cy="299" r="60"></circle>
+    </g>
+</svg>
