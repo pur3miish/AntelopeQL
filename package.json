@@ -1,0 +1,86 @@
+{
+  "name": "smartql",
+  "version": "1.0.0",
+  "description": "A GraphQL implementation for intereacting with EOSIO based smart contract blockchains.",
+  "main": "index.js",
+  "scripts": {
+    "get_abis": "node get_abis.mjs",
+    "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
+    "prepare:jsdoc": "jsdoc-md",
+    "prepare:prettier": "prettier --write readme.md && prettier --write changelog.md",
+    "test:size": "size-limit",
+    "test": "npm run test:size && npm run test:eslint && npm run test:prettier && npm run test:api",
+    "test:api": "coverage-node -r hard-rejection/register test/index.test.mjs",
+    "test:eslint": "eslint .",
+    "test:prettier": "prettier -c .",
+    "prepublishOnly": "npm test",
+    "snapshot": "node ./test/snapshots/index.mjs"
+  },
+  "files": [
+    "public",
+    "private"
+  ],
+  "engines": {
+    "node": ">= 12"
+  },
+  "exports": {
+    ".": {
+      "import": "./public/index.mjs",
+      "require": "./public/index.js"
+    },
+    "./public/": "./public/",
+    "./package": "./package.json",
+    "./package.json": "./package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pur3miish/smartql.git"
+  },
+  "browserslist": [
+    "defaults",
+    "not op_mini all",
+    "not IE 11"
+  ],
+  "keywords": [
+    "blockchain",
+    "graphql",
+    "smart",
+    "contract",
+    "bitcoin",
+    "eosio",
+    "eos",
+    "query",
+    "language"
+  ],
+  "author": "pur3miish",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pur3miish/smartql/issues"
+  },
+  "homepage": "https://github.com/pur3miish/smartql#readme",
+  "devDependencies": {
+    "coverage-node": "^4.0.0",
+    "eslint": "^7.20.0",
+    "eslint-config-env": "^18.0.1",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-compat": "^3.9.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsdoc": "^31.0.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "hard-rejection": "^2.1.0",
+    "jsdoc-md": "^9.1.1",
+    "prettier": "^2.2.1",
+    "size-limit": "^4.9.1",
+    "test-director": "^5.0.0"
+  },
+  "peerDependencies": {
+    "graphql": "^15.5.0"
+  },
+  "dependencies": {
+    "base58-js": "^1.0.0",
+    "graphql": "^15.5.0",
+    "isomorphic-fetch": "^3.0.0",
+    "ripemd160-js": "^1.1.1"
+  }
+}
