@@ -76,6 +76,7 @@ async function serialize_transaction_data({
     type,
     data: await wasm[type](await data)
   }))
+
   const serialize = await Promise.all(ast_map)
   return serialize.reduce((acc, { data }) => (acc += data), '')
 }

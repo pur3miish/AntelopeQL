@@ -5,8 +5,7 @@ const build_schema = require('../private/build_schema')
 const get_abi = require('../private/network/get_abi')
 
 /**
- * The core function to build and execute a GraphQL schema
- * for EOSIO based blockchains.
+ * The core function to build and execute a GraphQL request.
  * @name SmartQL
  * @kind function
  * @param {object} arg argument.
@@ -33,7 +32,7 @@ const get_abi = require('../private/network/get_abi')
  *   }
  * }`
  *
- * const rpc_urls =  ['https://jungle3.cryptolions.io:443', 'http://jungle3.atticlab.net:12875', 'https://jungle.eosphere.io:443']
+ * const rpc_urls =  ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443']
  *
  * SmartQL({
  *  query,

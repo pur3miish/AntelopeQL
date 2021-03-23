@@ -4,7 +4,6 @@ const {
   GraphQLList,
   GraphQLEnumType,
   GraphQLNonNull,
-  GraphQLObjectType,
   GraphQLInt
 } = require('graphql')
 const name = require('../../eos_types/name')
