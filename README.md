@@ -94,12 +94,6 @@ _SmartQL mutation - Transfer EOS tokens._
 >     actor: "eoshackathon"
 >   }) {
 >   transaction_id
->   block_time
->   resource_cost {
->      cpu_usage_us
->      net_usage_words
->      status
->    }
 >   }
 > }
 >
@@ -113,5 +107,4 @@ _SmartQL mutation - Transfer EOS tokens._
 > }).then(console.log)
 > ```
 >
-> The logged output was "data": { "transfer": { "transaction_id": "855ff441ebfc20d0909f81b97ac41ebe29bffbdf996545439ac79bf2e5f4f4ec", "block_time": "2021-03-24T11:24:33.500", "resource_cost": { "cpu_usage_us": 407, "net_usage_words": 23, "status": "executed" } } \
-> } }
+> The logged output was "data": { "transfer": { "transaction_id": "855ff441ebfc20d0909f81b97ac41ebe29bffbdf996545439ac79bf2e5f4f4ec" } }
