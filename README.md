@@ -2,7 +2,7 @@
 
 # SmartQL
 
-<span style="color:red;background:yellow">This project is a WIP not currently opperational.</span>
+> 🚧 This project is a WIP not currently opperational. 👷
 
 1. eoshackathon
 2. ihack4google
