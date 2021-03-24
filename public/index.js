@@ -24,7 +24,7 @@ const get_abi = require('../private/network/get_abi')
  * ```js
  * import SmartQL from 'smartql'
  * ```
- * @example <caption>GraphQL query user balance.</caption>
+ * @example <caption>GraphQL query - Get user balance.</caption>
  * ```js
  * const query = `{
  *   account(scope: "eosio") {
@@ -43,6 +43,43 @@ const get_abi = require('../private/network/get_abi')
  *
  * The logged output was
  * > { "data": { "account": [{ "balance": "1297726572.6175 EOS" }] }
+ *
+ * @example <caption>GraphQL mutation - Transfer EOS tokens.</caption>
+ * ```js
+ * import { sign } from "eos-ecc"
+ *
+ * const query = `
+ * mutation {
+ *  transfer(
+ *    data: {
+ *     to: "ihack4google",
+ *     from: "eoshackathon",
+ *     memo: "Feigenbaum constants",
+ *     quantity: "4.6692 EOS"
+ *    },
+ *   authorization: {
+ *     actor: "eoshackathon"
+ *   }) {
+ *   transaction_id
+ *   block_time
+ *   resource_cost {
+ *      cpu_usage_us
+ *      net_usage_words
+ *      status
+ *    }
+ *   }
+ * }
+ * `
+ *
+ * const rpc_urls =  ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443']
+ *
+ * SmartQL({
+ *  query,
+ *  rpc_urls,
+ *  contract: "eosio.token",
+ *  sign
+ * })
+ * ```
  */
 const SmartQL = async ({
   query,
