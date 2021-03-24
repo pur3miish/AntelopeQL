@@ -24,7 +24,7 @@ const get_abi = require('../private/network/get_abi')
  * ```js
  * import SmartQL from 'smartql'
  * ```
- * @example <caption>GraphQL query - Get user balance.</caption>
+ * @example <caption>SmartQL query - Get user balance.</caption>
  * ```js
  * const query = `{
  *   account(scope: "eosio") {
@@ -44,7 +44,7 @@ const get_abi = require('../private/network/get_abi')
  * The logged output was
  * > { "data": { "account": [{ "balance": "1297726572.6175 EOS" }] }
  *
- * @example <caption>GraphQL mutation - Transfer EOS tokens.</caption>
+ * @example <caption>SmartQL mutation - Transfer EOS tokens.</caption>
  * ```js
  * import { sign } from "eos-ecc"
  *
