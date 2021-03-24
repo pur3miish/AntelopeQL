@@ -39,10 +39,10 @@ const get_abi = require('../private/network/get_abi')
  *  contract: "eosio.token",
  *  rpc_urls
  * }).then(console.log)
- *
+ * ```
  * The logged output was
  * { "data": { "account": [{ "balance": "1297726572.6175 EOS" }] }
- * ```
+ *
  * @example <caption>SmartQL mutation - Transfer EOS tokens.</caption>
  * ```js
  * import { sign } from "eos-ecc"
@@ -77,7 +77,7 @@ const get_abi = require('../private/network/get_abi')
  *   contract: "eosio.token",
  *   sign
  * }).then(console.log)
- *
+ * ```
  * The logged output was
  * "data": {
  *   "transfer": {
@@ -86,7 +86,6 @@ const get_abi = require('../private/network/get_abi')
  *     "resource_cost": { "cpu_usage_us": 407, "net_usage_words": 23, "status": "executed" } } \
  *    }
  *  }
- * ```
  */
 const SmartQL = async ({
   query,

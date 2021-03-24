@@ -62,17 +62,19 @@ _SmartQL query - Get user balance._
 >   }
 > }`
 >
-> const rpc_urls =  ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443']
+> const rpc_urls = [
+>   'https://jungle3.cryptolions.io:443',
+>   'https://jungle.eosphere.io:443'
+> ]
 >
 > SmartQL({
->  query,
->  contract: "eosio.token",
->  rpc_urls
+>   query,
+>   contract: 'eosio.token',
+>   rpc_urls
 > }).then(console.log)
->
-> The logged output was
-> { "data": { "account": [{ "balance": "1297726572.6175 EOS" }] }
 > ```
+>
+> The logged output was { "data": { "account": \[{ "balance": "1297726572.6175 EOS" }] }
 
 _SmartQL mutation - Transfer EOS tokens._
 
@@ -109,13 +111,7 @@ _SmartQL mutation - Transfer EOS tokens._
 >   contract: "eosio.token",
 >   sign
 > }).then(console.log)
->
-> The logged output was
-> "data": {
->   "transfer": {
->     "transaction_id": "855ff441ebfc20d0909f81b97ac41ebe29bffbdf996545439ac79bf2e5f4f4ec",
->     "block_time": "2021-03-24T11:24:33.500",
->     "resource_cost": { "cpu_usage_us": 407, "net_usage_words": 23, "status": "executed" } } \
->    }
->  }
 > ```
+>
+> The logged output was "data": { "transfer": { "transaction_id": "855ff441ebfc20d0909f81b97ac41ebe29bffbdf996545439ac79bf2e5f4f4ec", "block_time": "2021-03-24T11:24:33.500", "resource_cost": { "cpu_usage_us": 407, "net_usage_words": 23, "status": "executed" } } \
+> } }
