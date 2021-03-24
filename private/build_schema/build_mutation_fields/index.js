@@ -23,7 +23,7 @@ const serialize_transaction_data = require('./serialize_transaction_data.js')
 const defaultConfig = {
   blocksBehind: 3,
   expireSeconds: 30,
-  max_net_usasge_words: 0,
+  max_net_usage_words: 0,
   max_cpu_usage_ms: 0,
   delay_sec: 0,
   context_free_actions: [],
@@ -44,7 +44,7 @@ const configuration = new GraphQLInputObjectType({
       type: GraphQLInt,
       defaultValue: 30
     },
-    max_net_usasge_words: {
+    max_net_usage_words: {
       description: `Maximum NET bandwidth usage a transaction can consume, \nwhen set to 0 there is no limit`,
       type: GraphQLInt,
       defaultValue: 0
@@ -105,7 +105,7 @@ function build_mutation_fields(ABI, sign) {
             configuration: {
               blocksBehind,
               expireSeconds,
-              max_net_usasge_words,
+              max_net_usage_words,
               max_cpu_usage_ms,
               delay_sec,
               context_free_actions,
@@ -147,7 +147,7 @@ function build_mutation_fields(ABI, sign) {
             expiration,
             ref_block_num: block_num & 0xffff,
             ref_block_prefix,
-            max_net_usasge_words,
+            max_net_usage_words,
             max_cpu_usage_ms,
             delay_sec
           })
