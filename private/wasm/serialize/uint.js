@@ -10,6 +10,8 @@
  * @ignore
  */
 const uint = (number, bytes) => {
+  // https://github.com/amilajack/eslint-plugin-compat/issues/457
+  // eslint-disable-next-line compat/compat
   number = BigInt(number)
 
   if (number < BigInt(0)) throw new Error('expected a positive number')

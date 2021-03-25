@@ -10,6 +10,8 @@
  */
 function asset(asset_string) {
   let amount =
+    // https://github.com/amilajack/eslint-plugin-compat/issues/457
+    // eslint-disable-next-line compat/compat
     BigInt(asset_string.replace(/[^0-9]/gu, '')) & 0xffffffffffffffffn
 
   if (amount.toString().length > 19)

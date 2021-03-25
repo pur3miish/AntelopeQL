@@ -1,3 +1,5 @@
+// https://github.com/amilajack/eslint-plugin-compat/issues/457
+/* eslint-disable compat/compat */
 'use strict'
 const uint = require('./uint')
 
