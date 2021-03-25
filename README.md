@@ -19,7 +19,10 @@ $ npm i smartql
 
 # Support
 
-Node js >= 12 Browser `defaults` `not op_mini all` `not IE 11`
+- [Node.js](https://nodejs.org/en/) `>= 12`
+- [Browser list](https://github.com/browserslist/browserslist) `> 0.5%, not OperaMini all, not IE > 0, not dead`.
+
+Consider a [BigInt](https://caniuse.com/?search=bigint) polyfill library for safari 13.
 
 # API
 
