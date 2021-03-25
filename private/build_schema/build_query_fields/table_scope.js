@@ -8,7 +8,7 @@ const {
   GraphQLEnumType,
   GraphQLBoolean
 } = require('graphql')
-const name_type = require('../../eos_types/name')
+const name_type = require('../../eos_types/name_type')
 const get_table_by_scope = require('../../network/get_table_by_scope')
 
 const type = new GraphQLObjectType({

@@ -15,14 +15,7 @@ function generate_checksum(size) {
 Represented as a hexadecimal string of ${2 * size} characters.
 `,
     name: `checksum${size * 8}`,
-    parseValue: checksum => {
-      if (checksum == '') return checksum
-      if (checksum.length !== size * 2)
-        throw new Error('Invalid checksum length.')
-      if (!checksum.match(/^[A-Fa-f0-9]+$/gmu))
-        throw new Error('Invald hexadecimal string.')
-      return checksum
-    }
+    parseValue: checksum => checksum
   })
 }
 

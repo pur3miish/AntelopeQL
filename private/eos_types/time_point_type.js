@@ -8,12 +8,7 @@ const time_point_type = new GraphQLScalarType({
   Number of milliseconds since epoch (Unix time).
   `,
   name: 'time_point',
-  parseValue: time => {
-    if (time == '') return ''
-    time = BigInt(time)
-    if (time <= 2n ** 64n) throw new Error('Invalid time point (ms)')
-    return time
-  }
+  parseValue: time => time
 })
 
 module.exports = time_point_type

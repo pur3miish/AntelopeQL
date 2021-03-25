@@ -6,7 +6,7 @@ const {
   GraphQLNonNull,
   GraphQLInt
 } = require('graphql')
-const name = require('../../eos_types/name')
+const name = require('../../eos_types/name_type')
 const get_table_by_row = require('../../network/get_table_by_row')
 const abi_to_ast = require('../abi_to_ast/index.js.js')
 const generate_table_scope = require('./table_scope')

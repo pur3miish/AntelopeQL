@@ -9,12 +9,7 @@ const symbol_code_type = new GraphQLScalarType({
   *Example* - 4,EOS
   `,
   name: 'symbol_code',
-  parseValue: symbol_code => {
-    if (symbol_code == '') return ''
-    if (!symbol_code.match(/^\d+,[A-Z]{1,7}$/gmu))
-      throw new Error('Invald symbol code.')
-    return symbol_code
-  }
+  parseValue: symbol_code => symbol_code
 })
 
 module.exports = symbol_code_type

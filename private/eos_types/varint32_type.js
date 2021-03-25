@@ -9,13 +9,7 @@ const varuint32_type = new GraphQLScalarType({
 
   `,
   name: 'varint32',
-  parseValue: varint32 => {
-    if (varint32 == '') return ''
-    if (varint32 < -2147483648 || varint32 > 2147483647)
-      throw new Error('Invalid varint32 range')
-
-    return varint32
-  }
+  parseValue: varint32 => varint32
 })
 
 module.exports = varuint32_type

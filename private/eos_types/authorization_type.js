@@ -1,7 +1,7 @@
 'use strict'
 
 const { GraphQLInputObjectType } = require('graphql')
-const name_type = require('./name')
+const name_type = require('./name_type')
 
 const authorization_type = new GraphQLInputObjectType({
   name: 'authorization',
