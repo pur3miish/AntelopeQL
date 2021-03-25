@@ -35,9 +35,7 @@
     "url": "git+https://github.com/pur3miish/smartql.git"
   },
   "browserslist": [
-    "defaults",
-    "not op_mini all",
-    "not IE 11"
+    "> 0.5%, not OperaMini all, not IE > 0, not dead"
   ],
   "keywords": [
     "blockchain",
