@@ -82,33 +82,4 @@ export default tests => {
       'Mutation on vote producer'
     )
   })
-
-  tests.add('SmartQL mutation transfer', async () => {
-    const { data } = await smartql({
-      query: /* GraphQL */ `
-        mutation {
-          transfer(
-            data: {
-              to: "ihack4google"
-              from: "eoshackathon"
-              memo: ""
-              quantity: "0.0001 EOS"
-            }
-            authorization: { actor: "eoshackathon" }
-          ) {
-            transaction_id
-          }
-        }
-      `,
-      rpc_urls,
-      contract: 'eosio.token',
-      sign(transaction) {
-        return []
-      }
-    })
-
-    const trn_bdy =
-      '000100a6823403ea3055000000572d3ccdcd013069cb0622d3305500000000a8ed3232213069cb0622d33055a022a39411884c73010000000000000004454f530000000000000000000000000000000000000000000000000000000000000000000000000000'
-    deepStrictEqual(data.transfer.transaction_body, trn_bdy)
-  })
 }
