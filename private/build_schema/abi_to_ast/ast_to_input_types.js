@@ -23,9 +23,11 @@ function ast_to_input_types(ABI_AST) {
         const field = ABI_AST.structs.find(({ name }) => baseValue == name)
         if (!field)
           throw new Error(`Could not find base value “${baseValue}” on ABI`)
+
         if (field.base == '') return [...field.fields, ...fields]
         return handle_base_fields(field.base, fields)
       }
+
       if (base !== '') struct_fields = handle_base_fields(base, struct_fields)
 
       const handle_input_GraphQLObjectType = objectType =>
