@@ -17,6 +17,10 @@ A GraphQL implementation for interacting with EOSIO based blockchains.
 $ npm i smartql
 ```
 
+# Support
+
+Node js >= 12 Browser `defaults` `not op_mini all` `not IE 11`
+
 # API
 
 ## Table of contents
@@ -53,24 +57,20 @@ _Ways to `import`._
 > import SmartQL from 'smartql'
 > ```
 
-_SmartQL query - Get user balance._
+_SmartQL query - Get account balance._
 
 > ```js
-> const query = `{
+> SmartQL({
+>   query: `{
 >   account(scope: "eosio") {
 >     balance
 >   }
-> }`
->
-> const rpc_urls = [
->   'https://jungle3.cryptolions.io:443',
->   'https://jungle.eosphere.io:443'
-> ]
->
-> SmartQL({
->   query,
+>  }`,
 >   contract: 'eosio.token',
->   rpc_urls
+>   rpc_urls: [
+>     'https://jungle3.cryptolions.io:443',
+>     'https://jungle.eosphere.io:443'
+>   ]
 > }).then(console.log)
 > ```
 >
@@ -81,7 +81,7 @@ _SmartQL mutation - Transfer EOS tokens._
 > ```js
 > import { sign } from "eos-ecc"
 >
-> const query = `
+> const mutation = `
 > mutation {
 >  transfer(
 >    data: {
@@ -97,13 +97,13 @@ _SmartQL mutation - Transfer EOS tokens._
 >   }
 > }
 >
-> const rpc_urls =  ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443']
->
 > SmartQL({
->   query,
->   rpc_urls,
+>   query: mutation,
+>   rpc_urls: ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443'],
 >   contract: "eosio.token",
->   sign
+>   sign(transaction) {
+>      retrun digital_signature(transaction, private_key)
+>  }
 > }).then(console.log)
 > ```
 >

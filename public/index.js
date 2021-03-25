@@ -24,20 +24,16 @@ const get_abi = require('../private/network/get_abi')
  * ```js
  * import SmartQL from 'smartql'
  * ```
- * @example <caption>SmartQL query - Get user balance.</caption>
+ * @example <caption>SmartQL query - Get account balance.</caption>
  * ```js
- * const query = `{
+ * SmartQL({
+ *  query: `{
  *   account(scope: "eosio") {
  *     balance
  *   }
- * }`
- *
- * const rpc_urls =  ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443']
- *
- * SmartQL({
- *  query,
+ *  }`,
  *  contract: "eosio.token",
- *  rpc_urls
+ *  rpc_urls: ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443']
  * }).then(console.log)
  * ```
  * The logged output was
@@ -47,7 +43,7 @@ const get_abi = require('../private/network/get_abi')
  * ```js
  * import { sign } from "eos-ecc"
  *
- * const query = `
+ * const mutation = `
  * mutation {
  *  transfer(
  *    data: {
@@ -63,13 +59,13 @@ const get_abi = require('../private/network/get_abi')
  *   }
  * }
  *
- * const rpc_urls =  ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443']
- *
  * SmartQL({
- *   query,
- *   rpc_urls,
+ *   query: mutation,
+ *   rpc_urls: ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443'],
  *   contract: "eosio.token",
- *   sign
+ *   sign(transaction) {
+ *      retrun digital_signature(transaction, private_key)
+ *  }
  * }).then(console.log)
  * ```
  * The logged output was
