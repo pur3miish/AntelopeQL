@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- *Serilaises a symbol string to a WASM hex string.
+ * Serilaises a symbol string to a WASM hex string.
  * @name symbol
  * @kind function
  * @param {string} symbol_string To be serialised.
