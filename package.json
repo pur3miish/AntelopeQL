@@ -57,6 +57,7 @@
   },
   "homepage": "https://github.com/pur3miish/smartql#readme",
   "devDependencies": {
+    "@size-limit/preset-app": "^4.10.1",
     "coverage-node": "^4.0.0",
     "eslint": "^7.20.0",
     "eslint-config-env": "^18.0.1",
