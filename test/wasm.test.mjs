@@ -1,4 +1,5 @@
 import { rejects, strictEqual, throws } from 'assert'
+import wasm from '../private/wasm/index.js'
 import serialise_asset from '../private/wasm/serialize/asset.js'
 import block_time_stamp from '../private/wasm/serialize/block_time_stamp.js'
 import bool from '../private/wasm/serialize/bool.js'
@@ -25,7 +26,7 @@ export default tests => {
   // These values are generated from cleos.
   tests.add('asset serialisation', () => {
     strictEqual(
-      serialise_asset('1.012345678901234560 EOS'),
+      wasm.asset('1.012345678901234560 EOS'),
       '804bcf0408930c0e12454f5300000000',
       'Expected equality 1.'
     )
@@ -89,7 +90,11 @@ export default tests => {
     )
   })
   tests.add('symbol serialisation', () => {
-    strictEqual(symbol('4,VWXWZ'), '04565758575a0000', 'Expected equality 1.')
+    strictEqual(
+      wasm.symbol('4,VWXWZ'),
+      '04565758575a0000',
+      'Expected equality 1.'
+    )
     strictEqual(symbol('10,A'), '0a41000000000000', 'Expected equality 2.')
     strictEqual(symbol('18,A'), '1241000000000000', 'Expected equality 3.')
     strictEqual(symbol('0,A'), '0041000000000000', 'Expected equality 4.')
@@ -107,6 +112,16 @@ export default tests => {
     )
   })
   tests.add('integer serilisation', () => {
+    strictEqual(wasm.int8(127), '7f')
+    strictEqual(wasm.int16(127), '7f00')
+    strictEqual(wasm.int32(127), '7f000000')
+    strictEqual(wasm.int64(127), '7f00000000000000')
+    strictEqual(wasm.int128(127), '7f000000000000000000000000000000')
+    strictEqual(wasm.uint8(255), 'ff')
+    strictEqual(wasm.uint16(255), 'ff00')
+    strictEqual(wasm.uint32(255), 'ff000000')
+    strictEqual(wasm.uint64(255), 'ff00000000000000')
+    strictEqual(wasm.uint128(255), 'ff000000000000000000000000000000')
     strictEqual(integer(127, 1), '7f')
     strictEqual(integer(0, 1), '00')
     strictEqual(integer(-1, 1), 'ff')
@@ -118,6 +133,7 @@ export default tests => {
     throws(() => unsigned_integer(257, 1))
   })
   tests.add('name serialisation', () => {
+    strictEqual(wasm.name('eosio'), '0000000000ea3055', 'expected equality 0')
     strictEqual(name('eosio'), '0000000000ea3055', 'expected equality 0')
     strictEqual(name(''), '0000000000000000', 'expected equality 1')
 
@@ -133,6 +149,13 @@ export default tests => {
     throws(() => name('abc123s8W'), 'Expected throw - number > 5')
   })
   tests.add('public key serialisation', async () => {
+    strictEqual(
+      await wasm.public_key(
+        'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'
+      ),
+      '0002c0ded2bc1f1305fb0faac5e6c03ee3a1924234985427b6167ca569d13df435cf',
+      'Expected output 1'
+    )
     strictEqual(
       await public_key('EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'),
       '0002c0ded2bc1f1305fb0faac5e6c03ee3a1924234985427b6167ca569d13df435cf',
@@ -156,6 +179,7 @@ export default tests => {
     )
   })
   tests.add('varint32 serialisation', () => {
+    strictEqual(wasm.varuint32(512), '8004', 'Expected output 1')
     strictEqual(varuint32(512), '8004', 'Expected output 1')
     strictEqual(varuint32(15), '0f', 'Expected output 2')
     strictEqual(varuint32(255), 'ff01', 'Expected output 3')
@@ -164,6 +188,7 @@ export default tests => {
     strictEqual(varuint32(2055), '8710', 'Expected output 6')
   })
   tests.add('varuint32 serialisation', () => {
+    strictEqual(wasm.varint32(-127), 'fd01')
     strictEqual(varint32(-127), 'fd01')
     strictEqual(varint32(-256), 'ff03')
     strictEqual(varint32(256), '8004')
@@ -171,13 +196,14 @@ export default tests => {
     strictEqual(varint32(429496729), 'b2e6cc9903')
   })
   tests.add('boolean serialisation', () => {
-    strictEqual(bool(1), '01')
+    strictEqual(wasm.bool(1), '01')
     strictEqual(bool(true), '01')
     strictEqual(bool('true'), '01')
     strictEqual(bool(0), '00')
     strictEqual(bool(false), '00')
   })
   tests.add('symbol code serialisation', () => {
+    strictEqual(wasm.symbol_code('EOS'), '454f530000000000')
     strictEqual(symbol_code('EOS'), '454f530000000000')
     strictEqual(symbol_code('KEK'), '4b454b0000000000')
     strictEqual(symbol_code('ABCDEFG'), '4142434445464700')
@@ -191,12 +217,18 @@ export default tests => {
   })
   tests.add('String serialisation', () => {
     strictEqual(
+      wasm.string('The quick brown fox jumps over the lazy dog.'),
+      '2c54686520717569636b2062726f776e20666f78206a756d7073206f76657220746865206c617a7920646f672e'
+    )
+    strictEqual(
       string('The quick brown fox jumps over the lazy dog.'),
       '2c54686520717569636b2062726f776e20666f78206a756d7073206f76657220746865206c617a7920646f672e'
     )
     strictEqual(string(''), '00')
   })
   tests.add('float serialisation', () => {
+    strictEqual(wasm.float32(1.25), '0000a03f')
+    strictEqual(wasm.float64(1111111.1111111), 'edc6711c47f43041')
     strictEqual(float32(1.25), '0000a03f')
     strictEqual(float32(55.25123), '42015d42')
     strictEqual(float32(214748364), 'cdcc4c4d')
@@ -205,6 +237,10 @@ export default tests => {
     strictEqual(float32(0.0000000000000000999999999), '9595e624')
     strictEqual(float64(1111111.1111111), 'edc6711c47f43041')
     strictEqual(
+      wasm.float128('ff01203040506070890ffaa000000122'),
+      'ff01203040506070890ffaa000000122'
+    )
+    strictEqual(
       float128('ff01203040506070890ffaa000000122'),
       'ff01203040506070890ffaa000000122'
     )
@@ -212,23 +248,36 @@ export default tests => {
     throws(() => strictEqual(float128('apple')))
   })
   tests.add('Time point serialisation', () => {
+    strictEqual(wasm.time_point('2021-03-01T11:15:49.170'), '50db73bd77bc0500')
     strictEqual(time_point('2021-03-01T11:15:49.170'), '50db73bd77bc0500')
     strictEqual(time_point('1970-01-01T00:00:00.000'), '0000000000000000')
     strictEqual(time_point('2000-01-01T11:15:49.170'), '501b23ac0a5d0300')
     throws(() => time_point('ASDAS'))
+    strictEqual(wasm.time_point_sec('2000-01-01T11:15:49.170'), 'e5e16d38')
     strictEqual(time_point_sec('2000-01-01T11:15:49.170'), 'e5e16d38')
     strictEqual(time_point_sec('1970-01-01T00:00:00.000'), '00000000')
     strictEqual(time_point_sec('2021-03-01T11:15:49.170'), 'e5cc3c60')
-    strictEqual(block_time_stamp('2021-03-01T11:15:49.170'), 'ca129f4f')
+    strictEqual(
+      wasm.block_timestamp_type('2021-03-01T11:15:49.170'),
+      'ca129f4f'
+    )
     strictEqual(block_time_stamp('2021-03-01T12:26:42.147'), '04349f4f')
   })
   tests.add('Checksum serialisation', () => {
+    strictEqual(
+      wasm.checksum160('ff'),
+      'ff00000000000000000000000000000000000000'
+    )
     strictEqual(checksum('ff', 20), 'ff00000000000000000000000000000000000000')
     strictEqual(
       checksum('ff1f', 20),
       'ff1f000000000000000000000000000000000000'
     )
     strictEqual(checksum('f', 20), '0f00000000000000000000000000000000000000')
+    strictEqual(
+      wasm.checksum256('f5f4f3e1a0'),
+      'f5f4f3e1a0000000000000000000000000000000000000000000000000000000'
+    )
     strictEqual(
       checksum('f5f4f3e1a0', 32),
       'f5f4f3e1a0000000000000000000000000000000000000000000000000000000'
@@ -242,12 +291,23 @@ export default tests => {
       checksum('f5f4f3e1a0', 64),
       'f5f4f3e1a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
     )
+    strictEqual(
+      wasm.checksum512('f5f4f3e1a0'),
+      'f5f4f3e1a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+    )
     throws(() =>
       strictEqual(checksum('ff1f0000000000000000000000000000000000009', 20))
     )
     throws(() => strictEqual(checksum('INVALID CHECKSUM', 20)))
   })
   tests.add('Signature serialisation', async () => {
+    strictEqual(
+      await wasm.signature(
+        'SIG_K1_K4jhCs4S3hVfXNhX4t6QSSGgdYTYNk6LhKTphcYoLH6EYatq3zvU38CNEj7VDtMmHWq24KhmR6CLBqyT5tFiFmXndthr7X'
+      ),
+      '001f4878b56b046993bc2936bfa0b2625d1da2aac56af84af4546124551d20c7153c1a6dd493be595f1fa143161a04f109170050bf66b882415be72115c0a6fa8d58',
+      'Expected equality 1.'
+    )
     strictEqual(
       await signature(
         'SIG_K1_K4jhCs4S3hVfXNhX4t6QSSGgdYTYNk6LhKTphcYoLH6EYatq3zvU38CNEj7VDtMmHWq24KhmR6CLBqyT5tFiFmXndthr7X'
@@ -266,9 +326,15 @@ export default tests => {
   })
   tests.add('Bytes serialisation', () => {
     strictEqual(bytes('AAFF'), '04aaff')
+    strictEqual(wasm.bytes('AAFF'), '04aaff')
     throws(() => bytes('AAFFGK'))
   })
+
   tests.add('Extended asset', () => {
+    strictEqual(
+      wasm.extended_asset('1.0000 EOS@eosio.token'),
+      '102700000000000004454f530000000000a6823403ea3055'
+    )
     strictEqual(
       extended_asset('1.0000 EOS@eosio.token'),
       '102700000000000004454f530000000000a6823403ea3055'
