@@ -18,13 +18,8 @@ import time_point from '../private/eos_types/time_point_type.js'
 import varint32 from '../private/eos_types/varint32_type.js'
 import varuint32 from '../private/eos_types/varuint32_type.js'
 
-/*  private/eos_types/generate_checksum.js:18:17 → 25:5
-private/eos_types/mutation_types.js:13:11 → 25:4
-private/eos_types/mutation_types.js:50:11 → 92:4
-*/
 export default tests => {
-  // These tests are very basic, I plan to integrate the AST into the EOS types.
-  // these tests are more of a placeholder until the concatenation of the serilization and EOS types complete.
+  // These tests are very basic, I plan to integrate the AST data serialization into the return value of the graphql scalar EOS types in the future.
   tests.add('EOSIO types - validating parse values', async () => {
     deepStrictEqual(varint32.parseValue(''), '')
     deepStrictEqual(varuint32.parseValue(''), '')

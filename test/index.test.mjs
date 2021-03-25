@@ -1,14 +1,7 @@
 import { TestDirector } from 'test-director'
-import build_schema from './build_schema.test.js'
-import eosio_types from './eosio_types.test.mjs'
-import smartql from './smartql.test.mjs'
-import transaction_serialize from './transaction_serialize.test.mjs'
 import wasm from './wasm.test.mjs'
 
 const tests = new TestDirector()
-transaction_serialize(tests)
-eosio_types(tests)
+// TODO need to add more tests for schema validation.
 wasm(tests)
-build_schema(tests)
-smartql(tests)
 tests.run()
