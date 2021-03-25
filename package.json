@@ -9,7 +9,7 @@
     "prepare:prettier": "prettier --write readme.md && prettier --write changelog.md",
     "test": "npm run test:size && npm run test:eslint && npm run test:prettier && npm run test:api",
     "test:size": "size-limit",
-    "test:api": "coverage-node -r hard-rejection/register test/index.test.mjs",
+    "test:api": "coverage-node test/index.test.mjs",
     "test:eslint": "eslint .",
     "test:prettier": "prettier -c .",
     "prepublishOnly": "npm test"
@@ -65,7 +65,6 @@
     "eslint-plugin-jsdoc": "^31.6.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.3.0",
-    "hard-rejection": "^2.1.0",
     "jsdoc-md": "^9.1.1",
     "prettier": "^2.2.1",
     "size-limit": "^4.9.1",
