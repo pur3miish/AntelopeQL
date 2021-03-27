@@ -1,5 +1,5 @@
 'use strict'
-const { GraphQLScalarType } = require('graphql/type/definition')
+const { GraphQLScalarType } = require('graphql')
 
 const symbol_code_type = new GraphQLScalarType({
   description: `\`Symbol code type\`

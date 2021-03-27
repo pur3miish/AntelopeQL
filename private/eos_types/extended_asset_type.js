@@ -1,5 +1,5 @@
 'use strict'
-const { GraphQLScalarType } = require('graphql/type/definition')
+const { GraphQLScalarType } = require('graphql')
 
 const extended_asset_type = new GraphQLScalarType({
   description: `\`Extended_asset\`

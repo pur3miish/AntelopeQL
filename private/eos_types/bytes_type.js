@@ -1,5 +1,5 @@
 'use strict'
-const { GraphQLScalarType } = require('graphql/type/definition')
+const { GraphQLScalarType } = require('graphql')
 const serialize = require('../wasm/serialize/bytes.js')
 
 const bytes_type = new GraphQLScalarType({

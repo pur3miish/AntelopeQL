@@ -1,6 +1,6 @@
 'use strict'
 
-const { GraphQLScalarType } = require('graphql/type/definition')
+const { GraphQLScalarType } = require('graphql')
 
 const varuint32_type = new GraphQLScalarType({
   description: `\`varint32\`

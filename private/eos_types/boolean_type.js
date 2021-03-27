@@ -1,5 +1,5 @@
 'use strict'
-const { GraphQLScalarType } = require('graphql/type/definition')
+const { GraphQLScalarType } = require('graphql')
 
 const boolean_type = new GraphQLScalarType({
   description: `\`Boolean type\``,

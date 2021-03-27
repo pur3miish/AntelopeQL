@@ -1,5 +1,5 @@
 'use strict'
-const { GraphQLScalarType } = require('graphql/type/definition')
+const { GraphQLScalarType } = require('graphql')
 
 /**
  * Generates a GraphQL scalar unsigend integer type of size `bits`.

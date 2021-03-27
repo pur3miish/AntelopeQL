@@ -1,6 +1,6 @@
 'use strict'
 
-const { GraphQLScalarType } = require('graphql/type/definition.js')
+const { GraphQLScalarType } = require('graphql')
 
 const block_timestamp_type = new GraphQLScalarType({
   description: '`Block timestamp type`',

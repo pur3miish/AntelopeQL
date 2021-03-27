@@ -1,6 +1,6 @@
 'use strict'
 const base58_to_binary = require('base58-js/public/base58_to_binary')
-const { GraphQLScalarType } = require('graphql/type/definition')
+const { GraphQLScalarType } = require('graphql')
 const ripemd160 = require('ripemd160-js')
 
 const public_key_type = new GraphQLScalarType({
