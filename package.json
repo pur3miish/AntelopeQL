@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A GraphQL implementation for intereacting with EOSIO based smart contract blockchains.",
   "main": "public/index.js",
   "scripts": {
@@ -65,6 +65,7 @@
     "eslint-plugin-jsdoc": "^31.6.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.3.0",
+    "graphql": "*",
     "jsdoc-md": "^9.1.1",
     "prettier": "^2.2.1",
     "size-limit": "^4.9.1",
@@ -75,7 +76,6 @@
   },
   "dependencies": {
     "base58-js": "^1.0.0",
-    "graphql": "^15.5.0",
     "isomorphic-fetch": "^3.0.0",
     "ripemd160-js": "^1.1.1"
   }
