@@ -1,6 +1,5 @@
 # SmarQL changelog
 
-
 ## 1.0.3
 
 GraphQL resolution errors resolved client side.
