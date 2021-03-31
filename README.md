@@ -2,14 +2,11 @@
 
 # SmartQL
 
-> 🚧 This project is a WIP not currently opperational. 👷
-
-1. eoshackathon
-2. ihack4google
-
 > _<span style="color:#34b4cb">Smart</span> contracts & Graph<span style="color:#e10098">QL</span>._
 
 A GraphQL implementation for interacting with EOSIO based blockchains.
+
+A working example of the site for eosio.token and eosio smart contract can be found [here](https://relocke.io/smartql/eosio.token) and [here](https://relocke.io/smartql/eosio).
 
 # Setup
 
@@ -82,7 +79,7 @@ _SmartQL query - Get account balance._
 _SmartQL mutation - Transfer EOS tokens._
 
 > ```js
-> import { sign } from "eos-ecc"
+> import eosjs from 'eosjs-ecc'
 >
 > const mutation = `
 > mutation {
@@ -104,9 +101,11 @@ _SmartQL mutation - Transfer EOS tokens._
 >   query: mutation,
 >   rpc_urls: ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443'],
 >   contract: "eosio.token",
->   sign(transaction) {
->      retrun digital_signature(transaction, private_key)
->  }
+>   async sign({ chain_id, transaction_body, transaction_header }) {
+>     return private_keys.map(key =>
+>       eosjs.sign(chain_id + transaction_header + transaction_body, key, 'hex')
+>     )
+>   }
 > }).then(console.log)
 > ```
 >

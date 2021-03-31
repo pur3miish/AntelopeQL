@@ -41,7 +41,7 @@ const get_abi = require('../private/network/get_abi')
  *
  * @example <caption>SmartQL mutation - Transfer EOS tokens.</caption>
  * ```js
- * import { sign } from "eos-ecc"
+ * import eosjs from 'eosjs-ecc'
  *
  * const mutation = `
  * mutation {
@@ -63,9 +63,11 @@ const get_abi = require('../private/network/get_abi')
  *   query: mutation,
  *   rpc_urls: ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443'],
  *   contract: "eosio.token",
- *   sign(transaction) {
- *      retrun digital_signature(transaction, private_key)
- *  }
+ *   async sign({ chain_id, transaction_body, transaction_header }) {
+ *     return private_keys.map(key =>
+ *       eosjs.sign(chain_id + transaction_header + transaction_body, key, 'hex')
+ *     )
+ *   }
  * }).then(console.log)
  * ```
  * The logged output was
