@@ -2,7 +2,7 @@
 
 # SmartQL
 
-> _<span style="color:#34b4cb">Smart</span> contracts & Graph<span style="color:#e10098">QL</span>._
+> _Smart contracts & GraphQL._
 
 A GraphQL implementation for interacting with EOSIO based blockchains.
 
