@@ -85,9 +85,14 @@ function build_mutation_fields(ABI, sign) {
           return ''
         })(),
         args: {
-          data: {
-            type: ast_input_object_types[type]
-          },
+          ...(() => {
+            if (ast_input_object_types[type])
+              return {
+                data: {
+                  type: (() => ast_input_object_types[type])()
+                }
+              }
+          })(),
           configuration: {
             description: 'Control elements of the EOSIO transaction.',
             type: configuration
