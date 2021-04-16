@@ -20,16 +20,6 @@ const serialize_header = require('../../wasm/serialize/transaction_header.js')
 const abi_to_ast = require('../abi_to_ast/index.js.js')
 const serialize_transaction_data = require('./serialize_transaction_data.js')
 
-const defaultConfig = {
-  blocksBehind: 3,
-  expireSeconds: 30,
-  max_net_usage_words: 0,
-  max_cpu_usage_ms: 0,
-  delay_sec: 0,
-  context_free_actions: [],
-  transaction_extensions: []
-}
-
 const configuration = new GraphQLInputObjectType({
   name: 'configuration',
   description: ``,
@@ -52,7 +42,7 @@ const configuration = new GraphQLInputObjectType({
     max_cpu_usage_ms: {
       description: `Maximum CPU bandwidth usage a transaction can consume, \nwhen set to 0 there is no limit`,
       type: GraphQLInt,
-      defaultValue: 0
+      defaultValue: 1
     },
     delay_sec: {
       type: GraphQLInt,
@@ -108,14 +98,14 @@ function build_mutation_fields(ABI, sign) {
             data,
             authorization,
             configuration: {
-              blocksBehind,
-              expireSeconds,
-              max_net_usage_words,
-              max_cpu_usage_ms,
-              delay_sec,
-              context_free_actions,
-              transaction_extensions
-            } = defaultConfig
+              blocksBehind = 3,
+              expireSeconds = 30,
+              max_net_usage_words = 0,
+              max_cpu_usage_ms = 1,
+              delay_sec = 0,
+              context_free_actions = [],
+              transaction_extensions = []
+            }
           },
           { contract, rpc_urls }
         ) {
