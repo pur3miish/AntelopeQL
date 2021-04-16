@@ -86,10 +86,10 @@ function build_mutation_fields(ABI, sign) {
         })(),
         args: {
           ...(() => {
-            if (ast_input_object_types[type])
+            if (Object.keys(ast_input_object_types[type]._fields()).length)
               return {
                 data: {
-                  type: (() => ast_input_object_types[type])()
+                  type: ast_input_object_types[type]
                 }
               }
           })(),

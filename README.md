@@ -6,7 +6,7 @@
 
 A GraphQL implementation for interacting with EOSIO based blockchains.
 
-A working example of the site for eosio.token and eosio smart contract can be found [here](https://relocke.io/smartql/eosio.token) and [here](https://relocke.io/smartql/eosio).
+A working example of SmartQL can be found here [here](https://relocke.io/smartql).
 
 # Setup
 

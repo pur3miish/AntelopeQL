@@ -16,7 +16,7 @@ function ast_to_input_types(ABI_AST) {
     (
       acc,
       { name: struct_name, fields: struct_fields, base },
-      _,
+      index,
       structs_array
     ) => {
       const handle_base_fields = (baseValue, fields = []) => {
@@ -30,10 +30,10 @@ function ast_to_input_types(ABI_AST) {
 
       if (base !== '') struct_fields = handle_base_fields(base, struct_fields)
 
-      const handle_input_GraphQLObjectType = objectType => {
-        if (!Object.keys(objectType.fields()).length) return null
-        return new GraphQLInputObjectType(objectType)
-      }
+      const handle_input_GraphQLObjectType = objectType =>
+        // if (!Object.keys(objectType.fields()).length) return null
+        new GraphQLInputObjectType(objectType)
+
       return {
         ...acc,
         [struct_name]: handle_input_GraphQLObjectType({
@@ -72,7 +72,7 @@ function ast_to_input_types(ABI_AST) {
 
                 /**
                  * This generates the types from a series of conditionals
-                 * based on abi data
+                 * based on ABI data.
                  */
                 const handle_type = field_struct
                   ? abi_ast[field_struct.name]

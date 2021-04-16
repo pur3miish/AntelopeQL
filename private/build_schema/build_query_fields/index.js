@@ -78,8 +78,8 @@ function build_query_fields(ABI) {
         type: GraphQLString
       }
     }
-  const { ast_object_types } = abi_to_ast(ABI)
 
+  const { ast_object_types } = abi_to_ast(ABI)
   const fields = ast_object_types.reduce(
     (acc, item) => ({
       ...acc,
