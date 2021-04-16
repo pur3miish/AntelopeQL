@@ -29,7 +29,7 @@ function ast_to_input_types(ABI_AST) {
       }
 
       if (base !== '') struct_fields = handle_base_fields(base, struct_fields)
-      // https://github.com/pur3miish/smartql/issues/3
+
       const handle_input_GraphQLObjectType = objectType => {
         if (!Object.keys(objectType.fields()).length) return null
         return new GraphQLInputObjectType(objectType)
