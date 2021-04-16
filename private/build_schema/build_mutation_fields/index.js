@@ -109,7 +109,6 @@ function build_mutation_fields(ABI, sign) {
           },
           { contract, rpc_urls }
         ) {
-          console.log(blocksBehind)
           const transaction_body =
             serialize_actions(context_free_actions) +
             serialize_actions([
