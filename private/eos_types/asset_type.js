@@ -23,10 +23,6 @@ An \`asset\` type describes a blockchain asset and includes a quantity and a sym
   name: 'asset',
   parseValue: asset_string => {
     if (asset_string == '') return ''
-    if (!asset_string.match(/^[0-9]+(\.)?[0-9]{1,18}\s[A-Z]{1,7}$/gmu))
-      throw new Error(
-        'The Asset symbol must be 1 - 7 uppercase characters (with a maximum precision of 18).'
-      )
 
     return asset_string
   }
