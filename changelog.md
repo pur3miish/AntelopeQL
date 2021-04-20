@@ -4,6 +4,9 @@
 
 ### Major
 
+- Now supporting optional (?) data types for ABI.
+### Minor
+
 - Fixes [#1](https://github.com/pur3miish/smartql/issues/1) configuration args.
 - Removed Asset type constraints on mutation input type, closes [#2](https://github.com/pur3miish/smartql/issues/2).
 - Supports actions with no input data, closes [#3](https://github.com/pur3miish/smartql/issues/3).
