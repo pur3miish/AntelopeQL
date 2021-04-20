@@ -1,8 +1,7 @@
 'use strict'
 const { GraphQLSchema, GraphQLObjectType } = require('graphql')
-const mutation_fields = require('./build_mutation_fields')
+const build_mutation_fields = require('./build_mutation_fields')
 const query_fields = require('./build_query_fields')
-
 /**
  * Builds a GraphQL schema from an EOS application binary interface (ABI) stored on a smart contract.
  * @name build_schema
@@ -26,7 +25,7 @@ function build_schema(ABI, smart_contract, sign) {
   const mutation = new GraphQLObjectType({
     name: 'Mutation',
     description: `Update the state of the \`${smart_contract}\` smart contract.`,
-    fields: mutation_fields(ABI, sign)
+    fields: build_mutation_fields(ABI, sign)
   })
 
   return new GraphQLSchema({
