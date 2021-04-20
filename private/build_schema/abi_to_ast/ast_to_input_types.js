@@ -2,7 +2,8 @@
 const {
   GraphQLInputObjectType,
   GraphQLString,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } = require('graphql')
 const eos_types = require('../../eos_types')
 
@@ -31,7 +32,6 @@ function ast_to_input_types(ABI_AST) {
       if (base !== '') struct_fields = handle_base_fields(base, struct_fields)
 
       const handle_input_GraphQLObjectType = objectType =>
-        // if (!Object.keys(objectType.fields()).length) return null
         new GraphQLInputObjectType(objectType)
 
       return {
@@ -42,7 +42,7 @@ function ast_to_input_types(ABI_AST) {
             const graphql_type_fields = struct_fields.reduce(
               (acc, { name: struct_field_name, type: struct_field_type }) => {
                 let isListType
-
+                let optionType
                 /**
                  * abi field list (array) item.
                  */
@@ -54,8 +54,10 @@ function ast_to_input_types(ABI_AST) {
                 /**
                  * Optional abi fields type
                  */
-                if (struct_field_type.endsWith('?'))
+                if (struct_field_type.endsWith('?')) {
+                  optionType = true
                   struct_field_type = struct_field_type.slice(0, -1)
+                }
 
                 /**
                  * variant type
@@ -80,10 +82,13 @@ function ast_to_input_types(ABI_AST) {
                   ? eos_types[struct_field_type]
                   : GraphQLString
 
-                /**
-                 * This is the graphql type
-                 */
-                const type = isListType ? GraphQLList(handle_type) : handle_type
+                let type
+                if (optionType)
+                  type = isListType ? GraphQLList(handle_type) : handle_type
+                else
+                  type = isListType
+                    ? GraphQLList(GraphQLNonNull(handle_type))
+                    : GraphQLNonNull(handle_type)
 
                 return {
                   ...acc,
