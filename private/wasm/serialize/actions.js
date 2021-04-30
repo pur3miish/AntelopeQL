@@ -56,7 +56,7 @@ function action({ account, action, authorization, data }) {
 function actions(actions) {
   return actions.reduce(
     (acc, i) => (acc += action(i)),
-    serialize_varuint32(actions.length)
+    serialize_varuint32(actions.length).toString().padStart(2, '0')
   )
 }
 
