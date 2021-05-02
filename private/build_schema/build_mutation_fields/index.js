@@ -3,8 +3,7 @@
 const {
   GraphQLList,
   GraphQLInputObjectType,
-  GraphQLNonNull,
-  GraphQLInt
+  GraphQLNonNull
 } = require('graphql')
 const authorization_type = require('../../eos_types/authorization_type')
 const {
@@ -18,39 +17,8 @@ const serialize_actions = require('../../wasm/serialize/actions.js')
 const serialize_extensions = require('../../wasm/serialize/extension.js')
 const serialize_header = require('../../wasm/serialize/transaction_header.js')
 const abi_to_ast = require('../abi_to_ast/index.js.js')
+const { configuration, defaultValue } = require('./configuration')
 const serialize_transaction_data = require('./serialize_transaction_data.js')
-
-const configuration = new GraphQLInputObjectType({
-  name: 'configuration',
-  description: ``,
-  fields: () => ({
-    blocksBehind: {
-      description: 'Number of blocks behind the current block',
-      type: GraphQLInt,
-      defaultValue: 3
-    },
-    expireSeconds: {
-      description: 'Seconds past before transaction is no longer valid',
-      type: GraphQLInt,
-      defaultValue: 30
-    },
-    max_net_usage_words: {
-      description: `Maximum NET bandwidth usage a transaction can consume, \nwhen set to 0 there is no limit`,
-      type: GraphQLInt,
-      defaultValue: 0
-    },
-    max_cpu_usage_ms: {
-      description: `Maximum CPU bandwidth usage a transaction can consume, \nwhen set to 0 there is no limit`,
-      type: GraphQLInt,
-      defaultValue: 1
-    },
-    delay_sec: {
-      type: GraphQLInt,
-      description: 'Number of seconds that the transaciton will be delayed by',
-      defaultValue: 0
-    }
-  })
-}) //configuration
 
 /**
  * This function builds mutation fields of a GraphQL query of the Schema from an ABI of a given EOS smart contract.
@@ -64,119 +32,136 @@ const configuration = new GraphQLInputObjectType({
 function build_mutation_fields(ABI, sign) {
   const { ast_input_object_types, abi_ast } = abi_to_ast(ABI)
 
-  return ABI.actions.reduce(
+  const fields = ABI.actions.reduce(
     (acc, { name, type, ricardian_contract }) => ({
       ...acc,
       [name]: {
-        type: sign ? transaction_receipt_type : packed_transaction_type,
         description: (() => {
           let description = ricardian_contract.match(/^title: .+$/gmu)
           if (description) return description[0].replace('title: ', '')
           return ''
         })(),
-        args: {
-          ...(() => {
-            if (Object.keys(ast_input_object_types[type]._fields()).length)
-              return {
-                data: {
-                  type: ast_input_object_types[type]
-                }
-              }
-          })(),
-          configuration: {
-            description: 'Control elements of the EOSIO transaction.',
-            type: configuration
-          },
-          authorization: {
-            description: 'Authorization array object',
-            type: new GraphQLNonNull(new GraphQLList(authorization_type))
-          }
-        },
-        async resolve(
-          _,
-          {
-            data,
-            authorization,
-            configuration: {
-              blocksBehind = 3,
-              expireSeconds = 30,
-              max_net_usage_words = 0,
-              max_cpu_usage_ms = 1,
-              delay_sec = 0,
-              context_free_actions = [],
-              transaction_extensions = []
-            } = {}
-          },
-          { contract, rpc_urls }
-        ) {
-          const transaction_body =
-            serialize_actions(context_free_actions) +
-            serialize_actions([
-              {
-                account: contract,
-                action: name,
-                authorization,
-                data: await serialize_transaction_data({
-                  actionType: type,
-                  data,
-                  abi_ast
-                })
-              }
-            ]) +
-            serialize_extensions(transaction_extensions) +
-            '0000000000000000000000000000000000000000000000000000000000000000'
-
-          const { chain_id, head_block_num } = await get_info({ rpc_urls })
-
-          const block_num_or_id = head_block_num - blocksBehind
-          const { timestamp, block_num, ref_block_prefix } = await get_block({
-            rpc_urls,
-            block_num_or_id
+        type: new GraphQLInputObjectType({
+          name: `${name}_data`,
+          fields: () => ({
+            ...(() => {
+              if (Object.keys(ast_input_object_types[type]._fields()).length)
+                return ast_input_object_types[type]._fields()
+            })(),
+            authorization: {
+              description: 'Authorization array object.',
+              type: new GraphQLNonNull(new GraphQLList(authorization_type))
+            }
           })
-
-          const expiration =
-            Math.round(Date.parse(timestamp + 'Z') / 1000) + expireSeconds
-
-          // serialize transaction header
-          const transaction_header = serialize_header({
-            expiration,
-            ref_block_num: block_num & 0xffff,
-            ref_block_prefix,
-            max_net_usage_words,
-            max_cpu_usage_ms,
-            delay_sec
-          })
-
-          if (!sign) return { chain_id, transaction_body, transaction_header }
-
-          const signatures = await sign({
-            chain_id,
-            transaction_body,
-            transaction_header
-          })
-
-          if (!Array.isArray(signatures))
-            throw new Error(
-              'Expected “sign” function to return an array of signatures.'
-            )
-
-          const receipt = await push_transaction({
-            transaction: transaction_header + transaction_body,
-            signatures,
-            rpc_urls
-          })
-
-          if (receipt.error)
-            throw new Error(
-              `${receipt.error.what} - ${receipt.error.details[0].message}`
-            )
-
-          return receipt
-        }
+        })
       }
     }),
     {}
   )
+
+  return {
+    transaction: {
+      type: sign ? transaction_receipt_type : packed_transaction_type,
+      description: '',
+      args: {
+        actions: {
+          type: GraphQLNonNull(
+            new GraphQLList(
+              GraphQLNonNull(
+                new GraphQLInputObjectType({
+                  name: 'action_type',
+                  description: 'List of the smart contract actions.',
+                  fields
+                })
+              )
+            )
+          )
+        },
+        configuration: {
+          type: configuration
+        }
+      },
+      async resolve(
+        _,
+        { configuration = defaultValue, actions },
+        { contract, rpc_urls }
+      ) {
+        const context_free_actions = []
+        const transaction_extensions = []
+        let action_array = []
+
+        for await (const action of actions)
+          action_array.push(
+            ...(await Promise.all(
+              Object.keys(action).map(async actionType => {
+                const { authorization, ...data } = action[actionType]
+                return {
+                  account: contract,
+                  action: actionType,
+                  authorization,
+                  data: await serialize_transaction_data({
+                    actionType,
+                    data,
+                    abi_ast
+                  })
+                }
+              })
+            ))
+          )
+
+        const transaction_body =
+          serialize_actions(context_free_actions) +
+          serialize_actions(action_array) +
+          serialize_extensions(transaction_extensions) +
+          '0000000000000000000000000000000000000000000000000000000000000000'
+
+        const { chain_id, head_block_num } = await get_info({ rpc_urls })
+        const block_num_or_id = head_block_num - configuration.blocksBehind
+        const { timestamp, block_num, ref_block_prefix } = await get_block({
+          rpc_urls,
+          block_num_or_id
+        })
+        const expiration =
+          Math.round(Date.parse(timestamp + 'Z') / 1000) +
+          configuration.expireSeconds
+
+        const transaction_header = serialize_header({
+          expiration,
+          ref_block_num: block_num & 0xffff,
+          ref_block_prefix,
+          max_net_usage_words: configuration.max_net_usage_words,
+          max_cpu_usage_ms: configuration.max_cpu_usage_ms,
+          delay_sec: configuration.delay_sec
+        })
+
+        if (!sign) return { chain_id, transaction_body, transaction_header }
+
+        const signatures = await sign({
+          chain_id,
+          transaction_body,
+          transaction_header
+        })
+
+        if (!Array.isArray(signatures))
+          throw new Error(
+            'Expected “sign” function to return an array of signatures.'
+          )
+
+        const receipt = await push_transaction({
+          transaction: transaction_header + transaction_body,
+          signatures,
+          rpc_urls
+        })
+
+        if (receipt.error)
+          throw new Error(
+            `${receipt.error.what} - ${receipt.error.details[0].message}`
+          )
+
+        return receipt
+      }
+    }
+  }
 }
 
 module.exports = build_mutation_fields
