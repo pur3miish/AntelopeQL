@@ -1,3 +1,10 @@
+## New account
+
+This example will create an account for you.
+
+Because EOS accounts need some RAM allocated, the order of operations matter.
+Each array Item will
+
 ```graphql
 mutation {
   transaction(
@@ -27,7 +34,7 @@ mutation {
         authorization: { actor: "pur3miish222" } # Each action needs an authorization.
       }
     }
-    # Actions 2 - Will be executed after Action 1, buyrambytes & delegatebw
+    # Actions 2 - Will be executed after previous list query, buyrambytes & delegatebw.
     {
       #  Delegate some bandwidth and purchase some RAM to the newly created account.
       buyrambytes: {
