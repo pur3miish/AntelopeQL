@@ -1,10 +1,11 @@
 # SmartQL changelog
 
-## Next
+## 2.0.0
 
 ### Major
 
-- Now uses `universal-ecdsa` for digital signatures
+- Supports atomic transactions.
+- Now uses `universal-ecdsa` for digital signatures.
 - Now supporting optional (?) data types for ABI.
 - Closes [#5](https://github.com/pur3miish/smartql/issues/5).
 - Closes [#6](https://github.com/pur3miish/smartql/issues/6).
@@ -18,6 +19,7 @@
 
 ### Patch
 
+- closed #7.
 - Fixed `smartql.svg` alignment being cut off.
 - Removed inline html from `readme.md`.
 
