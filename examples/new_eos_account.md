@@ -2,12 +2,9 @@
 
 Example of how to create a new EOS account.
 
-
 ### Background
 
-Because account creations require you to delegate some bandwidth and RAM to the account being created, you will need to create an atomic query.
-In other words we need to create actions on the blockchain that are executed in sequence from top to bottom.
-
+Because account creations require you to delegate some bandwidth and RAM to the account being created, you will need to create an atomic query. In other words we need to create actions on the blockchain that are executed in sequence from top to bottom.
 
 ```GraphQL
 mutation {
@@ -73,9 +70,7 @@ mutation {
 }
 ```
 
-
 ```js
-
 import SmartQL from 'smartql'
 
 SmartQL({
@@ -83,11 +78,11 @@ SmartQL({
   private_keys: ['5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'],
   contract: 'eosio', // smart contract accountname for creating new account.
   rpc_urls: ['https://jungle3.cryptolions.io:443'] // RPC url for sending txn to.
-   // list of required private keys.
+  // list of required private keys.
 }).then(console.log)
 ```
-> The logged output should include a `transaction_id` if new account was successfully created.
 
+> The logged output should include a `transaction_id` if new account was successfully created.
 
 ### Troubleshooting
 
