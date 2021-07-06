@@ -1,4 +1,4 @@
-# SmarQL changelog
+# SmartQL changelog
 
 ## Next
 
