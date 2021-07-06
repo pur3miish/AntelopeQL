@@ -5,7 +5,7 @@ const rpc_call = require('./rpc_call')
  * EOS account name base32 - characters 1-5, a-z and dot.
  * @kind typedef
  * @name NAME
- * @prop {string} name
+ * @prop {string} name EOS account name.
  * @ignore
  */
 

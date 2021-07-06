@@ -1,8 +1,10 @@
 'use strict'
 
+const { public_key_from_private } = require('eos-ecc')
 const { Source, execute, parse, validate, formatError } = require('graphql')
 const build_schema = require('../private/build_schema')
 const get_abi = require('../private/network/get_abi')
+const get_account_by_authorizers = require('../private/network/get_accounts_by_authorizers.js')
 
 /**
  * The core function to build and execute a GraphQL request.
@@ -11,10 +13,10 @@ const get_abi = require('../private/network/get_abi')
  * @param {object} arg argument.
  * @param {string} arg.query GraphQL query string.
  * @param {string} arg.contract Account name that holds the smart constract.
- * @param {string[]} arg.rpc_urls List of URLs to connect to RPC.
+ * @param {Array<string>} arg.rpc_urls List of URLs to connect to RPC.
  * @param {object} [arg.variables] GraphQL variables.
  * @param {object} [arg.operationName] GraphQL opperation name.
- * @param {Function} [arg.sign] Digital signature function.
+ * @param {Array<string>} [arg.private_keys] List of EOS wif private keys.
  * @returns {object} Reponse from a GraphQL query.
  * @example <caption>Ways to `require`.</caption>
  * ```js
@@ -63,11 +65,7 @@ const get_abi = require('../private/network/get_abi')
  *   query: mutation,
  *   rpc_urls: ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443'],
  *   contract: "eosio.token",
- *   async sign({ chain_id, transaction_body, transaction_header }) {
- *     return private_keys.map(key =>
- *       eosjs.sign(chain_id + transaction_header + transaction_body, key, 'hex')
- *     )
- *   }
+ *   private_keys: [5K7…]
  * }).then(console.log)
  * ```
  * The logged output was
@@ -83,22 +81,49 @@ const SmartQL = async ({
   rpc_urls,
   variables,
   operationName,
-  sign
+  private_keys = []
 }) => {
   try {
     let documentAST
     try {
+      // Validate graphql query.
       documentAST = parse(new Source(query))
     } catch (err) {
       throw new Error(err)
     }
 
+    // fetch ABI for a given smart contract.
     const abi = await get_abi({
       rpc_urls,
       contract
     })
 
-    const schema = build_schema(abi, contract, sign)
+    let key_chain = []
+    let auth_accounts
+
+    if (private_keys.length) {
+      // Remove duplicate keys
+      const private_key_set = new Set()
+      private_keys.forEach(i => private_key_set.add(i))
+
+      // Validate wif private keys and calcualte the corresponding public key.
+      key_chain = await Promise.all(
+        [...private_key_set].map(async pk => ({
+          public_key: await public_key_from_private(pk),
+          private_key: pk
+        }))
+      )
+
+      // Fetch valid account authorities from the calculated public keys.
+      const { accounts } = await get_account_by_authorizers({
+        rpc_urls,
+        keys: key_chain.map(({ public_key }) => public_key)
+      })
+      auth_accounts = accounts
+    }
+
+    // build schema
+    const schema = build_schema(abi, contract)
     const queryErrors = validate(schema, documentAST)
     if (queryErrors.length) throw queryErrors
 
@@ -108,7 +133,9 @@ const SmartQL = async ({
       rootValue: '',
       contextValue: {
         contract,
-        rpc_urls
+        rpc_urls,
+        key_chain,
+        auth_accounts
       },
       variableValues: variables,
       operationName,

@@ -5,7 +5,7 @@ const rpc_call = require('./rpc_call')
 /**
  * Returns an object containing various details about a specific block on the blockchain.
  * @param {object} arg Argument.
- * @param {string[]} arg.rpc_urls List of URL strings.
+ * @param {Array<string>} arg.rpc_urls List of URL strings.
  * @param {string} arg.block_num_or_id Provide a block number or a block id.
  * @returns {object} Get block object.
  */

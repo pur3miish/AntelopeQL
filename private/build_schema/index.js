@@ -8,11 +8,10 @@ const query_fields = require('./build_query_fields')
  * @kind function
  * @param {object} ABI The Application binary interface for the EOS smart contract.
  * @param {string} smart_contract The name of the account’s smart contract.
- * @param {Function} [sign] A function that will generate EOS signature.
  * @returns {object} GraphQL schema.
  * @ignore
  */
-function build_schema(ABI, smart_contract, sign) {
+function build_schema(ABI, smart_contract) {
   if (!ABI)
     throw new TypeError(`Expected ABI to be object type but got ${typeof ABI}.`)
 
@@ -25,7 +24,7 @@ function build_schema(ABI, smart_contract, sign) {
   const mutation = new GraphQLObjectType({
     name: 'Mutation',
     description: `Update the state of the \`${smart_contract}\` smart contract.`,
-    fields: build_mutation_fields(ABI, sign)
+    fields: build_mutation_fields(ABI)
   })
 
   return new GraphQLSchema({

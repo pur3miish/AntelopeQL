@@ -29,7 +29,7 @@ function permission({ actor, permission }) {
  * @param {Objext} arg Argument.
  * @param {string} arg.account The account name of the smart contract.
  * @param {string} arg.action The name of the action on the contract to interact with.
- * @param {Authorization[]} arg.authorization List of authorizations.
+ * @param {Array<Authorization>} arg.authorization List of authorizations.
  * @param {string} arg.data The hex string data to push to the contract.
  * @returns {sting} A hex string of the actions to
  * @ignore
@@ -49,7 +49,7 @@ function action({ account, action, authorization, data }) {
  * Serializes EOSIO actions (transaction) into WASM hex string.
  * @name actions
  * @kind function
- * @param {object[]} actions List of EOSIO actions.
+ * @param {Array<object>} actions List of EOSIO actions.
  * @returns {string} Hex string of action.
  * @ignore
  */

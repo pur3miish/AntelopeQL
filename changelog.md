@@ -4,6 +4,7 @@
 
 ### Major
 
+- Now uses `universal-ecdsa` for digital signatures
 - Now supporting optional (?) data types for ABI.
 - Closes [#5](https://github.com/pur3miish/smartql/issues/5).
 - Closes [#6](https://github.com/pur3miish/smartql/issues/6).

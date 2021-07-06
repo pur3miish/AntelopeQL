@@ -46,21 +46,20 @@ const packed_transaction_type = new GraphQLObjectType({
 
 const transaction_receipt_type = new GraphQLObjectType({
   name: 'transaction_receipt',
-  description:
-    'Receipt for the action (mutation) for a blockchain transaction.',
+  description: 'Receipt for the action (mutation) for a blockchain transaction',
   fields: () => ({
     transaction_id: {
       type: GraphQLID,
-      description: 'EOSIO blockchain transaction id.'
+      description: 'EOSIO blockchain transaction id “reciept”'
     },
     block_num: {
       type: GraphQLInt,
-      description: 'What block the transaction is located in.',
+      description: 'What block the transaction is located in',
       resolve: ({ processed }) => processed.block_num
     },
     block_time: {
       type: GraphQLString,
-      description: 'transaction time (GMT).',
+      description: 'transaction time (GMT)',
       resolve: ({ processed }) => processed.block_time
     },
     producer_block_id: {
@@ -69,7 +68,7 @@ const transaction_receipt_type = new GraphQLObjectType({
     },
     resource_cost: {
       description:
-        'A resource object for the network cost of running the transaction.',
+        'A resource object for the network cost of running the transaction',
       type: bandwidth_cost_type,
       resolve: ({ processed }) => processed.receipt
     },

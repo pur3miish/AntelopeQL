@@ -23,10 +23,6 @@ Consider a [BigInt](https://caniuse.com/?search=bigint) polyfill library for saf
 
 # API
 
-## Table of contents
-
-- [function SmartQL](#function-smartql)
-
 ## function SmartQL
 
 The core function to build and execute a GraphQL request.
@@ -39,7 +35,7 @@ The core function to build and execute a GraphQL request.
 | `arg.rpc_urls` | Array<string> | List of URLs to connect to RPC. |
 | `arg.variables` | object? | GraphQL variables. |
 | `arg.operationName` | object? | GraphQL opperation name. |
-| `arg.sign` | Function? | Digital signature function. |
+| `arg.private_keys` | Array<string>? | List of EOS wif private keys. |
 
 **Returns:** object — Reponse from a GraphQL query.
 
@@ -101,11 +97,7 @@ _SmartQL mutation - Transfer EOS tokens._
 >   query: mutation,
 >   rpc_urls: ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443'],
 >   contract: "eosio.token",
->   async sign({ chain_id, transaction_body, transaction_header }) {
->     return private_keys.map(key =>
->       eosjs.sign(chain_id + transaction_header + transaction_body, key, 'hex')
->     )
->   }
+>   private_keys: [5K7…]
 > }).then(console.log)
 > ```
 >

@@ -1,15 +1,12 @@
 'use strict'
-
+const { sign_txn } = require('eos-ecc')
 const {
   GraphQLList,
   GraphQLInputObjectType,
   GraphQLNonNull
 } = require('graphql')
 const authorization_type = require('../../eos_types/authorization_type')
-const {
-  transaction_receipt_type,
-  packed_transaction_type
-} = require('../../eos_types/mutation_types')
+const { transaction_receipt_type } = require('../../eos_types/mutation_types')
 const get_block = require('../../network/get_block.js')
 const get_info = require('../../network/get_info.js')
 const push_transaction = require('../../network/push_transaction.js')
@@ -25,11 +22,10 @@ const serialize_transaction_data = require('./serialize_transaction_data.js')
  * @name build_mutation_fields
  * @kind function
  * @param {object} ABI ABI for a smart contract.
- * @param {Function} [sign] Digiatal signature generation.
  * @returns {object} GraphQL mutation fields.
  * @ignore
  */
-function build_mutation_fields(ABI, sign) {
+function build_mutation_fields(ABI) {
   const { ast_input_object_types, abi_ast } = abi_to_ast(ABI)
 
   const fields = ABI.actions.reduce(
@@ -61,7 +57,7 @@ function build_mutation_fields(ABI, sign) {
 
   return {
     transaction: {
-      type: sign ? transaction_receipt_type : packed_transaction_type,
+      type: transaction_receipt_type,
       description: '',
       args: {
         actions: {
@@ -84,7 +80,7 @@ function build_mutation_fields(ABI, sign) {
       async resolve(
         _,
         { configuration = defaultValue, actions },
-        { contract, rpc_urls }
+        { contract, rpc_urls, key_chain = [], auth_accounts = [] }
       ) {
         const context_free_actions = []
         const transaction_extensions = []
@@ -109,6 +105,55 @@ function build_mutation_fields(ABI, sign) {
             ))
           )
 
+        // Parses required auth from GraphQL query
+        const required_auth = []
+        action_array.forEach(({ authorization }) =>
+          required_auth.push(...authorization)
+        )
+
+        // Determines missing authority and filters required PKs.
+        const required_keys = new Set()
+        const missing_auth = required_auth.filter(
+          ({ actor, permission }) =>
+            !auth_accounts.find(i => {
+              const has_auth =
+                actor == i.account_name && i.permission_name == permission
+              if (has_auth)
+                required_keys.add(
+                  key_chain.find(
+                    ({ public_key }) => public_key == i.authorizing_key
+                  )
+                )
+
+              return has_auth
+            })
+        )
+
+        /**
+         * Generates error message of missing authorities for a
+         * transaction/mutation that will be returned as a GraphQL error message.
+         */
+        if (missing_auth.length) {
+          const missing_auth_error_message = missing_auth.reduce(
+            (acc, x, i) =>
+              (acc += `${
+                missing_auth.length == 1 || missing_auth.length - 1 != i
+                  ? ''
+                  : 'and '
+              }“${x.actor}” with “${x.permission}” authority${
+                missing_auth.length - 1 != i ? ', ' : ''
+              }`),
+            ''
+          )
+
+          throw new Error(
+            `Missing keys for the account${
+              missing_auth.length > 1 ? 's' : ''
+            }: ${missing_auth_error_message}.`
+          )
+        }
+
+        // EOS transaction body
         const transaction_body =
           serialize_actions(context_free_actions) +
           serialize_actions(action_array) +
@@ -121,10 +166,13 @@ function build_mutation_fields(ABI, sign) {
           rpc_urls,
           block_num_or_id
         })
+
+        // TaPoS expiry time.
         const expiration =
           Math.round(Date.parse(timestamp + 'Z') / 1000) +
           configuration.expireSeconds
 
+        // Generates a transaction header for a EOS transaction.
         const transaction_header = serialize_header({
           expiration,
           ref_block_num: block_num & 0xffff,
@@ -134,18 +182,15 @@ function build_mutation_fields(ABI, sign) {
           delay_sec: configuration.delay_sec
         })
 
-        if (!sign) return { chain_id, transaction_body, transaction_header }
-
-        const signatures = await sign({
-          chain_id,
-          transaction_body,
-          transaction_header
-        })
-
-        if (!Array.isArray(signatures))
-          throw new Error(
-            'Expected “sign” function to return an array of signatures.'
+        // Generate sigs
+        const signatures = await Promise.all(
+          [...required_keys].map(({ private_key }) =>
+            sign_txn({
+              hex: chain_id + transaction_header + transaction_body,
+              wif_private_key: private_key
+            })
           )
+        )
 
         const receipt = await push_transaction({
           transaction: transaction_header + transaction_body,

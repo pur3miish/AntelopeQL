@@ -6,8 +6,8 @@ const rpc_call = require('./rpc_call')
  * Pushes a serialized transaction to the blockchain.
  * @param {object} arg Argument
  * @param {string} arg.transaction WASM transaction.
- * @param {string[]} arg.signatures List of signatures for the transaction.
- * @param {string[]} arg.rpc_urls List of RPC urls for the transaction.
+ * @param {Array<string>} arg.signatures List of signatures for the transaction.
+ * @param {Array<string>} arg.rpc_urls List of RPC urls for the transaction.
  * @returns {objext} transaction receipt.
  */
 const push_transaction = async ({ transaction, signatures, rpc_urls }) => {
