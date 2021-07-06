@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+## Next
+
+### Patch
+
+- Added license badge and NPM version to `readme.md`.
+
 ## 2.0.0
 
 ### Major
