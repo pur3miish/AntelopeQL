@@ -10,7 +10,7 @@ const get_account_by_authorizers = require('../private/network/get_accounts_by_a
  * The core function to build and execute a GraphQL request.
  * @name SmartQL
  * @kind function
- * @param {object} arg argument.
+ * @param {object} arg Argument.
  * @param {string} arg.query GraphQL query string.
  * @param {string} arg.contract Account name that holds the smart constract.
  * @param {Array<string>} arg.rpc_urls List of URLs to connect to RPC.
@@ -27,45 +27,44 @@ const get_account_by_authorizers = require('../private/network/get_accounts_by_a
  * import SmartQL from 'smartql'
  * ```
  * @example <caption>SmartQL query - Get account balance.</caption>
+ * ```GraphQL
+ * query { account(scope: "eosio") { balance } }
+ * ```
  * ```js
  * SmartQL({
- *  query: `{
- *   account(scope: "eosio") {
- *     balance
- *   }
- *  }`,
- *  contract: "eosio.token",
- *  rpc_urls: ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443']
+ *   query,
+ *   contract: 'eosio.token',
+ *   rpc_urls: ['https://jungle3.cryptolions.io:443'],
+ *   private_keys: ['5a12…']
  * }).then(console.log)
  * ```
  * The logged output was
- * { "data": { "account": [{ "balance": "1297726572.6175 EOS" }] }
+ * { "data": { "account": [{ "balance": "… EOS" }] }
  *
  * @example <caption>SmartQL mutation - Transfer EOS tokens.</caption>
- * ```js
- * import eosjs from 'eosjs-ecc'
- *
- * const mutation = `
+ * ```GraphQL
  * mutation {
- *  transfer(
- *    data: {
- *     to: "ihack4google",
- *     from: "eoshackathon",
- *     memo: "Feigenbaum constants",
- *     quantity: "4.6692 EOS"
- *    },
- *   authorization: {
- *     actor: "eoshackathon"
- *   }) {
- *   transaction_id
- *   }
+ *  transaction(
+ *    actions: {
+ *      transfer: {
+ *        to: eoshackathon,
+ *        from: pur3miish222,
+ *        quantity: "4.6692 EOS",
+ *        memo: "Feigenbaum constant",
+ *        authorization: { actor: pur3miish222 }
+ *    }
+ *  }
+ * ) {
+ *    transaction_id
  * }
- *
+ * }
+ * ```
+ * ```js
  * SmartQL({
  *   query: mutation,
- *   rpc_urls: ['https://jungle3.cryptolions.io:443', 'https://jungle.eosphere.io:443'],
- *   contract: "eosio.token",
- *   private_keys: [5K7…]
+ *   rpc_urls: ['https://jungle3.cryptolions.io:443'],
+ *   contract: 'eosio.token',
+ *   private_keys: ['5K7…']
  * }).then(console.log)
  * ```
  * The logged output was

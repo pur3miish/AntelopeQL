@@ -2,3 +2,5 @@ package.json
 private/ecdsa.json
 .vscode
 cpp/
+test
+/abi
