@@ -1,8 +1,10 @@
 # SmartQL changelog
 
-## Next
+## V2.0.1
 
 ### Patch
+
+- Fixed mjs import bug.
 
 - Added license badge and NPM version to `readme.md`.
 
