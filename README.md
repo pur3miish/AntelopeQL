@@ -15,7 +15,8 @@ $ npm i smartql
 # Support
 
 - [Node.js](https://nodejs.org/en/) `>= 12`
-- [Browser list](https://github.com/browserslist/browserslist) `> 0.5%, not OperaMini all, not IE > 0, not dead`.
+- [Browser list](https://github.com/browserslist/browserslist) `> 0.5%, not OperaMini all, not IE > 0, not dead`
+- GraphQL 15
 
 Consider a [BigInt](https://caniuse.com/?search=bigint) polyfill library for safari 13.
 
