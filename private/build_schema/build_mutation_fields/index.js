@@ -80,7 +80,7 @@ function build_mutation_fields(ABI) {
       async resolve(
         _,
         { configuration = defaultValue, actions },
-        { contract, rpc_urls, key_chain = [], auth_accounts = [] }
+        { contract, rpc_url, key_chain = [], auth_accounts = [] }
       ) {
         const context_free_actions = []
         const transaction_extensions = []
@@ -160,10 +160,10 @@ function build_mutation_fields(ABI) {
           serialize_extensions(transaction_extensions) +
           '0000000000000000000000000000000000000000000000000000000000000000'
 
-        const { chain_id, head_block_num } = await get_info({ rpc_urls })
+        const { chain_id, head_block_num } = await get_info({ rpc_url })
         const block_num_or_id = head_block_num - configuration.blocksBehind
         const { timestamp, block_num, ref_block_prefix } = await get_block({
-          rpc_urls,
+          rpc_url,
           block_num_or_id
         })
 
@@ -195,7 +195,7 @@ function build_mutation_fields(ABI) {
         const receipt = await push_transaction({
           transaction: transaction_header + transaction_body,
           signatures,
-          rpc_urls
+          rpc_url
         })
 
         if (receipt.error)

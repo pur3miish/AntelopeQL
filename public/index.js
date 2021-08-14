@@ -7,13 +7,13 @@ const get_abi = require('../private/network/get_abi')
 const get_account_by_authorizers = require('../private/network/get_accounts_by_authorizers.js')
 
 /**
- * The core function to build and execute a GraphQL request.
+ * The core function to build and execute a GraphQL request for EOSIO based blockchain.
  * @name SmartQL
  * @kind function
  * @param {object} arg Argument.
  * @param {string} arg.query GraphQL query string.
- * @param {string} arg.contract Account name that holds the smart constract.
- * @param {Array<string>} arg.rpc_urls List of URLs to connect to RPC.
+ * @param {string} arg.contract Account name that holds the smart contract.
+ * @param {string} arg.rpc_url URL to connect to RPC.
  * @param {object} [arg.variables] GraphQL variables.
  * @param {object} [arg.operationName] GraphQL opperation name.
  * @param {Array<string>} [arg.private_keys] List of EOS wif private keys.
@@ -34,7 +34,7 @@ const get_account_by_authorizers = require('../private/network/get_accounts_by_a
  * SmartQL({
  *   query,
  *   contract: 'eosio.token',
- *   rpc_urls: ['https://jungle3.cryptolions.io:443'],
+ *   rpc_url: 'https://api.relocke.io',
  *   private_keys: ['5a12…']
  * }).then(console.log)
  * ```
@@ -62,7 +62,7 @@ const get_account_by_authorizers = require('../private/network/get_accounts_by_a
  * ```js
  * SmartQL({
  *   query: mutation,
- *   rpc_urls: ['https://jungle3.cryptolions.io:443'],
+ *   rpc_url: 'https://api.relocke.io',
  *   contract: 'eosio.token',
  *   private_keys: ['5K7…']
  * }).then(console.log)
@@ -77,7 +77,7 @@ const get_account_by_authorizers = require('../private/network/get_accounts_by_a
 const SmartQL = async ({
   query,
   contract,
-  rpc_urls,
+  rpc_url,
   variables,
   operationName,
   private_keys = []
@@ -93,7 +93,7 @@ const SmartQL = async ({
 
     // fetch ABI for a given smart contract.
     const abi = await get_abi({
-      rpc_urls,
+      rpc_url,
       contract
     })
 
@@ -115,7 +115,7 @@ const SmartQL = async ({
 
       // Fetch valid account authorities from the calculated public keys.
       const { accounts } = await get_account_by_authorizers({
-        rpc_urls,
+        rpc_url,
         keys: key_chain.map(({ public_key }) => public_key)
       })
       auth_accounts = accounts
@@ -132,7 +132,7 @@ const SmartQL = async ({
       rootValue: '',
       contextValue: {
         contract,
-        rpc_urls,
+        rpc_url,
         key_chain,
         auth_accounts
       },

@@ -14,33 +14,28 @@ const rpc_call = require('./rpc_call')
  * @name get_abi
  * @kind function
  * @param {object} arg Argument.
- * @param {Array} arg.rpc_urls List of URLs running a
+ * @param {string} arg.rpc_url RPC URL.
  * @param {NAME} arg.contract Name of the EOS account that holds the smart contract.
  * @returns {ABI} The contract abi.
  * @ignore
  */
-async function get_abi({ contract, rpc_urls }) {
-  if (!rpc_urls || !rpc_urls.length || !Array.isArray(rpc_urls))
-    throw new TypeError(`Expected an array of URLs for rpc_urls argument.`)
+async function get_abi({ contract, rpc_url }) {
   if (!contract)
     throw new TypeError(
       `Epected a contract to be string, got ${typeof contract}`
     )
 
-  const { abi, error } = await rpc_call(
-    rpc_urls.map(url => `${url}/v1/chain/get_abi`),
-    {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        account_name: contract,
-        json: true
-      })
-    }
-  )
+  const { abi, error } = await rpc_call(`${rpc_url}/v1/chain/get_abi`, {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      account_name: contract,
+      json: true
+    })
+  })
 
   if (abi) return abi
   if (error)

@@ -90,13 +90,13 @@ function table_scope(tables) {
         description: 'Reverse the order of returned results.'
       }
     },
-    async resolve(_, args, { rpc_urls, contract }) {
+    async resolve(_, args, { rpc_url, contract }) {
       return get_table_by_scope(
         {
           code: contract,
           ...args
         },
-        rpc_urls
+        rpc_url
       )
     }
   }

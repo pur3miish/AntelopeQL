@@ -2,17 +2,17 @@
 const fetch = require('isomorphic-fetch')
 
 /**
- * Given a list of URLs recursively fetch and await for a specified duration.
+ * RPC call with error handle.
  * @name rpc_call
  * @kind function
- * @param {Array} urls List of urls to call.
+ * @param {string} url RPC url.
  * @param {object} body Fetch request data.
  * @returns {object} Fetch response.
  * @ignore
  */
-async function rpc_call(urls, body) {
+async function rpc_call(url, body) {
   try {
-    const request = await fetch(urls[0], body)
+    const request = await fetch(url, body)
     return request.json()
   } catch (err) {
     if (err.errno == 'ENOTFOUND')

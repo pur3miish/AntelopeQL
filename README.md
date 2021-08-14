@@ -24,14 +24,14 @@ Consider a [BigInt](https://caniuse.com/?search=bigint) polyfill library for saf
 
 ## function SmartQL
 
-The core function to build and execute a GraphQL request.
+The core function to build and execute a GraphQL request for EOSIO based blockchain.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | `arg` | object | Argument. |
 | `arg.query` | string | GraphQL query string. |
-| `arg.contract` | string | Account name that holds the smart constract. |
-| `arg.rpc_urls` | Array<string> | List of URLs to connect to RPC. |
+| `arg.contract` | string | Account name that holds the smart contract. |
+| `arg.rpc_url` | string | URL to connect to RPC. |
 | `arg.variables` | object? | GraphQL variables. |
 | `arg.operationName` | object? | GraphQL opperation name. |
 | `arg.private_keys` | Array<string>? | List of EOS wif private keys. |
@@ -62,7 +62,7 @@ _SmartQL query - Get account balance._
 > SmartQL({
 >   query,
 >   contract: 'eosio.token',
->   rpc_urls: ['https://jungle3.cryptolions.io:443'],
+>   rpc_url: 'https://api.relocke.io',
 >   private_keys: ['5a12…']
 > }).then(console.log)
 > ```
@@ -92,7 +92,7 @@ _SmartQL mutation - Transfer EOS tokens._
 > ```js
 > SmartQL({
 >   query: mutation,
->   rpc_urls: ['https://jungle3.cryptolions.io:443'],
+>   rpc_url: 'https://api.relocke.io',
 >   contract: 'eosio.token',
 >   private_keys: ['5K7…']
 > }).then(console.log)

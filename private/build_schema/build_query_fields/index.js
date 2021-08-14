@@ -7,7 +7,7 @@ const {
   GraphQLInt
 } = require('graphql')
 const name = require('../../eos_types/name_type')
-const get_table_by_row = require('../../network/get_table_by_row')
+const get_table_rows = require('../../network/get_table_rows')
 const abi_to_ast = require('../abi_to_ast/index.js.js')
 const generate_table_scope = require('./table_scope')
 
@@ -87,11 +87,11 @@ function build_query_fields(ABI) {
         description: `Query data from the table \`${Object.keys(item)[0]}\`.`,
         type: GraphQLList(item[Object.keys(item)[0]]),
         args: table_row_arguments,
-        resolve: async (_, args, { rpc_urls, contract }) => {
+        resolve: async (_, args, { rpc_url, contract }) => {
           args.table = Object.keys(item)[0]
           args.code = contract
 
-          const { rows } = await get_table_by_row(args, rpc_urls)
+          const { rows } = await get_table_rows(args, rpc_url)
           return rows
         }
       }

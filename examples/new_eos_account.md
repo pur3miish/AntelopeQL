@@ -77,7 +77,7 @@ SmartQL({
   query, // the query string above.
   private_keys: ['5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'],
   contract: 'eosio', // smart contract accountname for creating new account.
-  rpc_urls: ['https://jungle3.cryptolions.io:443'] // RPC url for sending txn to.
+  rpc_url: "https://api.relocke.io // RPC url for sending txn to.
   // list of required private keys.
 }).then(console.log)
 ```

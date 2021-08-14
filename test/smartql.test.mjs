@@ -2,15 +2,7 @@ import { deepStrictEqual, ok } from 'assert'
 import smartql from '../public/index.js'
 
 export default tests => {
-  // Currently using EOSIO RPC jungle test net for api calls
-  const rpc_urls = [
-    'https://jungle.eosn.io:443',
-    'https://jungle3.cryptolions.io:443',
-    'https://jungle3.cryptolions.io:443',
-    'http://jungle3.atticlab.net:12875',
-    'https://jungle.eosphere.io:443'
-  ]
-
+  const rpc_url = "https://api.relocke.io"
   tests.add('SmartQL query', async () => {
     const { data } = await smartql({
       query: /* GraphQL */ `
@@ -20,7 +12,7 @@ export default tests => {
           }
         }
       `,
-      rpc_urls,
+      rpc_url,
       contract: 'eosio.token'
     })
     // shape of the result is {"data":{"account":[{"balance":"asset"},{"balance":asset}]}}
@@ -45,7 +37,7 @@ export default tests => {
           }
         }
       `,
-      rpc_urls,
+      rpc_url,
       contract: 'eosio.token'
     })
 
@@ -72,7 +64,7 @@ export default tests => {
 
     const { data } = await smartql({
       query: vote_producer,
-      rpc_urls,
+      rpc_url,
       contract: 'eosio'
     })
 
