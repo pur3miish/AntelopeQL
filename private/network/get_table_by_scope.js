@@ -15,6 +15,10 @@ const get_table_by_scope = async (args, rpc_urls) => {
     rpc_urls.map(url => url + '/v1/chain/get_table_by_scope'),
     {
       method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json'
+      },
       body: JSON.stringify({
         ...args,
         json: true

@@ -15,6 +15,10 @@ const get_table_by_row = async (args, rpc_urls) => {
     rpc_urls.map(url => url + '/v1/chain/get_table_rows'),
     {
       method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json'
+      },
       body: JSON.stringify({
         ...args,
         json: true
