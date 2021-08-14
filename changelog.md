@@ -1,5 +1,19 @@
 # SmartQL changelog
 
+## V3.0.0
+
+### Major
+
+- Removed RPC URL list in favour of one rpc url string.
+
+### Patch
+
+- closes #9.
+
+- renamed `get_table_by_rows` to `get_table_rows`.
+
+- content type header added to `get_table_rows` & `get_table_by_scope`
+
 ## V2.0.1
 
 ### Patch
