@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+## next
+
+### Patch
+
+- New logo design
+
 ## V3.0.0
 
 ### Major
