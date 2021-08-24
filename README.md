@@ -1,5 +1,7 @@
 ![smartql logo](https://raw.githubusercontent.com/pur3miish/smartql/main/static/smartql.svg)
 
+# SmartQL
+
 [![NPM Package](https://img.shields.io/npm/v/smartql.svg)](https://www.npmjs.org/package/smartql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/smartql/blob/main/LICENSE)
 
 > _Smart contracts & GraphQL._
