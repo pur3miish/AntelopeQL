@@ -1,6 +1,10 @@
 # SmartQL changelog
 
-## next
+## Next
+
+### Minor
+
+- Now throws a GraphQL error for mutation adding EOSIO specific error details.
 
 ### Patch
 

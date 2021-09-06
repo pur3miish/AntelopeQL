@@ -3,7 +3,8 @@ const { sign_txn } = require('eos-ecc')
 const {
   GraphQLList,
   GraphQLInputObjectType,
-  GraphQLNonNull
+  GraphQLNonNull,
+  GraphQLError
 } = require('graphql')
 const authorization_type = require('../../eos_types/authorization_type')
 const { transaction_receipt_type } = require('../../eos_types/mutation_types')
@@ -198,10 +199,7 @@ function build_mutation_fields(ABI) {
           rpc_url
         })
 
-        if (receipt.error)
-          throw new Error(
-            `${receipt.error.what} - ${receipt.error.details[0].message}`
-          )
+        if (receipt.error) throw new GraphQLError(receipt.error)
 
         return receipt
       }
