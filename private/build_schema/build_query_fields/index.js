@@ -29,7 +29,7 @@ const index_position_enum_type = new GraphQLEnumType({
 
 const table_row_arguments = {
   scope: {
-    type: GraphQLNonNull(name),
+    type: GraphQLNonNull(GraphQLString),
     description: 'The account to which this data belongs.'
   },
   key_type: {

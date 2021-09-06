@@ -4,6 +4,7 @@
 
 ### Minor
 
+- table_row_arguments scope is now a GraphQLString instead of a name type.
 - Now throws a GraphQL error for mutation adding EOSIO specific error details.
 
 ### Patch
