@@ -4,6 +4,7 @@
 
 ### Patch
 
+- Added GraphQL peer dependency to readme.
 - New logo design
 
 ## V3.0.0
