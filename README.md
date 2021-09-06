@@ -11,7 +11,7 @@ A GraphQL implementation for interacting with EOSIO based blockchains.
 # Setup
 
 ```shell
-$ npm i smartql
+$ npm i smartql graphql
 ```
 
 # Support
