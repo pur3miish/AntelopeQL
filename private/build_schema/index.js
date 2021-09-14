@@ -17,7 +17,7 @@ function build_schema(ABI, smart_contract) {
 
   const query = new GraphQLObjectType({
     name: 'Query',
-    description: `Query the state of \`${smart_contract}\` smart contract.`,
+    description: `Query the state of the \`${smart_contract}\` smart contract.`,
     fields: query_fields(ABI)
   })
 
