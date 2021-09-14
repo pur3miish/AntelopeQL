@@ -59,7 +59,13 @@ function build_mutation_fields(ABI) {
   return {
     transaction: {
       type: transaction_receipt_type,
-      description: '',
+      description: `
+This mutation allows you to perform atomic actions (i.e. indivisible and irreducible series of transactions) such that all occur or none occur.
+_Actions (i.e. transaction arguments) will be executed from top to bottom._
+
+---
+
+`,
       args: {
         actions: {
           type: GraphQLNonNull(
