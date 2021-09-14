@@ -8,7 +8,6 @@
     "prepare:jsdoc": "jsdoc-md",
     "prepare:prettier": "prettier --write readme.md && prettier --write changelog.md",
     "test": "npm run test:size && npm run test:eslint && npm run test:prettier && npm run test:api",
-    "test:size": "size-limit",
     "test:api": "coverage-node test/index.test.mjs",
     "test:eslint": "eslint .",
     "test:prettier": "prettier -c .",
@@ -55,7 +54,6 @@
   },
   "homepage": "https://github.com/pur3miish/smartql#readme",
   "devDependencies": {
-    "@size-limit/preset-app": "^4.10.1",
     "coverage-node": "^5.0.1",
     "eslint": "^7.20.0",
     "eslint-config-env": "^21.0.0",
@@ -78,7 +76,6 @@
     "dataloader": "^2.0.0",
     "eos-ecc": "^2.0.1",
     "isomorphic-fetch": "^3.0.0",
-    "ripemd160-js": "^1.1.1",
-    "size-limit": "^4.12.0"
+    "ripemd160-js": "^1.1.1"
   }
 }
