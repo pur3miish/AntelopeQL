@@ -2,13 +2,14 @@
 
 ## Next
 
+### Major
+
 - Restructured the query input arguments to an object type.
 - Renamed table by scope to `table entries`.
 
 ### Minor
 
-- table_row_arguments scope is now a GraphQLString instead of a name type.
-- Now throws a GraphQL error for mutation adding EOSIO specific error details.
+- Descriptions updated.
 - Table_row_arguments scope is now a GraphQLString instead of a name type.
 - Now throws a GraphQL error for mutation adding EOSIO specific error details to the return value.
 
@@ -16,6 +17,7 @@
 
 - Added GraphQL peer dependency to readme.
 - New logo design
+- Updated dependencies
 
 ## V3.0.0
 
