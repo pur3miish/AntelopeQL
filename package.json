@@ -7,7 +7,7 @@
     "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
     "prepare:jsdoc": "jsdoc-md",
     "prepare:prettier": "prettier --write readme.md && prettier --write changelog.md",
-    "test": "npm run test:size && npm run test:eslint && npm run test:prettier && npm run test:api",
+    "test": "npm run test:api && npm run test:eslint && npm run test:prettier",
     "test:api": "coverage-node test/index.test.mjs",
     "test:eslint": "eslint .",
     "test:prettier": "prettier -c .",
