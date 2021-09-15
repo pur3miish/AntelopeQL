@@ -73,7 +73,6 @@
   },
   "dependencies": {
     "base58-js": "^1.0.0",
-    "dataloader": "^2.0.0",
     "eos-ecc": "^2.0.1",
     "isomorphic-fetch": "^3.0.0",
     "ripemd160-js": "^1.1.1"
