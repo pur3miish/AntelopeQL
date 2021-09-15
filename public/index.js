@@ -1,7 +1,14 @@
 'use strict'
 
 const { public_key_from_private } = require('eos-ecc')
-const { Source, execute, parse, validate, formatError } = require('graphql')
+const {
+  Source,
+  execute,
+  parse,
+  validate,
+  formatError,
+  GraphQLError
+} = require('graphql')
 const build_schema = require('../private/build_schema')
 const get_abi = require('../private/network/get_abi')
 const get_account_by_authorizers = require('../private/network/get_accounts_by_authorizers.js')
@@ -15,6 +22,7 @@ const get_account_by_authorizers = require('../private/network/get_accounts_by_a
  * @param {string} arg.contract Account name that holds the smart contract.
  * @param {string} arg.rpc_url Endpoint URL to connect to the blockchain.
  * @param {object} [arg.variables] GraphQL variables.
+ * @param {bool} [arg.broadcast] Push the transaction to the blockchain, else return the serialized transaction.
  * @param {object} [arg.operationName] GraphQL opperation name.
  * @param {Array<string>} [arg.private_keys] List of EOS wif private keys.
  * @returns {object} Reponse from a GraphQL query.
@@ -80,51 +88,37 @@ const SmartQL = async ({
   rpc_url,
   variables,
   operationName,
-  private_keys = []
+  private_keys = [],
+  broadcast = true
 }) => {
   try {
     let documentAST
-    try {
-      // Validate graphql query.
-      documentAST = parse(new Source(query))
-    } catch (err) {
-      throw new Error(err)
-    }
 
-    // fetch ABI for a given smart contract.
-    const abi = await get_abi({
-      rpc_url,
-      contract
-    })
+    // Validate graphql query.
+    documentAST = parse(new Source(query))
 
     let key_chain = []
-    let auth_accounts
 
-    if (private_keys.length) {
-      // Remove duplicate keys
-      const private_key_set = new Set()
-      private_keys.forEach(i => private_key_set.add(i))
+    if (broadcast && private_keys.length) {
+      // Remove any duplicate keys.
+      private_keys = [...new Set(private_keys)]
 
-      // Validate wif private keys and calcualte the corresponding public key.
+      // Validate wif private keys and calc the corresponding public key(s).
       key_chain = await Promise.all(
-        [...private_key_set].map(async pk => ({
+        [...private_keys].map(async pk => ({
           public_key: await public_key_from_private(pk),
           private_key: pk
         }))
       )
-
-      // Fetch valid account authorities from the calculated public keys.
-      const { accounts } = await get_account_by_authorizers({
-        rpc_url,
-        keys: key_chain.map(({ public_key }) => public_key)
-      })
-      auth_accounts = accounts
     }
 
+    // Fetch application binary interface (abi) for a given smart contract.
+    const abi = await get_abi({ rpc_url, contract })
     // build schema
-    const schema = build_schema(abi, contract)
+    const schema = build_schema(abi, contract, broadcast)
+    // validate schema
     const queryErrors = validate(schema, documentAST)
-    if (queryErrors.length) throw queryErrors
+    if (queryErrors.length) throw new GraphQLError(queryErrors)
 
     const result = await execute({
       schema,
@@ -133,8 +127,7 @@ const SmartQL = async ({
       contextValue: {
         contract,
         rpc_url,
-        key_chain,
-        auth_accounts
+        key_chain
       },
       variableValues: variables,
       operationName,
