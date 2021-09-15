@@ -7,9 +7,13 @@ const {
   GraphQLError
 } = require('graphql')
 const authorization_type = require('../../eos_types/authorization_type')
-const { transaction_receipt_type } = require('../../eos_types/mutation_types')
+const {
+  transaction_receipt_type,
+  packed_transaction_type
+} = require('../../eos_types/mutation_types')
 const get_block = require('../../network/get_block.js')
 const get_info = require('../../network/get_info.js')
+const get_required_keys = require('../../network/get_required_keys')
 const push_transaction = require('../../network/push_transaction.js')
 const serialize_actions = require('../../wasm/serialize/actions.js')
 const serialize_extensions = require('../../wasm/serialize/extension.js')
@@ -23,10 +27,11 @@ const serialize_transaction_data = require('./serialize_transaction_data.js')
  * @name build_mutation_fields
  * @kind function
  * @param {object} ABI ABI for a smart contract.
+ * @param {bool} broadcast Push the transaction to blockchain, else return serialized transaction.
  * @returns {object} GraphQL mutation fields.
  * @ignore
  */
-function build_mutation_fields(ABI) {
+function build_mutation_fields(ABI, broadcast) {
   const { ast_input_object_types, abi_ast } = abi_to_ast(ABI)
 
   const fields = ABI.actions.reduce(
@@ -58,8 +63,14 @@ function build_mutation_fields(ABI) {
 
   return {
     transaction: {
-      type: transaction_receipt_type,
-      description: '',
+      type: broadcast ? transaction_receipt_type : packed_transaction_type,
+      description: `
+This mutation allows you to perform atomic actions (i.e. indivisible and irreducible series of transactions) such that all occur or none occur.
+_Actions (i.e. transaction arguments) will be executed from top to bottom._
+
+---
+
+`,
       args: {
         actions: {
           type: GraphQLNonNull(
@@ -75,18 +86,20 @@ function build_mutation_fields(ABI) {
           )
         },
         configuration: {
-          type: configuration
+          type: configuration,
+          defaultValue
         }
       },
       async resolve(
         _,
-        { configuration = defaultValue, actions },
-        { contract, rpc_url, key_chain = [], auth_accounts = [] }
+        { configuration, actions },
+        { contract, rpc_url, key_chain = [] }
       ) {
         const context_free_actions = []
         const transaction_extensions = []
-        let action_array = []
 
+        let action_array = []
+        // create a list of transaction actions
         for await (const action of actions)
           action_array.push(
             ...(await Promise.all(
@@ -105,54 +118,6 @@ function build_mutation_fields(ABI) {
               })
             ))
           )
-
-        // Parses required auth from GraphQL query
-        const required_auth = []
-        action_array.forEach(({ authorization }) =>
-          required_auth.push(...authorization)
-        )
-
-        // Determines missing authority and filters required PKs.
-        const required_keys = new Set()
-        const missing_auth = required_auth.filter(
-          ({ actor, permission }) =>
-            !auth_accounts.find(i => {
-              const has_auth =
-                actor == i.account_name && i.permission_name == permission
-              if (has_auth)
-                required_keys.add(
-                  key_chain.find(
-                    ({ public_key }) => public_key == i.authorizing_key
-                  )
-                )
-
-              return has_auth
-            })
-        )
-
-        /**
-         * Generates error message of missing authorities for a
-         * transaction/mutation that will be returned as a GraphQL error message.
-         */
-        if (missing_auth.length) {
-          const missing_auth_error_message = missing_auth.reduce(
-            (acc, x, i) =>
-              (acc += `${
-                missing_auth.length == 1 || missing_auth.length - 1 != i
-                  ? ''
-                  : 'and '
-              }“${x.actor}” with “${x.permission}” authority${
-                missing_auth.length - 1 != i ? ', ' : ''
-              }`),
-            ''
-          )
-
-          throw new Error(
-            `Missing keys for the account${
-              missing_auth.length > 1 ? 's' : ''
-            }: ${missing_auth_error_message}.`
-          )
-        }
 
         // EOS transaction body
         const transaction_body =
@@ -183,14 +148,44 @@ function build_mutation_fields(ABI) {
           delay_sec: configuration.delay_sec
         })
 
+        if (!broadcast)
+          return {
+            chain_id,
+            transaction_header,
+            transaction_body
+          }
+
+        const { required_keys, error } = await get_required_keys({
+          rpc_url,
+          transaction: {
+            expiration: new Date(expiration).toISOString().split('.')[0],
+            ref_block_num: block_num & 0xffff,
+            ref_block_prefix,
+            max_net_usage_words: configuration.max_net_usage_words,
+            max_cpu_usage_ms: configuration.max_cpu_usage_ms,
+            delay_sec: configuration.delay_sec,
+            context_free_actions,
+            transaction_extensions,
+            actions: action_array.map(({ action, ...data }) => ({
+              name: action,
+              ...data
+            }))
+          },
+          available_keys: key_chain.map(({ public_key }) => public_key)
+        })
+
+        if (error) throw new GraphQLError(error)
+
         // Generate sigs
         const signatures = await Promise.all(
-          [...required_keys].map(({ private_key }) =>
-            sign_txn({
+          required_keys.map(key => {
+            return sign_txn({
               hex: chain_id + transaction_header + transaction_body,
-              wif_private_key: private_key
+              wif_private_key: key_chain.find(
+                ({ public_key }) => key == public_key
+              ).private_key
             })
-          )
+          })
         )
 
         const receipt = await push_transaction({

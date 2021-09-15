@@ -5,14 +5,13 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLInt,
-  GraphQLEnumType,
-  GraphQLBoolean
+  GraphQLEnumType
 } = require('graphql')
 const name_type = require('../../eos_types/name_type')
 const get_table_by_scope = require('../../network/get_table_by_scope')
 
 const type = new GraphQLObjectType({
-  name: 'table_scope',
+  name: 'table_entries',
   description: 'List of table data.',
   fields: () => ({
     scope: {
@@ -33,24 +32,24 @@ const type = new GraphQLObjectType({
 
 /**
  * Builds a GraphQL query field type for the EOSIO RPC call get_tables_by_scope.
- * @name table_scope
+ * @name table_entries
  * @kind function
  * @param {Array} tables List of Table names.
- * @returns {object} table_scope field for GraphQL query.
+ * @returns {object} table_entries field for GraphQL query.
  * @ignore
  */
-function table_scope(tables) {
+function table_entries(tables) {
   return {
-    description: 'Query data from table by `scope`.',
+    description: 'Query the list of entries on a `table`.',
     type: new GraphQLObjectType({
-      name: 'table_scope_type',
+      name: 'table_entries_type',
       fields: () => ({
         rows: {
-          description: 'List of objects `table_scope`.',
+          description: 'List of objects `table_entries`.',
           type: new GraphQLList(type)
         },
         more: {
-          description: 'The next scope in the `table_scope` rows array.',
+          description: 'The next entry.',
           type: name_type
         }
       })
@@ -59,8 +58,9 @@ function table_scope(tables) {
       table: {
         description: 'Name of the smart contract table',
         type: new GraphQLEnumType({
-          name: 'table_options',
-          description: 'Select one of the possible tables to query by scope.',
+          name: 'table_name',
+          description:
+            'Filter entires by table, if no table name is specified entries on all tables will be returned.',
           values: tables.reduce(
             (acc, value) => ({
               ...acc,
@@ -84,10 +84,6 @@ function table_scope(tables) {
         type: GraphQLInt,
         description: 'Limit number of results returned.',
         defaultValue: 5
-      },
-      reverse: {
-        type: GraphQLBoolean,
-        description: 'Reverse the order of returned results.'
       }
     },
     async resolve(_, args, { rpc_url, contract }) {
@@ -102,4 +98,4 @@ function table_scope(tables) {
   }
 }
 
-module.exports = table_scope
+module.exports = table_entries
