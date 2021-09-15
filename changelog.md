@@ -1,6 +1,6 @@
 # SmartQL changelog
 
-## Next
+## V4.0.0
 
 ### Major
 
