@@ -33,10 +33,10 @@ The core function to build and execute a GraphQL request for EOSIO based blockch
 | `arg` | object | Argument. |
 | `arg.query` | string | GraphQL query string. |
 | `arg.contract` | string | Account name that holds the smart contract. |
-| `arg.rpc_url` | string | URL to connect to RPC. |
+| `arg.rpc_url` | string | Endpoint URL to connect to the blockchain. |
 | `arg.variables` | object? | GraphQL variables. |
 | `arg.operationName` | object? | GraphQL opperation name. |
-| `arg.private_keys` | Array<string>? | List of EOS wif private keys. |
+| `arg.private_keys` | Array\<string>? | List of EOS wif private keys. |
 
 **Returns:** object — Reponse from a GraphQL query.
 
@@ -64,7 +64,7 @@ _SmartQL query - Get account balance._
 > SmartQL({
 >   query,
 >   contract: 'eosio.token',
->   rpc_url: 'https://api.relocke.io',
+>   rpc_url: 'https://eos.relocke.io',
 >   private_keys: ['5a12…']
 > }).then(console.log)
 > ```
@@ -94,7 +94,7 @@ _SmartQL mutation - Transfer EOS tokens._
 > ```js
 > SmartQL({
 >   query: mutation,
->   rpc_url: 'https://api.relocke.io',
+>   rpc_url: 'https://eos.relocke.io',
 >   contract: 'eosio.token',
 >   private_keys: ['5K7…']
 > }).then(console.log)

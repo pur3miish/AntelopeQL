@@ -13,7 +13,7 @@ const get_account_by_authorizers = require('../private/network/get_accounts_by_a
  * @param {object} arg Argument.
  * @param {string} arg.query GraphQL query string.
  * @param {string} arg.contract Account name that holds the smart contract.
- * @param {string} arg.rpc_url URL to connect to RPC.
+ * @param {string} arg.rpc_url Endpoint URL to connect to the blockchain.
  * @param {object} [arg.variables] GraphQL variables.
  * @param {object} [arg.operationName] GraphQL opperation name.
  * @param {Array<string>} [arg.private_keys] List of EOS wif private keys.
@@ -34,7 +34,7 @@ const get_account_by_authorizers = require('../private/network/get_accounts_by_a
  * SmartQL({
  *   query,
  *   contract: 'eosio.token',
- *   rpc_url: 'https://api.relocke.io',
+ *   rpc_url: 'https://eos.relocke.io',
  *   private_keys: ['5a12…']
  * }).then(console.log)
  * ```
@@ -62,7 +62,7 @@ const get_account_by_authorizers = require('../private/network/get_accounts_by_a
  * ```js
  * SmartQL({
  *   query: mutation,
- *   rpc_url: 'https://api.relocke.io',
+ *   rpc_url: 'https://eos.relocke.io',
  *   contract: 'eosio.token',
  *   private_keys: ['5K7…']
  * }).then(console.log)
