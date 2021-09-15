@@ -6,6 +6,7 @@
 
 - Restructured the query input arguments to an object type.
 - Renamed table by scope to `table entries`.
+- Can selectively broadcast transactions.
 
 ### Minor
 

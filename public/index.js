@@ -11,7 +11,6 @@ const {
 } = require('graphql')
 const build_schema = require('../private/build_schema')
 const get_abi = require('../private/network/get_abi')
-const get_account_by_authorizers = require('../private/network/get_accounts_by_authorizers.js')
 
 /**
  * The core function to build and execute a GraphQL request for EOSIO based blockchain.
@@ -42,8 +41,7 @@ const get_account_by_authorizers = require('../private/network/get_accounts_by_a
  * SmartQL({
  *   query,
  *   contract: 'eosio.token',
- *   rpc_url: 'https://eos.relocke.io',
- *   private_keys: ['5a12…']
+ *   rpc_url: 'https://eos.relocke.io'
  * }).then(console.log)
  * ```
  * The logged output was
