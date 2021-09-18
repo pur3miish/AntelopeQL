@@ -1,26 +1,22 @@
 'use strict'
 
-const { ok, throws } = require('assert')
+const { ok } = require('assert')
 const { validateSchema } = require('graphql')
-const query_fields = require('../private/build_schema/build_query_fields/index.js')
 const build_schema = require('../private/build_schema/index.js')
 const EOS_ABI = require('./abis/eosio.json')
 const EOS_TOKEN_ABI = require('./abis/eosio.token.json')
 
 module.exports = tests => {
   tests.add('build schema', async () => {
-    // check if valid schema.
+    const schema_eosio_token = build_schema(EOS_TOKEN_ABI, 'eosio_token', false)
+    const schema_eosio = build_schema(EOS_ABI, 'eosio', true)
     ok(
-      !validateSchema(build_schema(EOS_ABI, 'eosio')).length,
-      'valid schema expected for eosio abi'
+      validateSchema(schema_eosio_token).length == 0,
+      'Schema eosio.token passed validation.'
     )
-
     ok(
-      !validateSchema(build_schema(EOS_TOKEN_ABI, 'eosio.token')).length,
-      'valid schema expected for eosio.token abi'
+      validateSchema(schema_eosio).length == 0,
+      'Schema eosio passed validation.'
     )
-
-    ok(query_fields({}).noquery, 'no query')
-    throws(() => build_schema(null))
   })
 }

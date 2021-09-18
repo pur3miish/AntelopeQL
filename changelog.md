@@ -1,5 +1,19 @@
 # SmartQL changelog
 
+# V5.0.0
+
+## Major
+
+- Restructured GraphQL API to be contract specific, i.e. GraphQL types are now generated with contract name specific names to prevent any duplicate error types thrown by GraphQL.
+- New `build_fields` function available in public dir, generate GraphQL query and mutation fields for a contract that can be readily consumed by a GraphQL schema.
+- GraphQL type that are specific to EOSIO are moved to public Dir _(available for deep imports)_.
+
+## Minor
+
+- Abstracted the EOSIO type serialisation into its own package [eosio-wasm-js](https://github.com/pur3miish/eosio-wasm-js).
+
+## Patch
+
 ## V4.0.0
 
 ### Major

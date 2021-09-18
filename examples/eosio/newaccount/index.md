@@ -8,7 +8,7 @@ Because account creations require you to delegate some bandwidth and RAM to the 
 
 ```GraphQL
 mutation {
-  transaction(
+  eosio_transaction(
     actions: [{
       # new account - action 1 (executed first).
       newaccount: {

@@ -1,6 +1,6 @@
 import { strictEqual } from 'assert'
-import actions from '../private/wasm/serialize/actions.js'
-import transaction_header from '../private/wasm/serialize/transaction_header.js'
+import actions from '../private/serialize/actions.js'
+import transaction_header from '../private/serialize/transaction_header.js'
 
 export default tests => {
   tests.add('transaction header serialisation', () => {

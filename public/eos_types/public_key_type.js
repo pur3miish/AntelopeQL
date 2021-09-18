@@ -7,7 +7,7 @@ const public_key_type = new GraphQLScalarType({
   description: `\`Public key type\`
   ---
 
-  EOS public keys should begin with EOS and include base58 string.
+  EOS public keys should begin with EOS and include base58 characters only.
   `,
   name: 'public_key',
   parseValue: async public_key => {

@@ -4,7 +4,7 @@ In this example we are updating the EOS account ihack4google account authority.
 
 ```GraphQL
 mutation {
-  transaction(actions: {
+  eosio_transaction(actions: {
     updateauth:{
       account: "ihack4google"
       permission: "active",

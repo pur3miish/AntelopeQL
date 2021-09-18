@@ -7,7 +7,7 @@ const {
   GraphQLInt,
   GraphQLEnumType
 } = require('graphql')
-const name_type = require('../../eos_types/name_type')
+const name_type = require('../../../public/eos_types/name_type')
 const get_table_by_scope = require('../../network/get_table_by_scope')
 
 const type = new GraphQLObjectType({
@@ -35,10 +35,11 @@ const type = new GraphQLObjectType({
  * @name table_entries
  * @kind function
  * @param {Array} tables List of Table names.
+ * @param {string} contract Name of smart contract.
  * @returns {object} table_entries field for GraphQL query.
  * @ignore
  */
-function table_entries(tables) {
+function table_entries(tables, contract) {
   return {
     description: 'Query the list of entries on a `table`.',
     type: new GraphQLObjectType({
@@ -86,7 +87,7 @@ function table_entries(tables) {
         defaultValue: 5
       }
     },
-    async resolve(_, args, { rpc_url, contract }) {
+    async resolve(_, args, { rpc_url }) {
       return get_table_by_scope(
         {
           code: contract,

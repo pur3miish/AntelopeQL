@@ -5,7 +5,7 @@ const {
   GraphQLList,
   GraphQLNonNull
 } = require('graphql')
-const eos_types = require('../../eos_types')
+const eos_types = require('../../../public/eos_types')
 
 /**
  * Creates an EOSIO GraphQL input object type from AST

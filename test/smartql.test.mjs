@@ -1,13 +1,13 @@
-import { deepStrictEqual, ok } from 'assert'
+import { ok } from 'assert'
 import smartql from '../public/index.js'
 
 export default tests => {
-  const rpc_url = "https://api.relocke.io"
-  tests.add('SmartQL query', async () => {
-    const { data } = await smartql({
+  const rpc_url = 'https://jungle.relocke.io'
+  tests.add('SmartQL balance query', async () => {
+    const { data: query_data } = await smartql({
       query: /* GraphQL */ `
         {
-          account(scope: "eoshackathon") {
+          eosio_token_account(arg: { scope: "eosio" }) {
             balance
           }
         }
@@ -15,63 +15,43 @@ export default tests => {
       rpc_url,
       contract: 'eosio.token'
     })
-    // shape of the result is {"data":{"account":[{"balance":"asset"},{"balance":asset}]}}
-    ok(data.account[0].balance, 'Smartql Expected balance.')
-  })
-  tests.add('SmartQL mutation non signing transfer', async () => {
-    const { data } = await smartql({
+
+    ok(query_data.eosio_token_account[0].balance.match(/^[0-9.]+[\sA-Z]+$/gmu))
+
+    const {
+      data: {
+        eosio_token_transaction: { transaction_body }
+      }
+    } = await smartql({
       query: /* GraphQL */ `
         mutation {
-          transfer(
-            data: {
-              to: "ihack4google"
-              from: "eoshackathon"
-              memo: ""
-              quantity: "0.0001 EOS"
+          eosio_token_transaction(
+            actions: {
+              transfer: {
+                to: "relocke"
+                from: "eosio"
+                memo: "0"
+                quantity: "50000.0000 EOS"
+                authorization: { actor: "eosio" }
+              }
             }
-            authorization: { actor: "eoshackathon" }
+            configuration: { delay_sec: 4, max_cpu_usage_ms: 0 }
           ) {
             chain_id
-            transaction_body
             transaction_header
+            transaction_body
           }
         }
       `,
       rpc_url,
-      contract: 'eosio.token'
+      contract: 'eosio.token',
+      broadcast: false
     })
 
-    const trn_bdy =
-      '000100a6823403ea3055000000572d3ccdcd013069cb0622d3305500000000a8ed3232213069cb0622d33055a022a39411884c73010000000000000004454f530000000000000000000000000000000000000000000000000000000000000000000000000000'
-    deepStrictEqual(data.transfer.transaction_body, trn_bdy)
-  })
-
-  tests.add('SmartQL mutation vote producer', async () => {
-    const vote_producer = /* GraphQL */ `
-      mutation {
-        voteproducer(
-          data: {
-            voter: "eoshackathon"
-            proxy: ""
-            producers: ["alohaeostest"]
-          }
-          authorization: [{ actor: "eoshackathon" }]
-        ) {
-          transaction_body
-        }
-      }
-    `
-
-    const { data } = await smartql({
-      query: vote_producer,
-      rpc_url,
-      contract: 'eosio'
-    })
-
-    deepStrictEqual(
-      data.voteproducer.transaction_body,
-      '00010000000000ea30557015d289deaa32dd013069cb0622d3305500000000a8ed3232193069cb0622d3305500000000000000000190b1ca982ad36834000000000000000000000000000000000000000000000000000000000000000000',
-      'Mutation on vote producer'
+    ok(
+      transaction_body ==
+        '000100a6823403ea3055000000572d3ccdcd010000000000ea305500000000a8ed3232220000000000ea3055000000404144a3ba0065cd1d0000000004454f53000000000130000000000000000000000000000000000000000000000000000000000000000000',
+      'Expected output for token transfer.'
     )
   })
 }

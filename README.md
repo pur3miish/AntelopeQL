@@ -11,8 +11,14 @@ A GraphQL implementation for interacting with EOSIO based blockchains.
 # Setup
 
 ```shell
-$ npm i smartql graphql
+$ npm i smartql
 ```
+
+```shell
+$ npm i graphql eos-ecc # peer dependencies
+```
+
+_If you plan on signing with a 3rd party tool or are just making queries [eos-ecc](https://github.com/pur3miish/eos-ecc) is not needed._
 
 # Support
 
@@ -23,6 +29,24 @@ $ npm i smartql graphql
 Consider a [BigInt](https://caniuse.com/?search=bigint) polyfill library for safari 13.
 
 # API
+
+- [function build_fields](#function-build_fields)
+- [function SmartQL](#function-smartql)
+
+## function build_fields
+
+Build GraphQL fields (mutation and query) for a smart contract.
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| `arg` | object | Argument. |
+| `arg.rpc_url` | string | Endpoint url. |
+| `arg.contract` | string | Account name that holds the smart contract. |
+| `arg.broadcast` | bool | Determins if the schema mutation will include a receipt type or a packed transaction type. |
+
+**Returns:** object — GraphQL fields for a given smart contract.
+
+---
 
 ## function SmartQL
 
@@ -58,7 +82,7 @@ _Ways to `import`._
 _SmartQL query - Get account balance._
 
 > ```GraphQL
-> query { account(scope: "eosio") { balance } }
+> query { eosio_token_account(arg: { scope: "pur3miish222" }) { balance } }
 > ```
 >
 > ```js
@@ -75,7 +99,7 @@ _SmartQL mutation - Transfer EOS tokens._
 
 > ```GraphQL
 > mutation {
->  transaction(
+>  eosio_token_transaction(
 >    actions: {
 >      transfer: {
 >        to: eoshackathon,

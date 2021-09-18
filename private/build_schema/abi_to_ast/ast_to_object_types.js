@@ -1,6 +1,6 @@
 'use strict'
 const { GraphQLObjectType, GraphQLList, GraphQLString } = require('graphql')
-const eos_types = require('../../eos_types')
+const eos_types = require('../../../public/eos_types')
 
 /**
  * Builds a GraphQL object types from an ABI AST to build GraphQL Query fields.

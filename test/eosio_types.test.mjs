@@ -1,25 +1,24 @@
 import { deepStrictEqual, ok, rejects, strictEqual, throws } from 'assert'
-import asset_type from '../private/eos_types/asset_type.js'
-import block_time_stamp from '../private/eos_types/block_timestamp_type.js'
-import bool from '../private/eos_types/boolean_type.js'
-import bytes from '../private/eos_types/bytes_type.js'
-import extended_asset from '../private/eos_types/extended_asset_type.js'
-import generate_checksum from '../private/eos_types/generate_checksum_type.js'
-import generate_float_type from '../private/eos_types/generate_float_type.js'
-import generate_int_type from '../private/eos_types/generate_int_type.js'
-import generate_uint_type from '../private/eos_types/generate_uint_type.js'
-import name from '../private/eos_types/name_type.js'
-import public_key from '../private/eos_types/public_key_type.js'
-import signature from '../private/eos_types/signature_type.js'
-import symbol_code from '../private/eos_types/symbol_code_type.js'
-import symbol from '../private/eos_types/symbol_type.js'
-import time_point_sec from '../private/eos_types/time_point_sec_type.js'
-import time_point from '../private/eos_types/time_point_type.js'
-import varint32 from '../private/eos_types/varint32_type.js'
-import varuint32 from '../private/eos_types/varuint32_type.js'
+import asset_type from '../public/eos_types/asset_type.js'
+import block_time_stamp from '../public/eos_types/block_timestamp_type.js'
+import bool from '../public/eos_types/boolean_type.js'
+import bytes from '../public/eos_types/bytes_type.js'
+import extended_asset from '../public/eos_types/extended_asset_type.js'
+import generate_checksum from '../public/eos_types/generate_checksum_type.js'
+import generate_float_type from '../public/eos_types/generate_float_type.js'
+import generate_int_type from '../public/eos_types/generate_int_type.js'
+import generate_uint_type from '../public/eos_types/generate_uint_type.js'
+import name from '../public/eos_types/name_type.js'
+import public_key from '../public/eos_types/public_key_type.js'
+import signature from '../public/eos_types/signature_type.js'
+import symbol_code from '../public/eos_types/symbol_code_type.js'
+import symbol from '../public/eos_types/symbol_type.js'
+import time_point_sec from '../public/eos_types/time_point_sec_type.js'
+import time_point from '../public/eos_types/time_point_type.js'
+import varint32 from '../public/eos_types/varint32_type.js'
+import varuint32 from '../public/eos_types/varuint32_type.js'
 
 export default tests => {
-  // These tests are very basic, I plan to integrate the AST data serialization into the return value of the graphql scalar EOS types in the future.
   tests.add('EOSIO types - validating parse values', async () => {
     deepStrictEqual(varint32.parseValue(''), '')
     deepStrictEqual(varuint32.parseValue(''), '')
@@ -43,7 +42,6 @@ export default tests => {
     )
     throws(() => signature.parseValue(1848))
 
-    throws(() => asset_type.parseValue('#'))
     ok(asset_type.parseValue('') == '')
     strictEqual(asset_type.parseValue('1.000 EOS'), '1.000 EOS')
     deepStrictEqual(block_time_stamp.parseValue(''), '')

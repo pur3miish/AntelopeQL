@@ -1,7 +1,7 @@
 'use strict'
 
-const serialize_name = require('./name.js')
-const serialize_varuint32 = require('./varuint32.js')
+const serialize_name = require('eosio-wasm-js/public/serialize/name.js')
+const serialize_varuint32 = require('eosio-wasm-js/public/serialize/varuint32.js')
 
 /**
  * Serializes EOS permission.

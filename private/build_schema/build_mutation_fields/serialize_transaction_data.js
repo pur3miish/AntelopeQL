@@ -1,5 +1,5 @@
 'use strict'
-const wasm = require('../../wasm/index.js')
+const serilaize = require('eosio-wasm-js')
 
 /**
  * Given an ABI AST and data object serialise the data to a WASM hex string.
@@ -74,7 +74,7 @@ async function serialize_transaction_data({
     data: ast_data
   }).map(async ({ type, data }) => ({
     type,
-    data: await wasm[type](await data)
+    data: await serilaize[type](await data)
   }))
 
   const serialize = await Promise.all(ast_map)

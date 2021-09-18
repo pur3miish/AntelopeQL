@@ -15,7 +15,6 @@ const ast_to_object_types = require('./ast_to_object_types')
  * @ignore
  */
 function abi_to_ast(ABI) {
-  // Becuase GraphQL name types can only include [A-Za-Z_].
   const abi_ast = {
     ...ABI
   }

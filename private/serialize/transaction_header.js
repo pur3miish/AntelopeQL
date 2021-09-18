@@ -1,6 +1,6 @@
 'use strict'
 
-const varuint32 = require('./varuint32.js')
+const varuint32 = require('eosio-wasm-js/public/serialize/varuint32.js')
 
 const serialize_uint = uint => {
   let hex = uint.toString('16')

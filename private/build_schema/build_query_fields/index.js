@@ -2,40 +2,23 @@
 const {
   GraphQLString,
   GraphQLList,
-  GraphQLEnumType,
-  GraphQLInt,
   GraphQLInputObjectType
 } = require('graphql')
 const get_table_rows = require('../../network/get_table_rows')
-const abi_to_ast = require('../abi_to_ast/index.js.js')
-const generate_table_entries = require('./table_entries')
-
-const index_position_enum_type = new GraphQLEnumType({
-  name: 'index_position_enum_type',
-  values: {
-    primary: { value: 'primary' },
-    secondary: { value: 'secondary' },
-    tertiary: { value: 'tertiary' },
-    fourth: { value: 'fourth' },
-    fifth: { value: 'fifth' },
-    sixth: { value: 'sixth' },
-    seventh: { value: 'seventh' },
-    eighth: { value: 'eighth' },
-    ninth: { value: 'ninth' },
-    tenth: { value: 'tenth' }
-  }
-})
-
+const abi_to_ast = require('../abi_to_ast/index.js')
+const query_argument_fields = require('./query_argument_fields.js')
+const generate_table_entries = require('./table_entries.js')
 /**
  * This function builds query fields of a GraphQL query of the Schema from an ABI of a given EOS smart contract.
  * Please see [graphql](https://graphql.org/learn/schema/) and [ABI](https://developers.eos.io/welcome/latest/getting-started/smart-contract-development/understanding-ABI-files).
  * @name build_query
  * @kind function
  * @param {object} ABI An ABI for a smart contract.
+ * @param {string} contract name of the smart contract.
  * @returns {object} GraphQL query fields.
  * @ignore
  */
-function build_query_fields(ABI) {
+function build_query_fields(ABI, contract) {
   if (!ABI.tables || !ABI.tables.length)
     return {
       noquery: {
@@ -45,6 +28,7 @@ function build_query_fields(ABI) {
     }
 
   const { ast_object_types } = abi_to_ast(ABI)
+
   const fields = ast_object_types.reduce(
     (acc, item) => ({
       ...acc,
@@ -55,47 +39,11 @@ function build_query_fields(ABI) {
           arg: {
             type: new GraphQLInputObjectType({
               name: `${item[Object.keys(item)[0]]}_arg`,
-              fields: () => ({
-                scope: {
-                  type: GraphQLString,
-                  description: `The scope within the \`${
-                    item[Object.keys(item)[0]]
-                  }\`table to query data from.`,
-                  defaultValue: ''
-                },
-                index_position: {
-                  type: index_position_enum_type,
-                  description: 'Position of the index used.',
-                  defaultValue: 'primary'
-                },
-                key_type: {
-                  type: GraphQLString,
-                  description: `The key type of \`index_position\`; primary only supports i64. All others support i64, i128, i256, float64, float128, ripemd160, sha256. Special type name indicates an account name`
-                },
-                encode_type: {
-                  type: GraphQLString,
-                  description:
-                    'The encoding type of `key_type` dec for decimal encoding of (i[64|128|256], float[64|128]); hex for hexadecimal encoding of (i256, ripemd160, sha256).'
-                },
-                upper_bound: {
-                  type: GraphQLString,
-                  description:
-                    'Filters results to return the first element that is greater than provided value in set.'
-                },
-                lower_bound: {
-                  type: GraphQLString,
-                  description:
-                    'Filters results to return the first element that is not less than provided value in set.'
-                },
-                limit: {
-                  type: GraphQLInt,
-                  description: 'The maximum number of items to return'
-                }
-              })
+              fields: query_argument_fields(item[Object.keys(item)[0]])
             })
           }
         },
-        resolve: async (_, { arg }, { rpc_url, contract }) => {
+        resolve: async (_, { arg }, { rpc_url }) => {
           const table_arg = {
             code: contract,
             table: Object.keys(item)[0],
@@ -109,33 +57,29 @@ function build_query_fields(ABI) {
     {}
   )
 
-  fields.ricardian_contract = {
-    name: 'ricardian_contract_type',
-    description: `Query ricardian contract for smart contract mutations.`,
-    type: GraphQLString,
-    args: {
-      mutation_name: {
-        type: new GraphQLEnumType({
-          name: 'action_mutation',
-          values: ABI.actions.reduce(
-            (acc, { name }) => ({ ...acc, [name]: { value: name } }),
-            {}
-          )
-        }),
-        description: 'The name of the EOS action mutation.'
-      }
-    },
-    resolve(_, { mutation_name }) {
-      return ABI.actions.find(({ name }) => name == mutation_name)
-        .ricardian_contract
-    }
-  }
-
   fields.table_entries = generate_table_entries(
-    ABI.tables.map(({ name }) => name)
+    ABI.tables.map(({ name }) => name),
+    contract
   )
+  /*
+   * We create this prefix to to give an graphql fields unique names specific to the smart contract.
+   * this prevents any GraphQL Duplicate errors being thrown.
+   * Moreover and EOSIO account names with periods need to be transformed into _ as periods are invalid graphql chars.
+   */
+  const contract_name_prefix = contract.replace(/[.]+/gmu, '_')
 
-  return fields
+  // Transforms the field names to be specific to the contract which will prevent graphql throwing a possible duplicate type error.
+  // Remove any periods from the contract name, “eosio.token” as periods are not valid graphql name type.
+  return Object.keys(fields).reduce((acc, name) => {
+    if (fields[name].type.ofType)
+      fields[
+        name
+      ].type.ofType.name = `${contract_name_prefix}_${fields[name].type.ofType.name}`
+    return {
+      ...acc,
+      [`${contract_name_prefix}_${name}`]: fields[name]
+    }
+  }, {})
 }
 
 module.exports = build_query_fields

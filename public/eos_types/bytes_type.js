@@ -1,6 +1,6 @@
 'use strict'
+const serialize = require('eosio-wasm-js/public/serialize/bytes.js')
 const { GraphQLScalarType } = require('graphql')
-const serialize = require('../wasm/serialize/bytes.js')
 
 const bytes_type = new GraphQLScalarType({
   description: '`Bytes type`',

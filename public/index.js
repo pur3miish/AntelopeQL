@@ -1,6 +1,5 @@
 'use strict'
 
-const { public_key_from_private } = require('eos-ecc')
 const {
   Source,
   execute,
@@ -35,7 +34,7 @@ const get_abi = require('../private/network/get_abi')
  * ```
  * @example <caption>SmartQL query - Get account balance.</caption>
  * ```GraphQL
- * query { account(scope: "eosio") { balance } }
+ * query { eosio_token_account(arg: { scope: "pur3miish222" }) { balance } }
  * ```
  * ```js
  * SmartQL({
@@ -50,7 +49,7 @@ const get_abi = require('../private/network/get_abi')
  * @example <caption>SmartQL mutation - Transfer EOS tokens.</caption>
  * ```GraphQL
  * mutation {
- *  transaction(
+ *  eosio_token_transaction(
  *    actions: {
  *      transfer: {
  *        to: eoshackathon,
@@ -80,7 +79,7 @@ const get_abi = require('../private/network/get_abi')
  *   }
  * }
  */
-const SmartQL = async ({
+const smartql = async ({
   query,
   contract,
   rpc_url,
@@ -95,45 +94,25 @@ const SmartQL = async ({
     // Validate graphql query.
     documentAST = parse(new Source(query))
 
-    let key_chain = []
-
-    if (broadcast && private_keys.length) {
-      // Remove any duplicate keys.
-      private_keys = [...new Set(private_keys)]
-
-      // Validate wif private keys and calc the corresponding public key(s).
-      key_chain = await Promise.all(
-        [...private_keys].map(async pk => ({
-          public_key: await public_key_from_private(pk),
-          private_key: pk
-        }))
-      )
-    }
-
     // Fetch application binary interface (abi) for a given smart contract.
     const abi = await get_abi({ rpc_url, contract })
     // build schema
     const schema = build_schema(abi, contract, broadcast)
     // validate schema
     const queryErrors = validate(schema, documentAST)
+
     if (queryErrors.length) throw new GraphQLError(queryErrors)
 
-    const result = await execute({
+    return execute({
       schema,
       document: documentAST,
       rootValue: '',
-      contextValue: {
-        contract,
-        rpc_url,
-        key_chain
-      },
+      contextValue: { rpc_url, private_keys },
       variableValues: variables,
       operationName,
       fieldResolver: (rootValue, args, ctx, { fieldName }) =>
         rootValue[fieldName]
     })
-
-    return result
   } catch (err) {
     return {
       errors: Array.isArray(err) ? [...err.map(formatError)] : formatError(err)
@@ -141,4 +120,4 @@ const SmartQL = async ({
   }
 }
 
-module.exports = SmartQL
+module.exports = smartql
