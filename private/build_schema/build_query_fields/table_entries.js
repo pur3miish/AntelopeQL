@@ -40,10 +40,11 @@ const type = new GraphQLObjectType({
  * @ignore
  */
 function table_entries(tables, contract) {
+  const contract_prefix = contract.replace(/[.]+/gmu, '_')
   return {
-    description: 'Query the list of entries on a `table`.',
+    description: `Query the list of \`table entries\` on the ${contract} contract.`,
     type: new GraphQLObjectType({
-      name: 'table_entries_type',
+      name: contract.replace(/[.]+/gmu, '_') + 'table_entries',
       fields: () => ({
         rows: {
           description: 'List of objects `table_entries`.',
@@ -59,7 +60,7 @@ function table_entries(tables, contract) {
       table: {
         description: 'Name of the smart contract table',
         type: new GraphQLEnumType({
-          name: 'table_name',
+          name: contract_prefix + '_table_name',
           description:
             'Filter entires by table, if no table name is specified entries on all tables will be returned.',
           values: tables.reduce(
