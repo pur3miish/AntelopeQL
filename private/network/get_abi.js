@@ -1,4 +1,5 @@
 'use strict'
+const { GraphQLError } = require('graphql')
 const rpc_call = require('./rpc_call')
 
 /**
@@ -38,17 +39,7 @@ async function get_abi({ contract, rpc_url }) {
   })
 
   if (abi) return abi
-  if (error)
-    if (
-      error.details &&
-      Array.isArray(error.details) &&
-      error.details[0].message ==
-        `unknown key (eosio::chain::name): ${contract}`
-    )
-      throw new Error(`“${contract}” is not an account on the EOS blockchain.`)
-    else throw new Error('Internal server error.')
-  else
-    throw new Error(`No smart contract held by the EOS account “${contract}”.`)
+  if (error) throw new GraphQLError(error)
 }
 
 module.exports = get_abi
