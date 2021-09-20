@@ -93,7 +93,6 @@ const smartql = async ({
 
     // Validate graphql query.
     documentAST = parse(new Source(query))
-
     // Fetch application binary interface (abi) for a given smart contract.
     const abi = await get_abi({ rpc_url, contract })
     // build schema
