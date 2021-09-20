@@ -8,6 +8,7 @@ const get_table_rows = require('../../network/get_table_rows')
 const abi_to_ast = require('../abi_to_ast/index.js')
 const query_argument_fields = require('./query_argument_fields.js')
 const generate_table_entries = require('./table_entries.js')
+
 /**
  * This function builds query fields of a GraphQL query of the Schema from an ABI of a given EOS smart contract.
  * Please see [graphql](https://graphql.org/learn/schema/) and [ABI](https://developers.eos.io/welcome/latest/getting-started/smart-contract-development/understanding-ABI-files).
@@ -57,10 +58,6 @@ function build_query_fields(ABI, contract) {
     {}
   )
 
-  fields.table_entries = generate_table_entries(
-    ABI.tables.map(({ name }) => name),
-    contract
-  )
   /*
    * We create this prefix to to give an graphql fields unique names specific to the smart contract.
    * this prevents any GraphQL Duplicate errors being thrown.
@@ -70,7 +67,7 @@ function build_query_fields(ABI, contract) {
 
   // Transforms the field names to be specific to the contract which will prevent graphql throwing a possible duplicate type error.
   // Remove any periods from the contract name, “eosio.token” as periods are not valid graphql name type.
-  return Object.keys(fields).reduce((acc, name) => {
+  const new_fields = Object.keys(fields).reduce((acc, name) => {
     if (fields[name].type.ofType)
       fields[
         name
@@ -80,6 +77,13 @@ function build_query_fields(ABI, contract) {
       [`${contract_name_prefix}_${name}`]: fields[name]
     }
   }, {})
+
+  new_fields.table_entries = generate_table_entries(
+    ABI.tables.map(({ name }) => name),
+    contract
+  )
+
+  return new_fields
 }
 
 module.exports = build_query_fields
