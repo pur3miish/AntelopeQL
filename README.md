@@ -30,24 +30,6 @@ Consider a [BigInt](https://caniuse.com/?search=bigint) polyfill library for saf
 
 # API
 
-- [function build_fields](#function-build_fields)
-- [function SmartQL](#function-smartql)
-
-## function build_fields
-
-Build GraphQL fields (mutation and query) for a smart contract.
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| `arg` | object | Argument. |
-| `arg.rpc_url` | string | Endpoint url. |
-| `arg.contract` | string | Account name that holds the smart contract. |
-| `arg.broadcast` | bool | Determins if the schema mutation will include a receipt type or a packed transaction type. |
-
-**Returns:** object — GraphQL fields for a given smart contract.
-
----
-
 ## function SmartQL
 
 The core function to build and execute a GraphQL request for EOSIO based blockchain.
