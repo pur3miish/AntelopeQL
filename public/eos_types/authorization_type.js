@@ -1,6 +1,6 @@
 'use strict'
 
-const { GraphQLInputObjectType } = require('graphql')
+const { GraphQLInputObjectType, GraphQLNonNull } = require('graphql')
 const name_type = require('./name_type')
 
 const authorization_type = new GraphQLInputObjectType({
@@ -9,7 +9,7 @@ const authorization_type = new GraphQLInputObjectType({
   fields: () => ({
     actor: {
       description: 'The name of the account name to sign the transaction.',
-      type: name_type
+      type: new GraphQLNonNull(name_type)
     },
     permission: {
       description: 'The name of the account permission.',

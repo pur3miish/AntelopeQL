@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# V5.1.0
+
+## Minor
+
+- Auth actor is now non nullable field.
+
 # V5.0.0
 
 ## Major
