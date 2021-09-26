@@ -13,20 +13,20 @@ const build_query_fields = require('./build_query_fields')
  * @param {bool} broadcast Push the transaction to blockchain, else return serialized transaction.
  * @ignore
  */
-function build_schema(ABI, contract, broadcast) {
+function build_schema(ABI, contract, broadcast, prefix = '') {
   if (!ABI)
     throw new TypeError(`Expected ABI to be object type but got ${typeof ABI}.`)
 
   const query = new GraphQLObjectType({
     name: 'Query',
     description: `Query the state of the \`${contract}\` smart contract.`,
-    fields: build_query_fields(ABI, contract)
+    fields: build_query_fields(ABI, contract, prefix)
   })
 
   const mutation = new GraphQLObjectType({
     name: 'Mutation',
     description: `Update the state of the \`${contract}\` smart contract.`,
-    fields: build_mutation_fields(ABI, contract, broadcast)
+    fields: build_mutation_fields(ABI, contract, broadcast, prefix)
   })
 
   return new GraphQLSchema({

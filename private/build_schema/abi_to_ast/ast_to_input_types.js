@@ -10,9 +10,10 @@ const eos_types = require('../../../public/eos_types')
 /**
  * Creates an EOSIO GraphQL input object type from AST
  * @param {object} ABI_AST Syntax tree for generating GraphQL input object types.
+ * @param {string} prefix Prefix GraphQL types with a unique ID to prevent GraphQL duplicate errors.
  * @returns {object} GraphQL input types.
  */
-function ast_to_input_types(ABI_AST) {
+function ast_to_input_types(ABI_AST, prefix = '') {
   const abi_ast = ABI_AST.structs.reduce(
     (
       acc,
@@ -37,7 +38,7 @@ function ast_to_input_types(ABI_AST) {
       return {
         ...acc,
         [struct_name]: handle_input_GraphQLObjectType({
-          name: struct_name + '_data_type',
+          name: prefix + '_input_' + struct_name,
           fields: () => {
             const graphql_type_fields = struct_fields.reduce(
               (acc, { name: struct_field_name, type: struct_field_type }) => {

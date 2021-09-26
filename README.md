@@ -64,7 +64,7 @@ _Ways to `import`._
 _SmartQL query - Get account balance._
 
 > ```GraphQL
-> query { eosio_token_account(arg: { scope: "pur3miish222" }) { balance } }
+> query { account(arg: { scope: "pur3miish222" }) { balance } }
 > ```
 >
 > ```js
@@ -81,7 +81,7 @@ _SmartQL mutation - Transfer EOS tokens._
 
 > ```GraphQL
 > mutation {
->  eosio_token_transaction(
+>  eosio_token(
 >    actions: {
 >      transfer: {
 >        to: eoshackathon,

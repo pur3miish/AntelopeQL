@@ -11,7 +11,7 @@ const name_type = require('../../../public/eos_types/name_type')
 const get_table_by_scope = require('../../network/get_table_by_scope')
 
 const type = new GraphQLObjectType({
-  name: 'table_entries',
+  name: 'table_entries_rows',
   description: 'List of table data.',
   fields: () => ({
     scope: {
@@ -40,14 +40,14 @@ const type = new GraphQLObjectType({
  * @ignore
  */
 function table_entries(tables, contract) {
-  const contract_prefix = contract.replace(/[.]+/gmu, '_')
+  const prefix = contract.replace(/[.]+/gmu, '_')
   return {
     description: `Query the list of \`table entries\` on the ${contract} contract.`,
     type: new GraphQLObjectType({
-      name: contract.replace(/[.]+/gmu, '_') + 'table_entries',
+      name: prefix + '_table_entry_data',
       fields: () => ({
         rows: {
-          description: 'List of objects `table_entries`.',
+          description: `List of objects \`table_entries\`.`,
           type: new GraphQLList(type)
         },
         more: {
@@ -60,7 +60,7 @@ function table_entries(tables, contract) {
       table: {
         description: 'Name of the smart contract table',
         type: new GraphQLEnumType({
-          name: contract_prefix + '_table_name',
+          name: prefix + '_table_names',
           description:
             'Filter entires by table, if no table name is specified entries on all tables will be returned.',
           values: tables.reduce(

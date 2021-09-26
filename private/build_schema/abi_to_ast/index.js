@@ -11,10 +11,11 @@ const ast_to_object_types = require('./ast_to_object_types')
  * @name abi_ast
  * @kind function
  * @param {object} ABI EOS ABI.
+ * @param {object} prefix Prefix to add to avoid GraphQL name type collisions.
  * @returns {object} ABI_AST.
  * @ignore
  */
-function abi_to_ast(ABI) {
+function abi_to_ast(ABI, prefix = '') {
   const abi_ast = {
     ...ABI
   }
@@ -48,8 +49,8 @@ function abi_to_ast(ABI) {
 
   return {
     abi_ast,
-    ast_object_types: ast_to_object_types(abi_ast),
-    ast_input_object_types: ast_to_input_types(abi_ast)
+    ast_object_types: ast_to_object_types(abi_ast, prefix),
+    ast_input_object_types: ast_to_input_types(abi_ast, prefix)
   }
 }
 

@@ -1,9 +1,5 @@
 'use strict'
-const {
-  GraphQLString,
-  GraphQLList,
-  GraphQLInputObjectType
-} = require('graphql')
+const { GraphQLString, GraphQLList } = require('graphql')
 const get_table_rows = require('../../network/get_table_rows')
 const abi_to_ast = require('../abi_to_ast/index.js')
 const query_argument_fields = require('./query_argument_fields.js')
@@ -28,20 +24,19 @@ function build_query_fields(ABI, contract) {
       }
     }
 
-  const { ast_object_types } = abi_to_ast(ABI)
+  const prefix = contract.replace(/[.]+/gmu, '_') + '_'
+  const { ast_object_types } = abi_to_ast(ABI, prefix)
 
-  const fields = ast_object_types.reduce(
-    (acc, item) => ({
+  const fields = ast_object_types.reduce((acc, item) => {
+    return {
       ...acc,
-      [`${Object.values(item)[0]}`]: {
+      [String(Object.values(item)[0]).replace(prefix, '')]: {
         description: `Query data from \`${Object.keys(item)[0]}\` table.`,
         type: GraphQLList(item[Object.keys(item)[0]]),
         args: {
           arg: {
-            type: new GraphQLInputObjectType({
-              name: `${item[Object.keys(item)[0]]}_arg`,
-              fields: query_argument_fields(item[Object.keys(item)[0]])
-            })
+            name: 'argument_type',
+            type: query_argument_fields
           }
         },
         resolve: async (_, { arg }, { rpc_url }) => {
@@ -54,36 +49,15 @@ function build_query_fields(ABI, contract) {
           return rows
         }
       }
-    }),
-    {}
-  )
-
-  /*
-   * We create this prefix to to give an graphql fields unique names specific to the smart contract.
-   * this prevents any GraphQL Duplicate errors being thrown.
-   * Moreover and EOSIO account names with periods need to be transformed into _ as periods are invalid graphql chars.
-   */
-  const contract_name_prefix = contract.replace(/[.]+/gmu, '_')
-
-  // Transforms the field names to be specific to the contract which will prevent graphql throwing a possible duplicate type error.
-  // Remove any periods from the contract name, “eosio.token” as periods are not valid graphql name type.
-  const new_fields = Object.keys(fields).reduce((acc, name) => {
-    if (fields[name].type.ofType)
-      fields[
-        name
-      ].type.ofType.name = `${contract_name_prefix}_${fields[name].type.ofType.name}`
-    return {
-      ...acc,
-      [`${contract_name_prefix}_${name}`]: fields[name]
     }
   }, {})
 
-  new_fields.table_entries = generate_table_entries(
+  fields.table_entries = generate_table_entries(
     ABI.tables.map(({ name }) => name),
     contract
   )
 
-  return new_fields
+  return fields
 }
 
 module.exports = build_query_fields

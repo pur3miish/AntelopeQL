@@ -34,7 +34,7 @@ const get_abi = require('../private/network/get_abi')
  * ```
  * @example <caption>SmartQL query - Get account balance.</caption>
  * ```GraphQL
- * query { eosio_token_account(arg: { scope: "pur3miish222" }) { balance } }
+ * query { account(arg: { scope: "pur3miish222" }) { balance } }
  * ```
  * ```js
  * SmartQL({
@@ -49,7 +49,7 @@ const get_abi = require('../private/network/get_abi')
  * @example <caption>SmartQL mutation - Transfer EOS tokens.</caption>
  * ```GraphQL
  * mutation {
- *  eosio_token_transaction(
+ *  eosio_token(
  *    actions: {
  *      transfer: {
  *        to: eoshackathon,
