@@ -89,11 +89,11 @@ _SmartQL mutation - Transfer EOS tokens._
 >        quantity: "4.6692 EOS",
 >        memo: "Feigenbaum constant",
 >        authorization: { actor: pur3miish222 }
+>      }
 >    }
->  }
-> ) {
+>  ) {
 >    transaction_id
-> }
+>  }
 > }
 > ```
 >

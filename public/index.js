@@ -57,11 +57,11 @@ const get_abi = require('../private/network/get_abi')
  *        quantity: "4.6692 EOS",
  *        memo: "Feigenbaum constant",
  *        authorization: { actor: pur3miish222 }
+ *      }
  *    }
- *  }
- * ) {
+ *  ) {
  *    transaction_id
- * }
+ *  }
  * }
  * ```
  * ```js
