@@ -71,14 +71,16 @@ mutation {
 ```
 
 ```js
+
 import SmartQL from 'smartql'
 
 SmartQL({
-  query, // the query string above.
+  query, // Query string above.
   private_keys: ['5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'],
   contract: 'eosio', // smart contract accountname for creating new account.
-  rpc_url: "https://api.relocke.io // RPC url for sending txn to.
-  // list of required private keys.
+  rpc_url: "https://eos.relocke.io" // Endpoint to send your mutations to the blockchain.
+  broadcast: true, // specifies if you want to push transaction to the blockchain
+  private_keys: ['5…'], // List of keys to sign transactions.
 }).then(console.log)
 ```
 

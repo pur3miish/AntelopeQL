@@ -22,7 +22,7 @@ const get_abi = require('../private/network/get_abi')
  * @param {object} [arg.variables] GraphQL variables.
  * @param {bool} [arg.broadcast] Push the transaction to the blockchain, else return the serialized transaction.
  * @param {object} [arg.operationName] GraphQL opperation name.
- * @param {Array<string>} [arg.private_keys] List of EOS wif private keys.
+ * @param {Array<string>} [arg.private_keys] List of EOSIO wif private keys.
  * @returns {object} Reponse from a GraphQL query.
  * @example <caption>Ways to `require`.</caption>
  * ```js
