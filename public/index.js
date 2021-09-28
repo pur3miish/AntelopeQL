@@ -22,7 +22,7 @@ const get_abi = require('../private/network/get_abi')
  * @param {object} [arg.variables] GraphQL variables.
  * @param {bool} [arg.broadcast] Push the transaction to the blockchain, else return the serialized transaction.
  * @param {object} [arg.operationName] GraphQL opperation name.
- * @param {Array<string>} [arg.private_keys] List of EOS wif private keys.
+ * @param {Array<string>} [arg.private_keys] List of EOSIO wif private keys.
  * @returns {object} Reponse from a GraphQL query.
  * @example <caption>Ways to `require`.</caption>
  * ```js
@@ -34,7 +34,7 @@ const get_abi = require('../private/network/get_abi')
  * ```
  * @example <caption>SmartQL query - Get account balance.</caption>
  * ```GraphQL
- * query { eosio_token_account(arg: { scope: "pur3miish222" }) { balance } }
+ * query { account(arg: { scope: "pur3miish222" }) { balance } }
  * ```
  * ```js
  * SmartQL({
@@ -49,7 +49,7 @@ const get_abi = require('../private/network/get_abi')
  * @example <caption>SmartQL mutation - Transfer EOS tokens.</caption>
  * ```GraphQL
  * mutation {
- *  eosio_token_transaction(
+ *  eosio_token(
  *    actions: {
  *      transfer: {
  *        to: eoshackathon,
@@ -57,11 +57,11 @@ const get_abi = require('../private/network/get_abi')
  *        quantity: "4.6692 EOS",
  *        memo: "Feigenbaum constant",
  *        authorization: { actor: pur3miish222 }
+ *      }
  *    }
- *  }
- * ) {
+ *  ) {
  *    transaction_id
- * }
+ *  }
  * }
  * ```
  * ```js

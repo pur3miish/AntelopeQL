@@ -10,7 +10,7 @@ const eos_types = require('../../../public/eos_types')
  * @returns {object} Builds GraphQL fields for GraphQL Object types.
  * @ignore
  */
-function ast_to_graphql_object_types(ABI_AST) {
+function ast_to_graphql_object_types(ABI_AST, prefix = '') {
   const abi_ast = ABI_AST.structs.reduce(
     (
       acc,
@@ -25,12 +25,13 @@ function ast_to_graphql_object_types(ABI_AST) {
         if (field.base == '') return [...field.fields, ...fields]
         return handle_base_fields(field.base, fields)
       }
+
       if (base !== '') struct_fields = handle_base_fields(base, struct_fields)
 
       return {
         ...acc,
         [struct_name]: new GraphQLObjectType({
-          name: struct_name,
+          name: prefix + struct_name,
           fields: () => {
             const graphql_type_fields = struct_fields.reduce(
               (acc, { name: struct_field_name, type: struct_field_type }) => {

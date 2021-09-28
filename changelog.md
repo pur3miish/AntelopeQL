@@ -1,5 +1,12 @@
 # SmartQL changelog
 
+# V6.0.0
+
+## Major
+
+- Better stability for handling name collisions in GraphQL.
+- Favour terse introspection schema.
+
 # V5.1.0
 
 ## Minor

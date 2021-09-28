@@ -8,6 +8,8 @@
 
 A GraphQL implementation for interacting with EOSIO based blockchains.
 
+_See a working example of [SmartQL](https://smartql.relocke.io?1=eosio&2=eosio.token)._
+
 # Setup
 
 ```shell
@@ -43,7 +45,7 @@ The core function to build and execute a GraphQL request for EOSIO based blockch
 | `arg.variables` | object? | GraphQL variables. |
 | `arg.broadcast` | bool? | Push the transaction to the blockchain, else return the serialized transaction. |
 | `arg.operationName` | object? | GraphQL opperation name. |
-| `arg.private_keys` | Array\<string>? | List of EOS wif private keys. |
+| `arg.private_keys` | Array\<string>? | List of EOSIO wif private keys. |
 
 **Returns:** object — Reponse from a GraphQL query.
 
@@ -64,7 +66,7 @@ _Ways to `import`._
 _SmartQL query - Get account balance._
 
 > ```GraphQL
-> query { eosio_token_account(arg: { scope: "pur3miish222" }) { balance } }
+> query { account(arg: { scope: "pur3miish222" }) { balance } }
 > ```
 >
 > ```js
@@ -81,7 +83,7 @@ _SmartQL mutation - Transfer EOS tokens._
 
 > ```GraphQL
 > mutation {
->  eosio_token_transaction(
+>  eosio_token(
 >    actions: {
 >      transfer: {
 >        to: eoshackathon,
@@ -89,11 +91,11 @@ _SmartQL mutation - Transfer EOS tokens._
 >        quantity: "4.6692 EOS",
 >        memo: "Feigenbaum constant",
 >        authorization: { actor: pur3miish222 }
+>      }
 >    }
->  }
-> ) {
+>  ) {
 >    transaction_id
-> }
+>  }
 > }
 > ```
 >

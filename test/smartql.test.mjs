@@ -7,7 +7,7 @@ export default tests => {
     const { data: query_data } = await smartql({
       query: /* GraphQL */ `
         {
-          eosio_token_account(arg: { scope: "eosio" }) {
+          account(arg: { scope: "eosio" }) {
             balance
           }
         }
@@ -16,16 +16,16 @@ export default tests => {
       contract: 'eosio.token'
     })
 
-    ok(query_data.eosio_token_account[0].balance.match(/^[0-9.]+[\sA-Z]+$/gmu))
+    ok(query_data.account[0].balance.match(/^[0-9.]+[\sA-Z]+$/gmu))
 
     const {
       data: {
-        eosio_token_transaction: { transaction_body }
+        eosio_token: { transaction_body }
       }
     } = await smartql({
       query: /* GraphQL */ `
         mutation {
-          eosio_token_transaction(
+          eosio_token(
             actions: {
               transfer: {
                 to: "relocke"
