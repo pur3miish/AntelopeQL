@@ -1,5 +1,5 @@
 'use strict'
-const { GraphQLString, GraphQLList } = require('graphql')
+const { GraphQLString, GraphQLList, GraphQLError } = require('graphql')
 const get_table_rows = require('../../network/get_table_rows')
 const abi_to_ast = require('../abi_to_ast/index.js')
 const query_argument_fields = require('./query_argument_fields.js')
@@ -45,7 +45,8 @@ function build_query_fields(ABI, contract) {
             table: Object.keys(item)[0],
             ...arg
           }
-          const { rows } = await get_table_rows(table_arg, rpc_url)
+          const { rows, error } = await get_table_rows(table_arg, rpc_url)
+          if (error) throw new GraphQLError(error)
           return rows
         }
       }

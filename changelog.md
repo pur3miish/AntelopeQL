@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# Next
+
+# Patch
+
+- SmartQL queries now handles errors returned from EOSIO rpc table requests, Errors are thrown with `GraphQLErrors`.
+
 # V6.0.0
 
 ## Major
