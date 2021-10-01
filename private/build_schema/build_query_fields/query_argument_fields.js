@@ -22,6 +22,31 @@ const index_position_enum_type = new GraphQLEnumType({
   }
 })
 
+const key_type_enum_type = new GraphQLEnumType({
+  name: 'key_type_enum',
+  description: `Primary only supports i64. All others support i64, i128, i256, float64, float128, ripemd160, sha256.`,
+  values: {
+    name: { value: 'name', description: 'Indicates an account name.' },
+    i64: { value: 'i64' },
+    i128: { value: 'i128' },
+    i256: { value: 'i256' },
+    float64: { value: 'float64' },
+    float128: { value: 'float128' },
+    ripemd160: { value: 'ripemd160' },
+    sha256: { value: 'sha256' }
+  }
+})
+const encode_type_enum_type = new GraphQLEnumType({
+  name: 'encode_type_enum',
+  description: `
+  \`dec\` for decimal encoding of (i[64|128|256] and float[64|128])
+  \`hex\` for hexadecimal encoding of (i256, ripemd160, sha256).`,
+  values: {
+    dec: { value: 'dec' },
+    hex: { value: 'hex' }
+  }
+})
+
 const query_arg_fields = new GraphQLInputObjectType({
   name: 'arguments',
   fields: {
@@ -36,13 +61,14 @@ const query_arg_fields = new GraphQLInputObjectType({
       defaultValue: 'primary'
     },
     key_type: {
-      type: GraphQLString,
-      description: `The key type of \`index_position\`; primary only supports i64. All others support i64, i128, i256, float64, float128, ripemd160, sha256. Special type name indicates an account name`
+      type: key_type_enum_type,
+      description: 'The key type of `index_position`',
+      defaultValue: 'name'
     },
     encode_type: {
-      type: GraphQLString,
-      description:
-        'The encoding type of `key_type` dec for decimal encoding of (i[64|128|256], float[64|128]); hex for hexadecimal encoding of (i256, ripemd160, sha256).'
+      type: encode_type_enum_type,
+      description: '`key_type` encoding',
+      defaultValue: 'dec'
     },
     upper_bound: {
       type: GraphQLString,

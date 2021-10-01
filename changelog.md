@@ -1,8 +1,16 @@
 # SmartQL changelog
 
-# Next
+# V6.0.2
 
-# Patch
+## Patch
+
+- Added GraphQL Enum type to `key_type` for SmartQL queries.
+- Set default key type to `name`.
+- Key type encoding for smartql query.
+
+# V6.0.1
+
+## Patch
 
 - SmartQL queries now handles errors returned from EOSIO rpc table requests, Errors are thrown with `GraphQLErrors`.
 
