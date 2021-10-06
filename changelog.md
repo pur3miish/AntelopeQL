@@ -1,5 +1,9 @@
 # SmartQL changelog
 
+# V6.0.3
+
+- Updated depen.
+
 # V6.0.2
 
 ## Patch
