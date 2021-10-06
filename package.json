@@ -55,6 +55,7 @@
   "homepage": "https://github.com/pur3miish/smartql#readme",
   "devDependencies": {
     "coverage-node": "^5.0.1",
+    "eos-ecc": "^2.0.2",
     "eslint": "^7.20.0",
     "eslint-config-env": "^22.0.0",
     "eslint-config-prettier": "^8.1.0",
@@ -63,11 +64,10 @@
     "eslint-plugin-jsdoc": "^36.1.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "graphql": "^15.6.1",
     "jsdoc-md": "^11.0.0",
     "prettier": "^2.4.1",
-    "test-director": "^6.0.0",
-    "eos-ecc": "^2.0.1",
-    "graphql": "^15"
+    "test-director": "^6.0.0"
   },
   "peerDependencies": {
     "eos-ecc": "^2.0.1",
