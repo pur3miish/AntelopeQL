@@ -70,7 +70,7 @@
     "test-director": "^6.0.0"
   },
   "peerDependencies": {
-    "eos-ecc": "^2.0.1",
+    "eos-ecc": "^2",
     "graphql": "^15"
   },
   "dependencies": {
