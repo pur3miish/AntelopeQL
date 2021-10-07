@@ -2,6 +2,14 @@
 
 # V6.0.3
 
+## Patch
+
+- Updated peer dependency `eoc-ecc` to ^2.
+
+# V6.0.3
+
+## Patch
+
 - Updated depen.
 
 # V6.0.2
