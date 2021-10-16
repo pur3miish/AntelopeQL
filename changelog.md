@@ -1,5 +1,17 @@
 # SmartQL changelog
 
+# Next
+
+## Major
+
+- Destructured imports.
+- Base Query string changed to include contract base.
+
+## Patch
+
+- Refactored code base to set up unit test.
+- Removed graphql non null type from top level GraphQL mutations.
+
 # V6.0.4
 
 ## Patch

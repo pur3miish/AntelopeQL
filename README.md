@@ -34,17 +34,17 @@ Consider a [BigInt](https://caniuse.com/?search=bigint) polyfill library for saf
 
 ## function SmartQL
 
-The core function to build and execute a GraphQL request for EOSIO based blockchain.
+The core function to build and execute a GraphQL request for EOSIO based blockchains.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | `arg` | object | Argument. |
 | `arg.query` | string | GraphQL query string. |
-| `arg.contract` | string | Account name that holds the smart contract. |
-| `arg.rpc_url` | string | Endpoint URL to connect to the blockchain. |
-| `arg.variables` | object? | GraphQL variables. |
-| `arg.broadcast` | bool? | Push the transaction to the blockchain, else return the serialized transaction. |
 | `arg.operationName` | object? | GraphQL opperation name. |
+| `arg.variables` | object? | GraphQL variables. |
+| `arg.contract` | string | `Account name` that holds the smart contract. |
+| `arg.rpc_url` | string | [Nodeos](https://developers.eos.io/manuals/eos/v2.1/nodeos/index) endpoint URL. |
+| `arg.broadcast` | bool? | Specifies if mutation is pushed to the blockchain. |
 | `arg.private_keys` | Array\<string>? | List of EOSIO wif private keys. |
 
 **Returns:** object — Reponse from a GraphQL query.
@@ -54,19 +54,25 @@ The core function to build and execute a GraphQL request for EOSIO based blockch
 _Ways to `require`._
 
 > ```js
-> const SmartQL = require('smartql')
+> const { SmartQL } = require('smartql')
 > ```
 
 _Ways to `import`._
 
 > ```js
-> import SmartQL from 'smartql'
+> import { SmartQL } from 'smartql'
 > ```
 
 _SmartQL query - Get account balance._
 
 > ```GraphQL
-> query { account(arg: { scope: "pur3miish222" }) { balance } }
+>  query {
+>     eosio_token {
+>          account(arg: { scope: "pur3miish222" }) {
+>            balance
+>          }
+>     }
+>  }
 > ```
 >
 > ```js

@@ -1,14 +1,16 @@
 import { ok } from 'assert'
-import smartql from '../public/index.js'
+import { SmartQL } from '../public/index.js'
 
 export default tests => {
   const rpc_url = 'https://jungle.relocke.io'
   tests.add('SmartQL balance query', async () => {
-    const { data: query_data } = await smartql({
+    const { data: query_data } = await SmartQL({
       query: /* GraphQL */ `
         {
-          account(arg: { scope: "eosio" }) {
-            balance
+          eosio_token {
+            account(arg: { scope: "eosio" }) {
+              balance
+            }
           }
         }
       `,
@@ -16,13 +18,13 @@ export default tests => {
       contract: 'eosio.token'
     })
 
-    ok(query_data.account[0].balance.match(/^[0-9.]+[\sA-Z]+$/gmu))
+    ok(query_data.eosio_token.account[0].balance.match(/^[0-9.]+[\sA-Z]+$/gmu))
 
     const {
       data: {
         eosio_token: { transaction_body }
       }
-    } = await smartql({
+    } = await SmartQL({
       query: /* GraphQL */ `
         mutation {
           eosio_token(
