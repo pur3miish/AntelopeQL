@@ -14,11 +14,6 @@ async function serialize_transaction_data({
   data: ast_data,
   abi_ast
 }) {
-  if (!abi_ast)
-    throw new Error(
-      `serialize_transaction_data - expected ABI AST to be suppplied`
-    )
-
   const findStruct = struct_name =>
     abi_ast.structs.find(({ name }) => name == struct_name)
 

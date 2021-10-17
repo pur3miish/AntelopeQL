@@ -1,7 +1,6 @@
 'use strict'
 
-const { GraphQLObjectType } = require('graphql/type/definition.js')
-const { GraphQLString } = require('graphql/type/scalars.js')
+const { GraphQLObjectType, GraphQLString } = require('graphql')
 
 const packed_transaction_type = new GraphQLObjectType({
   name: 'packed_transaction',

@@ -1,6 +1,5 @@
 'use strict'
-const { GraphQLObjectType } = require('graphql/type/definition.js')
-const { GraphQLSchema } = require('graphql/type/schema.js')
+const { GraphQLObjectType, GraphQLSchema } = require('graphql')
 const abi_to_ast = require('./abi_to_ast.js')
 const build_mutation_fields = require('./build_mutation_fields/index.js')
 const packed_transaction_type = require('./build_mutation_fields/types/packed_transaction_type.js')

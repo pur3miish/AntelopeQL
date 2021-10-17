@@ -19,8 +19,15 @@ function abi_to_ast(ABI, contract) {
    * this prevents any GraphQL Duplicate errors being thrown.
    */
   const gql_contract = contract.replace(/[.]+/gmu, '_')
-
   const abi_ast = { ...ABI, contract, gql_contract }
+
+  // Trim ricardian contracts
+  abi_ast.actions.forEach((action, index) => {
+    const description = action.ricardian_contract.match(/^title: .+$/gmu)
+    abi_ast.actions[index].ricardian_contract = description
+      ? description[0].replace('title: ', '')
+      : ''
+  })
 
   //  Handle ABI types
   if (abi_ast.types && abi_ast.types.length) {
@@ -49,6 +56,13 @@ function abi_to_ast(ABI, contract) {
 
     delete abi_ast.variants
   }
+  delete abi_ast.ricardian_clauses
+  delete abi_ast.error_messages
+  delete abi_ast.action_results
+  delete abi_ast.kv_tables
+  delete abi_ast.abi_extensions
+  delete abi_ast.version
+
   return abi_ast
 }
 

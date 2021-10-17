@@ -1,7 +1,6 @@
 'use strict'
 
-const { GraphQLObjectType } = require('graphql/type/definition.js')
-const { GraphQLInt, GraphQLString } = require('graphql/type/scalars.js')
+const { GraphQLObjectType, GraphQLInt, GraphQLString } = require('graphql')
 
 const bandwidth_cost_type = new GraphQLObjectType({
   name: 'bandwidth_cost',

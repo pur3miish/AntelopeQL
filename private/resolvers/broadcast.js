@@ -1,6 +1,6 @@
 'use strict'
 
-const { GraphQLError } = require('graphql/error/GraphQLError.js')
+const { GraphQLError } = require('graphql')
 const get_required_keys = require('../network/get_required_keys.js')
 const push_transaction = require('../network/push_transaction.js')
 const resolver = require('./index.js')

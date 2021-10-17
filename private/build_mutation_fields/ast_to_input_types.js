@@ -3,9 +3,9 @@
 const {
   GraphQLInputObjectType,
   GraphQLList,
-  GraphQLNonNull
-} = require('graphql/type/definition.js')
-const { GraphQLString } = require('graphql/type/scalars.js')
+  GraphQLNonNull,
+  GraphQLString
+} = require('graphql')
 const eos_types = require('../eosio_types')
 
 /**

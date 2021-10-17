@@ -1,6 +1,6 @@
 'use strict'
 
-const { GraphQLScalarType } = require('graphql/type/definition.js')
+const { GraphQLScalarType } = require('graphql')
 
 const time_point_type = new GraphQLScalarType({
   description: `\`time point\`

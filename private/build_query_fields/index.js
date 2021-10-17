@@ -1,7 +1,10 @@
 'use strict'
-const { GraphQLError } = require('graphql/error/GraphQLError.js')
-const { GraphQLList, GraphQLObjectType } = require('graphql/type/definition.js')
-const { GraphQLString } = require('graphql/type/scalars.js')
+const {
+  GraphQLError,
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLString
+} = require('graphql')
 const get_table_rows = require('../network/get_table_rows')
 const ast_to_object_types = require('./ast_to_object_types')
 const query_argument_fields = require('./query_argument_fields.js')

@@ -1,5 +1,5 @@
 'use strict'
-const { GraphQLScalarType } = require('graphql/type/definition.js')
+const { GraphQLScalarType } = require('graphql')
 /**
  * Generates a GraphQL scalar signed integer type of size `bytes`.
  * @name generate_int_type

@@ -1,9 +1,10 @@
 'use strict'
 const {
   GraphQLEnumType,
-  GraphQLInputObjectType
-} = require('graphql/type/definition.js')
-const { GraphQLString, GraphQLInt } = require('graphql/type/scalars.js')
+  GraphQLInputObjectType,
+  GraphQLString,
+  GraphQLInt
+} = require('graphql')
 
 const index_position_enum_type = new GraphQLEnumType({
   name: 'index_position_enum_type',

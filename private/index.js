@@ -1,11 +1,13 @@
 'use strict'
 
-const { GraphQLError } = require('graphql/error/GraphQLError.js')
-const { formatError } = require('graphql/error/formatError.js')
-const { execute } = require('graphql/execution/execute.js')
-const { parse } = require('graphql/language/parser.js')
-const { Source } = require('graphql/language/source.js')
-const { validate } = require('graphql/validation/validate.js')
+const {
+  GraphQLError,
+  formatError,
+  execute,
+  parse,
+  Source,
+  validate
+} = require('graphql')
 const build_schema = require('./build_schema')
 const get_abi = require('./network/get_abi')
 

@@ -1,6 +1,5 @@
 'use strict'
-const { GraphQLList, GraphQLObjectType } = require('graphql/type/definition.js')
-const { GraphQLString } = require('graphql/type/scalars.js')
+const { GraphQLList, GraphQLObjectType, GraphQLString } = require('graphql')
 const eos_types = require('../eosio_types/index.js')
 
 /**

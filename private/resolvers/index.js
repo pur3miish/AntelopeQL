@@ -3,7 +3,7 @@
 const get_block = require('../network/get_block.js')
 const get_info = require('../network/get_info.js')
 const serialize_actions = require('../serialize/actions.js')
-const serialize_extensions = require('../serialize/extension.js')
+const serialize_extensions = require('../serialize/extensions.js')
 const serialize_transaction_data = require('../serialize/transaction_data')
 const serialize_header = require('../serialize/transaction_header.js')
 

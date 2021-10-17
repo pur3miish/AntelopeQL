@@ -1,5 +1,5 @@
 'use strict'
-const { GraphQLScalarType } = require('graphql/type/definition.js')
+const { GraphQLScalarType } = require('graphql')
 
 const signature_type = new GraphQLScalarType({
   description: `\`Signature type\`

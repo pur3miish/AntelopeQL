@@ -1,8 +1,12 @@
 'use strict'
 
-const { GraphQLList, GraphQLObjectType } = require('graphql/type/definition.js')
-const { GraphQLEnumType } = require('graphql/type/definition.js')
-const { GraphQLString, GraphQLInt } = require('graphql/type/scalars.js')
+const {
+  GraphQLString,
+  GraphQLInt,
+  GraphQLEnumType,
+  GraphQLList,
+  GraphQLObjectType
+} = require('graphql')
 const name_type = require('../eosio_types/name_type.js')
 const get_table_by_scope = require('../network/get_table_by_scope.js')
 

@@ -11,7 +11,7 @@ const server = http
 
       SmartQL({
         query,
-        broadcast: 0,
+        broadcast: false,
         rpc_url: 'https://jungle.relocke.io',
         contract: 'eosio.token',
         private_keys: ['5K7xR2C8mBzMo4aMPJyBPp7Njc3XvszeJSfTApa51rc2d54rrd3']
@@ -23,4 +23,4 @@ const server = http
   })
   .listen(3001)
 
-server.close()
+// server.close()

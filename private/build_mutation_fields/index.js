@@ -4,10 +4,11 @@ const {
   GraphQLNonNull,
   GraphQLInputObjectType,
   GraphQLList
-} = require('graphql/type/definition.js')
+} = require('graphql')
 const ast_to_input_types = require('./ast_to_input_types.js')
 const authorization_type = require('./types/authorization_type.js')
-const { configuration, defaultValue } = require('./types/configuration.js')
+const configuration_default_value = require('./types/configuration_default_value.js')
+const configuration_type = require('./types/configuration_type.js')
 
 /**
  * Builds a GraphQL mutation input field from an `abi ast`.
@@ -28,11 +29,7 @@ function build_mutation_fields(abi_ast, resolver, type) {
     (acc, { name, type, ricardian_contract }) => ({
       ...acc,
       [name]: {
-        description: (() => {
-          let description = ricardian_contract.match(/^title: .+$/gmu)
-          if (description) return description[0].replace('title: ', '')
-          return ''
-        })(),
+        description: ricardian_contract,
         type: new GraphQLInputObjectType({
           name: abi_ast.gql_contract + '_' + name,
           fields: () => ({
@@ -70,12 +67,12 @@ function build_mutation_fields(abi_ast, resolver, type) {
         configuration: {
           description:
             'An optional configuration object that controls various elements of a transaction.',
-          type: configuration
+          type: configuration_type
         }
       },
       async resolve(
         _,
-        { configuration = defaultValue, actions },
+        { configuration = configuration_default_value, actions },
         { rpc_url, private_keys = [] }
       ) {
         return resolver(

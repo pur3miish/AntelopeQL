@@ -1,12 +1,12 @@
 'use strict'
 
-const { GraphQLObjectType } = require('graphql/type/definition.js')
 const {
+  GraphQLObjectType,
   GraphQLBoolean,
   GraphQLInt,
   GraphQLString,
   GraphQLID
-} = require('graphql/type/scalars.js')
+} = require('graphql')
 const bandwidth_cost_type = require('./bandwidth_cost_type.js')
 
 const transaction_receipt_type = new GraphQLObjectType({

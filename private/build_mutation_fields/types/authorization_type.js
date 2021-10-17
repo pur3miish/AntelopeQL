@@ -1,9 +1,6 @@
 'use strict'
 
-const {
-  GraphQLInputObjectType,
-  GraphQLNonNull
-} = require('graphql/type/definition.js')
+const { GraphQLInputObjectType, GraphQLNonNull } = require('graphql')
 const name_type = require('../../eosio_types/name_type')
 
 const authorization_type = new GraphQLInputObjectType({
