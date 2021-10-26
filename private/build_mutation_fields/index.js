@@ -5,6 +5,7 @@ const {
   GraphQLInputObjectType,
   GraphQLList
 } = require('graphql')
+const serialize_transaction_data = require('../serialize/transaction_data.js')
 const ast_to_input_types = require('./ast_to_input_types.js')
 const authorization_type = require('./types/authorization_type.js')
 const configuration_default_value = require('./types/configuration_default_value.js')
@@ -75,12 +76,46 @@ function build_mutation_fields(abi_ast, resolver, type) {
         { configuration = configuration_default_value, actions },
         { rpc_url, private_keys = [] }
       ) {
+        let _actions = []
+        let _context_free_actions = []
+
+        for await (const action of actions) {
+          const actions_data = Object.values(action)
+          const action_key = Object.keys(action)
+          let index = 0
+          for await (const action of action_key) {
+            const { authorization, ...action_data } = actions_data[index]
+            const data = await serialize_transaction_data({
+              actionType: action,
+              data: action_data,
+              abi_ast
+            })
+
+            if (authorization)
+              _actions.push({
+                account: abi_ast.contract,
+                action,
+                authorization,
+                data
+              })
+            else
+              _context_free_actions.push({
+                account: abi_ast.contract,
+                action,
+                data
+              })
+
+            index++
+          }
+        }
+
         return resolver(
           {
             configuration,
-            actions,
+            actions: _actions,
             rpc_url,
-            private_keys
+            private_keys,
+            context_free_actions: _context_free_actions
           },
           abi_ast
         )

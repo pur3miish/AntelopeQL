@@ -5,7 +5,11 @@
 ## Major
 
 - Destructured imports.
-- Base Query string changed to include contract base.
+- Base query string changed to include contract base.
+
+## Minor
+
+- Added no query argument option, where the smart contract has no query.
 
 ## Patch
 

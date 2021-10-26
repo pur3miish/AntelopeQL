@@ -46,6 +46,7 @@ function build_schema(ABI, contract, broadcast) {
       description: `Update the state of the \`${contract}\` smart contract.`,
       fields: build_mutation_fields(abi_ast, resolver, packed_transaction_type)
     })
+
   return new GraphQLSchema({
     query,
     mutation

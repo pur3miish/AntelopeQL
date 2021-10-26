@@ -35,14 +35,15 @@ function permission({ actor, permission }) {
  * @ignore
  */
 function action({ account, action, authorization, data }) {
-  return (
-    serialize_name(account) +
-    serialize_name(action) +
-    serialize_varuint32(authorization.length) +
-    authorization.reduce((acc, auth) => (acc += permission(auth)), '') +
-    serialize_varuint32(data.length / 2) +
-    data
-  )
+  let hex_str = serialize_name(account) + serialize_name(action)
+
+  if (authorization)
+    hex_str +=
+      serialize_varuint32(authorization.length) +
+      authorization.reduce((acc, auth) => (acc += permission(auth)), '')
+
+  hex_str += serialize_varuint32(data.length / 2) + data
+  return hex_str
 }
 
 /**

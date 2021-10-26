@@ -4,7 +4,6 @@ const get_block = require('../network/get_block.js')
 const get_info = require('../network/get_info.js')
 const serialize_actions = require('../serialize/actions.js')
 const serialize_extensions = require('../serialize/extensions.js')
-const serialize_transaction_data = require('../serialize/transaction_data')
 const serialize_header = require('../serialize/transaction_header.js')
 
 /**
@@ -21,41 +20,17 @@ const serialize_header = require('../serialize/transaction_header.js')
  * @returns {object} packed transaction.
  * @ignore
  */
-async function resolver(
-  {
-    configuration,
-    actions,
-    rpc_url,
-    context_free_actions = [],
-    transaction_extensions = []
-  },
-  abi_ast
-) {
-  // Create a list of transaction actions.
-  let action_array = []
-  for await (const action of actions)
-    action_array.push(
-      ...(await Promise.all(
-        Object.keys(action).map(async actionType => {
-          const { authorization, ...data } = action[actionType]
-          return {
-            account: abi_ast.contract,
-            action: actionType,
-            authorization,
-            data: await serialize_transaction_data({
-              actionType,
-              data,
-              abi_ast
-            })
-          }
-        })
-      ))
-    )
-
+async function resolver({
+  configuration,
+  actions,
+  rpc_url,
+  context_free_actions = [],
+  transaction_extensions = []
+}) {
   // EOS transaction body
   const transaction_body =
     serialize_actions(context_free_actions) +
-    serialize_actions(action_array) +
+    serialize_actions(actions) +
     serialize_extensions(transaction_extensions) +
     '0000000000000000000000000000000000000000000000000000000000000000'
 
@@ -79,6 +54,7 @@ async function resolver(
     max_cpu_usage_ms: configuration.max_cpu_usage_ms,
     delay_sec: configuration.delay_sec
   }
+
   // Generates a transaction header for a EOS transaction.
   const transaction_header = serialize_header(header)
 
@@ -91,7 +67,7 @@ async function resolver(
       expiration: new Date(expiration).toISOString().split('.')[0],
       context_free_actions,
       transaction_extensions,
-      actions: action_array.map(({ action, ...data }) => ({
+      actions: actions.map(({ action, ...data }) => ({
         name: action,
         ...data
       }))

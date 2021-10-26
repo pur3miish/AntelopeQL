@@ -8,15 +8,15 @@ const packed_transaction_type = new GraphQLObjectType({
   fields: () => ({
     chain_id: {
       type: GraphQLString,
-      description: 'Chain id'
+      description: 'chain id'
     },
     transaction_header: {
       type: GraphQLString,
-      description: 'Transaction header for TaPos'
+      description: 'Transaction header for TaPoS protection.'
     },
     transaction_body: {
       type: GraphQLString,
-      description: 'Packed transaction data'
+      description: 'Packed transaction.'
     }
   })
 })
