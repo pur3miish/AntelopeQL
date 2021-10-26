@@ -19,14 +19,16 @@ const generate_table_scope = require('./table_entries.js')
  * @returns {object} GraphQL query fields.
  * @ignore
  */
-function build_query_fields(ABI_AST) {
+function build_query_fields(ABI_AST, no_query) {
   if (!ABI_AST.tables || !ABI_AST.tables.length)
-    return {
-      NO_QUERY: {
-        description: 'Placeholder query.',
-        type: GraphQLString
+    if (no_query) return
+    else
+      return {
+        NO_QUERY: {
+          description: 'Placeholder query.',
+          type: GraphQLString
+        }
       }
-    }
 
   const ast_object_types = ast_to_object_types(ABI_AST)
 
