@@ -16,7 +16,6 @@ const serialize_header = require('../serialize/transaction_header.js')
  * @param {Array} arg.context_free_actions context free actions.
  * @param {Array} arg.transaction_extensions transaction extensions.
  * @param {string} arg.rpc_url URL of the nodeos EOSIO instance.
- * @param {object} abi_ast Application binary interface abstract syntax tree.
  * @returns {object} packed transaction.
  * @ignore
  */

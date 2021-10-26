@@ -23,4 +23,4 @@ const server = http
   })
   .listen(3002)
 
-// server.close()
+server.close()
