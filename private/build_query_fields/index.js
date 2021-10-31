@@ -1,10 +1,5 @@
 'use strict'
-const {
-  GraphQLError,
-  GraphQLList,
-  GraphQLObjectType,
-  GraphQLString
-} = require('graphql')
+const { GraphQLList, GraphQLObjectType, GraphQLString } = require('graphql')
 const get_table_rows = require('../network/get_table_rows')
 const ast_to_object_types = require('./ast_to_object_types')
 const query_argument_fields = require('./query_argument_fields.js')
@@ -16,6 +11,7 @@ const generate_table_scope = require('./table_entries.js')
  * @name build_query
  * @kind function
  * @param {object} ABI_AST Abstract syntax tree of ABI.
+ * @param {bool} no_query Removes Query fied for contracts without query fields.
  * @returns {object} GraphQL query fields.
  * @ignore
  */
@@ -38,7 +34,7 @@ function build_query_fields(ABI_AST, no_query) {
       [String(Object.values(item)[0]).replace(ABI_AST.gql_contract + '_', '')]:
         {
           description: `Query data from \`${Object.keys(item)[0]}\` table.`,
-          type: GraphQLList(item[Object.keys(item)[0]]),
+          type: new GraphQLList(item[Object.keys(item)[0]]),
           args: {
             arg: {
               name: 'argument_type',
@@ -52,7 +48,7 @@ function build_query_fields(ABI_AST, no_query) {
               ...arg
             }
             const { rows, error } = await get_table_rows(table_arg, rpc_url)
-            if (error) throw new GraphQLError(error)
+            if (error) throw new Error(JSON.stringify(error))
             return rows
           }
         }

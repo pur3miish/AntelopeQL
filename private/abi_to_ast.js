@@ -18,10 +18,19 @@ function abi_to_ast(ABI, contract) {
    * Moreover prefix graphql fields unique names specific to the smart contract.
    * this prevents any GraphQL Duplicate errors being thrown.
    */
-  const gql_contract = contract.replace(/[.]+/gmu, '_')
+  let gql_contract = contract.replace(/[.]+/gmu, '_')
+
+  /*
+   * Because GraphQL types must start with [_a-zA-Z], so we append an “_”
+   * If there are any `names` that begin with a numberical.
+   */
+  if (gql_contract.match(/^[1-5]/gmu)) gql_contract = '_' + gql_contract
+
   const abi_ast = { ...ABI, contract, gql_contract }
 
-  // Trim ricardian contracts
+  /*
+   * Trim ricardian contracts so that the description only inlcudes the title.
+   */
   abi_ast.actions.forEach((action, index) => {
     const description = action.ricardian_contract.match(/^title: .+$/gmu)
     abi_ast.actions[index].ricardian_contract = description
@@ -56,6 +65,7 @@ function abi_to_ast(ABI, contract) {
 
     delete abi_ast.variants
   }
+
   delete abi_ast.ricardian_clauses
   delete abi_ast.error_messages
   delete abi_ast.action_results

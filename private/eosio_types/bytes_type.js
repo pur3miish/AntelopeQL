@@ -8,7 +8,7 @@ const bytes_type = new GraphQLScalarType({
   parseValue: bytes => {
     if (bytes == '') return bytes
     if (!bytes.match(/^[A-Fa-f0-9]+$/gmu))
-      throw new Error('Invald hexadecimal string.')
+      throw new TypeError('Invald hexadecimal string: ' + bytes)
     return serialize(bytes)
   }
 })

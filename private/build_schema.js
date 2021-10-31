@@ -2,10 +2,7 @@
 const { GraphQLObjectType, GraphQLSchema } = require('graphql')
 const abi_to_ast = require('./abi_to_ast.js')
 const build_mutation_fields = require('./build_mutation_fields/index.js')
-const packed_transaction_type = require('./build_mutation_fields/types/packed_transaction_type.js')
-const transaction_receipt_type = require('./build_mutation_fields/types/transaction_receipt_type.js')
 const build_query_fields = require('./build_query_fields/index.js')
-const resolver = require('./resolvers/index.js')
 
 /**
  * Builds a GraphQL schema from an EOS application binary interface (ABI).
@@ -30,22 +27,12 @@ function build_schema(ABI, contract, broadcast) {
   })
 
   let mutation
-  if (broadcast)
-    mutation = new GraphQLObjectType({
-      name: 'Mutation',
-      description: `Update the state of the \`${contract}\` smart contract.`,
-      fields: build_mutation_fields(
-        abi_ast,
-        require('./resolvers/broadcast'),
-        transaction_receipt_type
-      )
-    })
-  else
-    mutation = new GraphQLObjectType({
-      name: 'Mutation',
-      description: `Update the state of the \`${contract}\` smart contract.`,
-      fields: build_mutation_fields(abi_ast, resolver, packed_transaction_type)
-    })
+
+  mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    description: `Update the state of the \`${contract}\` smart contract.`,
+    fields: build_mutation_fields(abi_ast, broadcast)
+  })
 
   return new GraphQLSchema({
     query,

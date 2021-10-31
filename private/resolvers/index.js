@@ -7,16 +7,28 @@ const serialize_extensions = require('../serialize/extensions.js')
 const serialize_header = require('../serialize/transaction_header.js')
 
 /**
+ * The object structure required for Actions to be serialised.
+ * @kind typedef
+ * @name Actions
+ * @type {Array<object>}
+ * @prop {string} account The name of the account that holds the smart contract.
+ * @prop {string} action the name of the action on the smart contract you are interacting with.
+ * @prop {string} data Seriaized action data use `serialize/transaction_data`.
+ * @prop {Array<Authorization>} Auth List of Authorizations to push the transaction.
+ * @ignore
+ */
+
+/**
  * SmartQL Mutation resolver (non broadcast edition).
  * @kind function
  * @name resolver
  * @param {object} arg Argument.
- * @param {object} arg.configuration Transaction configuration.
- * @param {object} arg.actions List of action data.
- * @param {Array} arg.context_free_actions context free actions.
+ * @param {configuration_type} arg.configuration Transaction configuration.
+ * @param {Actions} arg.actions List of action data.
+ * @param {Actions} arg.context_free_actions context free actions.
  * @param {Array} arg.transaction_extensions transaction extensions.
  * @param {string} arg.rpc_url URL of the nodeos EOSIO instance.
- * @returns {object} packed transaction.
+ * @returns {Packed_transaction} packed transaction.
  * @ignore
  */
 async function resolver({

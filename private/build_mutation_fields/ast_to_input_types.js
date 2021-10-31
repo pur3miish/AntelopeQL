@@ -14,11 +14,10 @@ const eos_types = require('../eosio_types')
  * @name ast_to_input_types
  * @kind function
  * @param {object} ABI_AST Abstract syntax tree for generating GraphQL input object types.
- * @param {string} prefix Prefix GraphQL types with a unique ID to prevent GraphQL duplicate errors.
  * @returns {object} GraphQL input types.
  * @ignore
  */
-function ast_to_input_types(ABI_AST, prefix = '') {
+function ast_to_input_types(ABI_AST) {
   const abi_ast = ABI_AST.structs.reduce(
     (
       acc,
@@ -29,7 +28,7 @@ function ast_to_input_types(ABI_AST, prefix = '') {
       const handle_base_fields = (baseValue, fields = []) => {
         const field = ABI_AST.structs.find(({ name }) => baseValue == name)
         if (!field)
-          throw new Error(`Could not find base value “${baseValue}” on ABI`)
+          throw new TypeError(`Could not find base value “${baseValue}” on ABI`)
 
         if (field.base == '') return [...field.fields, ...fields]
         return handle_base_fields(field.base, fields)
@@ -43,7 +42,7 @@ function ast_to_input_types(ABI_AST, prefix = '') {
       return {
         ...acc,
         [struct_name]: handle_input_GraphQLObjectType({
-          name: prefix + '_input_' + struct_name,
+          name: ABI_AST.gql_contract + '_input_' + struct_name,
           fields: () => {
             const graphql_type_fields = struct_fields.reduce(
               (acc, { name: struct_field_name, type: struct_field_type }) => {
@@ -90,11 +89,11 @@ function ast_to_input_types(ABI_AST, prefix = '') {
 
                 let type
                 if (optionType)
-                  type = isListType ? GraphQLList(handle_type) : handle_type
+                  type = isListType ? new GraphQLList(handle_type) : handle_type
                 else
                   type = isListType
-                    ? GraphQLList(GraphQLNonNull(handle_type))
-                    : GraphQLNonNull(handle_type)
+                    ? new GraphQLList(new GraphQLNonNull(handle_type))
+                    : new GraphQLNonNull(handle_type)
 
                 return {
                   ...acc,

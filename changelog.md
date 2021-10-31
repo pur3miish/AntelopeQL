@@ -1,11 +1,13 @@
 # SmartQL changelog
 
-# Next
+# 7.0.0-beta
 
 ## Major
 
 - Destructured imports.
 - Base query string changed to include contract base.
+- Can now extend GraphQL schema.
+- Can now handle multiple `EOSIO` Smart contracts.
 
 ## Minor
 
@@ -13,8 +15,10 @@
 
 ## Patch
 
+- updated to GraphQL 16.
 - Refactored code base to set up unit test.
 - Removed graphql non null type from top level GraphQL mutations.
+- Updated dependencies.
 
 # V6.0.4
 

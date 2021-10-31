@@ -1,5 +1,4 @@
 'use strict'
-const { GraphQLError } = require('graphql')
 const rpc_call = require('./rpc_call')
 
 /**
@@ -21,12 +20,7 @@ const rpc_call = require('./rpc_call')
  * @ignore
  */
 async function get_abi({ contract, rpc_url }) {
-  if (!contract)
-    throw new TypeError(
-      `Epected a contract to be string, got ${typeof contract}`
-    )
-
-  const { abi, error } = await rpc_call(`${rpc_url}/v1/chain/get_abi`, {
+  return rpc_call(`${rpc_url}/v1/chain/get_abi`, {
     method: 'POST',
     headers: {
       accept: 'application/json',
@@ -37,9 +31,6 @@ async function get_abi({ contract, rpc_url }) {
       json: true
     })
   })
-
-  if (abi) return abi
-  if (error) throw new GraphQLError(error)
 }
 
 module.exports = get_abi

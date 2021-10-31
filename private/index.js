@@ -1,15 +1,19 @@
 'use strict'
 
 const {
-  GraphQLError,
-  formatError,
+  GraphQLObjectType,
+  GraphQLSchema,
+  validate,
   execute,
-  parse,
   Source,
-  validate
+  parse
 } = require('graphql')
-const build_schema = require('./build_schema')
-const get_abi = require('./network/get_abi')
+const handleErrors = require('../private/handle_errors.js')
+const abi_to_ast = require('./abi_to_ast.js')
+const build_mutation_fields = require('./build_mutation_fields/index.js')
+const transactions = require('./build_mutation_fields/transactions.js')
+const build_query_fields = require('./build_query_fields/index.js')
+const get_abi = require('./network/get_abi.js')
 
 /**
  * The core function to build and execute a GraphQL request for EOSIO based blockchains.
@@ -19,11 +23,14 @@ const get_abi = require('./network/get_abi')
  * @param {string} arg.query GraphQL query string.
  * @param {object} [arg.operationName] GraphQL opperation name.
  * @param {object} [arg.variables] GraphQL variables.
- * @param {string} arg.contract `Account name` that holds the smart contract.
+ * @param {Array<string>} arg.contracts List of accounts that holds smart contracts.
  * @param {string} arg.rpc_url [Nodeos](https://developers.eos.io/manuals/eos/v2.1/nodeos/index) endpoint URL.
- * @param {bool} [arg.broadcast] Specifies if mutation is pushed to the blockchain.
+ * @param {bool} [arg.broadcast] Specifies if mutation will return `packed transaction` or `transaction receipt`.
  * @param {Array<string>} [arg.private_keys] List of EOSIO wif private keys.
- * @returns {object} Reponse from a GraphQL query.
+ * @param {object} [extensions] Extend the GraphQL schema by providing mutations and query fields.
+ * @param {object} [extensions.queries_fields] GraphQL query fields.
+ * @param {object} [extensions.mutation_fields] GraphQL mutation fields.
+ * @returns {packed_transaction | transaction_receipt} Response from the SmartQL (graphql) query.
  * @example <caption>Ways to `require`.</caption>
  * ```js
  * const { SmartQL } = require('smartql')
@@ -42,17 +49,19 @@ const get_abi = require('./network/get_abi')
  *     }
  *  }
  * ```
+ *
  * ```js
  * SmartQL({
  *   query,
- *   contract: 'eosio.token',
+ *   contracts: ['eosio.token'],
  *   rpc_url: 'https://eos.relocke.io'
  * }).then(console.log)
  * ```
- * The logged output was
+ *
+ * The logged output was:
  * { "data": { "account": [{ "balance": "… EOS" }] }
  *
- * @example <caption>SmartQL mutation - Transfer EOS tokens.</caption>
+ * @example <caption>SmartQL mutation - Transfer EOS tokens with memo.</caption>
  * ```GraphQL
  * mutation {
  *  eosio_token(
@@ -70,11 +79,12 @@ const get_abi = require('./network/get_abi')
  *  }
  * }
  * ```
+ *
  * ```js
  * SmartQL({
  *   query: mutation,
  *   rpc_url: 'https://eos.relocke.io',
- *   contract: 'eosio.token',
+ *   contracts: ['eosio.token'],
  *   private_keys: ['5K7…']
  * }).then(console.log)
  * ```
@@ -83,42 +93,101 @@ const get_abi = require('./network/get_abi')
  *   "transfer": {
  *     "transaction_id": "855ff441ebfc20d0909f81b97ac41ebe29bffbdf996545439ac79bf2e5f4f4ec"
  *   }
- * }
+ *  }
  */
-const smartql = async ({
-  query,
-  contract,
-  rpc_url,
-  variables,
-  operationName,
-  broadcast = true,
-  private_keys = []
-}) => {
+async function SmartQL(
+  {
+    query,
+    contracts,
+    rpc_url,
+    variables,
+    operationName,
+    broadcast = true,
+    private_keys = []
+  },
+  { queries_fields = {}, mutation_fields = {} } = {
+    queries_fields: {},
+    mutation_fields: {}
+  }
+) {
   try {
-    // Validate graphql query.
     const documentAST = parse(new Source(query))
-    // Fetch application binary interface (abi) for a given smart contract.
-    const abi = await get_abi({ rpc_url, contract })
-    // Build schema.
-    const schema = build_schema(abi, contract, broadcast)
-    // Validate schema.
+
+    const abis = []
+    for (const contract of contracts) abis.push(get_abi({ rpc_url, contract }))
+
+    let _abi_ast = {}
+
+    // const abis = await Promise.all(fetch_abis)
+    let index = 0
+    for await (const { abi } of abis) {
+      if (!abi)
+        throw new TypeError(
+          `No smart contract available for “${contracts[index]}”.`
+        )
+
+      const abi_ast = abi_to_ast(abi, contracts[index])
+
+      _abi_ast = {
+        ..._abi_ast,
+        [contracts[index].replace(/[.]+/gmu, '_')]: abi_ast
+      }
+
+      queries_fields = {
+        ...queries_fields,
+        ...build_query_fields(abi_ast, true)
+      }
+
+      mutation_fields = {
+        ...mutation_fields,
+        ...build_mutation_fields(abi_ast, broadcast)
+      }
+
+      index++
+    }
+
+    const queries = new GraphQLObjectType({
+      name: 'Query',
+      description: 'Query for the `EOSIO` blockchain.',
+      fields: queries_fields
+    })
+
+    const mutations = new GraphQLObjectType({
+      name: 'Mutation',
+      description: 'GraphQL mutations for `EOSIO` blockchains.',
+      fields: {
+        ...mutation_fields,
+        ...transactions(mutation_fields, _abi_ast, broadcast)
+      }
+    })
+
+    const schema = new GraphQLSchema({
+      query: queries,
+      mutation: mutations
+    })
+
     const queryErrors = validate(schema, documentAST)
-    if (queryErrors.length) throw new GraphQLError(queryErrors)
-    return execute({
-      schema,
+    if (queryErrors.length) throw new Error(JSON.stringify(queryErrors))
+
+    const { errors, ...data } = await execute({
+      schema: schema,
       document: documentAST,
       rootValue: '',
-      contextValue: { rpc_url, private_keys },
+      contextValue: {
+        rpc_url,
+        private_keys
+      },
       variableValues: variables,
       operationName,
       fieldResolver: (rootValue, args, ctx, { fieldName }) =>
         rootValue[fieldName]
     })
-  } catch (err) {
-    return {
-      errors: Array.isArray(err) ? [...err.map(formatError)] : formatError(err)
-    }
+
+    if (errors) throw errors
+    return data
+  } catch (errors) {
+    return handleErrors(errors)
   }
 }
 
-module.exports = smartql
+module.exports = SmartQL

@@ -1,40 +1,33 @@
 'use strict'
 
-const { GraphQLError } = require('graphql')
 const get_required_keys = require('../network/get_required_keys.js')
 const push_transaction = require('../network/push_transaction.js')
-const resolver = require('./index.js')
 
 /**
- * SmartQL Mutation resolver.
- * Serialize and push a mutation to the EOSIO blockchain
+ * SmartQL Mutation resolver, serialize and push a mutation to the EOSIO blockchain
  * @kind function
  * @name broadcast_resolver
  * @param {object} arg Argument.
- * @param {object} arg.configuration Transaction configuration.
- * @param {object} arg.actions List of action data.
+ * @param {string} arg.chain_id Checksum of the hash.
+ * @param {string} arg.transaction_header Serialized transaction header.
+ * @param {string} arg.transaction_body Serialized transaction body.
+ * @param {object} arg.transaction Transaction object for the transaction.
  * @param {string} arg.rpc_url URL of the nodeos EOSIO instance.
- * @param {Array} arg.context_free_actions context free actions.
- * @param {Array} arg.transaction_extensions transaction extensions.
- * @param {Array<string>} arg.private_keys  List of WIF private keys/
- * @param {object} abi_ast Application binary interface abstract syntax tree.
- * @returns {object} Transction EOSIO receipt.
+ * @param {Array<string>} arg.private_keys  List of WIF private keys.
+ * @returns {object} Transction `EOSIO` receipt.
  * @ignore
  */
-async function broadcast_resolver(
-  {
-    configuration,
-    actions,
-    rpc_url,
-    private_keys = [],
-    context_free_actions = [],
-    transaction_extensions = []
-  },
-  abi_ast
-) {
+async function broadcast_resolver({
+  chain_id,
+  transaction_header,
+  transaction_body,
+  transaction,
+  rpc_url,
+  private_keys = []
+}) {
   const { public_key_from_private, sign_txn } = require('eos-ecc')
 
-  if (!private_keys.length) throw new GraphQLError('Expected private keys')
+  if (!private_keys.length) throw new TypeError('Expected private keys')
   // Remove any duplicate keys.
   private_keys = [...new Set(private_keys)]
 
@@ -46,25 +39,13 @@ async function broadcast_resolver(
     }))
   )
 
-  const { chain_id, transaction_header, transaction_body, transaction } =
-    await resolver(
-      {
-        configuration,
-        actions,
-        rpc_url,
-        context_free_actions,
-        transaction_extensions
-      },
-      abi_ast
-    )
-
   const { required_keys, error } = await get_required_keys({
     rpc_url,
     transaction,
     available_keys: key_chain.map(({ public_key }) => public_key)
   })
 
-  if (error) throw new GraphQLError(error)
+  if (error) throw new Error(JSON.stringify(error))
 
   // Generate sigs
   const signatures = await Promise.all(
@@ -83,7 +64,7 @@ async function broadcast_resolver(
     rpc_url
   })
 
-  if (receipt.error) throw new GraphQLError(receipt.error)
+  if (receipt.error) throw new Error(JSON.stringify(receipt.error))
 
   return receipt
 }

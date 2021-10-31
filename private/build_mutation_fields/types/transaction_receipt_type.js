@@ -9,6 +9,17 @@ const {
 } = require('graphql')
 const bandwidth_cost_type = require('./bandwidth_cost_type.js')
 
+/**
+ * @kind typedef
+ * @name transaction_receipt
+ * @type {object}
+ * @prop {string} transaction_id ID of the transaction.
+ * @prop {number} block_num Block number where teh transaction can be found.
+ * @prop {stiring} block_time The time of the transaction.
+ * @prop {string} producer_block_id The block producer ID that processed the transaction.
+ * @prop {bandwidth_cost} resource_cost Network cost for the transaction.
+ * @prop {bool} scheduled Scheduled transactions are executed at a later time.
+ */
 const transaction_receipt_type = new GraphQLObjectType({
   name: 'transaction_receipt',
   description: 'Receipt for the action (mutation) for a blockchain transaction',
@@ -29,6 +40,7 @@ const transaction_receipt_type = new GraphQLObjectType({
     },
     producer_block_id: {
       type: GraphQLString,
+      description: 'Block producer ID that processed the transaction.',
       resolve: ({ processed }) => processed.producer_block_id
     },
     resource_cost: {
@@ -37,20 +49,14 @@ const transaction_receipt_type = new GraphQLObjectType({
       type: bandwidth_cost_type,
       resolve: ({ processed }) => processed.receipt
     },
-    elapsed: {
-      type: GraphQLInt,
-      resolve: ({ processed }) => processed.elapsed
-    },
-    net_usage: {
-      type: GraphQLInt,
-      resolve: ({ processed }) => processed.net_usage
-    },
     scheduled: {
       type: GraphQLBoolean,
+      description: 'Scheduled transactions are executed at a later time.',
       resolve: ({ processed }) => processed.scheduled
     },
     action_traces: {
-      description: 'A JSON string for the transaction action trace.',
+      description:
+        'A JSON string trace of the actions performed for the transaction.',
       type: GraphQLString,
       resolve: ({ processed }) => JSON.stringify(processed.action_traces)
     }

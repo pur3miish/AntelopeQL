@@ -20,8 +20,6 @@ function ast_to_graphql_object_types(ABI_AST) {
     ) => {
       const handle_base_fields = (baseValue, fields = []) => {
         const field = ABI_AST.structs.find(({ name }) => baseValue == name)
-        if (!field)
-          throw new Error(`Could not find base value “${baseValue}” on ABI`)
         if (field.base == '') return [...field.fields, ...fields]
         return handle_base_fields(field.base, fields)
       }
@@ -80,7 +78,9 @@ function ast_to_graphql_object_types(ABI_AST) {
                 /**
                  *  graphql type
                  */
-                const type = isListType ? GraphQLList(handle_type) : handle_type
+                const type = isListType
+                  ? new GraphQLList(handle_type)
+                  : handle_type
 
                 return {
                   ...acc,

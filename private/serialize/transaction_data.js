@@ -29,11 +29,11 @@ async function serialize_transaction_data({
 
     const handleFields = fields =>
       fields.forEach(({ name, type }) => {
-        if (data[name] == undefined) throw new Error(`Expected “${name}”`)
+        if (data[name] == undefined) throw new TypeError(`Expected “${name}”`)
         if (type.endsWith('$')) type = type.replace('$', '')
         if (type.endsWith('?')) type = type.replace('?', '')
         if (type.endsWith('[]')) {
-          if (!data[name]) throw new Error(`Expected “${name}” array`)
+          if (!data[name]) throw new TypeError(`Expected “${name}” array`)
           ast.push({
             name: name + '_length',
             type: 'varuint32',
