@@ -7,11 +7,20 @@
  */
 function handleErrors(errors) {
   if (Array.isArray(errors))
-    return {
-      errors: errors.map(error => ({
-        ...error,
-        message: JSON.parse(error.message)
-      }))
+    try {
+      return {
+        errors: errors.map(error => ({
+          ...error,
+          message: JSON.parse(error.message)
+        }))
+      }
+    } catch (err) {
+      return {
+        errors: errors.map(error => ({
+          ...error,
+          message: error.message
+        }))
+      }
     }
   else if (errors.name == 'GraphQLError') return { errors: errors.toJSON() }
   else if (errors.name == 'SyntaxError') return { errors }

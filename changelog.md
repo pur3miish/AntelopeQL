@@ -12,10 +12,11 @@
 ## Minor
 
 - Added no query argument option, where the smart contract has no query.
+- Can now handle account names that begin with numerical values.
 
 ## Patch
 
-- updated to GraphQL 16.
+- Peer dependency GraphQL ^16.
 - Refactored code base to set up unit test.
 - Removed graphql non null type from top level GraphQL mutations.
 - Updated dependencies.

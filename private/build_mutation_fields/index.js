@@ -86,6 +86,7 @@ function build_mutation_fields(abi_ast, broadcast) {
           const actions_data = Object.values(action)
           const action_key = Object.keys(action)
           let index = 0
+
           for await (const action of action_key) {
             const { authorization, ...action_data } = actions_data[index]
             const data = await serialize_transaction_data({

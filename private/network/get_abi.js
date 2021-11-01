@@ -27,7 +27,7 @@ async function get_abi({ contract, rpc_url }) {
       'content-type': 'application/json'
     },
     body: JSON.stringify({
-      account_name: contract,
+      account_name: contract.replace(/^[.]{1}/gmu, ''),
       json: true
     })
   })

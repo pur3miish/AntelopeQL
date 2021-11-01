@@ -28,7 +28,7 @@ const get_abi = require('./network/get_abi.js')
  * @param {bool} [arg.broadcast] Specifies if mutation will return `packed transaction` or `transaction receipt`.
  * @param {Array<string>} [arg.private_keys] List of EOSIO wif private keys.
  * @param {object} [extensions] Extend the GraphQL schema by providing mutations and query fields.
- * @param {object} [extensions.queries_fields] GraphQL query fields.
+ * @param {object} [extensions.query_fields] GraphQL query fields.
  * @param {object} [extensions.mutation_fields] GraphQL mutation fields.
  * @returns {packed_transaction | transaction_receipt} Response from the SmartQL (graphql) query.
  * @example <caption>Ways to `require`.</caption>
@@ -105,14 +105,14 @@ async function SmartQL(
     broadcast = true,
     private_keys = []
   },
-  { queries_fields = {}, mutation_fields = {} } = {
-    queries_fields: {},
+  { query_fields = {}, mutation_fields = {} } = {
+    query_fields: {},
     mutation_fields: {}
   }
 ) {
   try {
     const documentAST = parse(new Source(query))
-
+    let eosio_mutation_fields = {}
     const abis = []
     for (const contract of contracts) abis.push(get_abi({ rpc_url, contract }))
 
@@ -128,18 +128,21 @@ async function SmartQL(
 
       const abi_ast = abi_to_ast(abi, contracts[index])
 
+      let ast_name = contracts[index].replace(/[.]+/gmu, '_')
+      ast_name = ast_name.match(/^[1-5]/gmu) ? '_' + ast_name : ast_name
+
       _abi_ast = {
         ..._abi_ast,
-        [contracts[index].replace(/[.]+/gmu, '_')]: abi_ast
+        [ast_name]: abi_ast
       }
 
-      queries_fields = {
-        ...queries_fields,
+      query_fields = {
+        ...query_fields,
         ...build_query_fields(abi_ast, true)
       }
 
-      mutation_fields = {
-        ...mutation_fields,
+      eosio_mutation_fields = {
+        ...eosio_mutation_fields,
         ...build_mutation_fields(abi_ast, broadcast)
       }
 
@@ -149,7 +152,7 @@ async function SmartQL(
     const queries = new GraphQLObjectType({
       name: 'Query',
       description: 'Query for the `EOSIO` blockchain.',
-      fields: queries_fields
+      fields: query_fields
     })
 
     const mutations = new GraphQLObjectType({
@@ -157,7 +160,8 @@ async function SmartQL(
       description: 'GraphQL mutations for `EOSIO` blockchains.',
       fields: {
         ...mutation_fields,
-        ...transactions(mutation_fields, _abi_ast, broadcast)
+        ...eosio_mutation_fields,
+        ...transactions(eosio_mutation_fields, _abi_ast, broadcast)
       }
     })
 

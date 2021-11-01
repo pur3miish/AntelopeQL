@@ -31,24 +31,27 @@ const build_transactions_mutation_fields = (
     ? {
         transactions: {
           description:
-            'Perform a series of atomic transactions across multiple smart `EOSIO` smart contracts (1 -> x).',
+            'Perform a series of atomic transactions across multiple `EOSIO` smart contracts (1 -> x).',
           type: broadcast ? transaction_receipt_type : packed_transaction_type,
           args: {
             actions: {
-              type: new GraphQLList(
-                new GraphQLNonNull(
-                  new GraphQLInputObjectType({
-                    name: 'transactions_type',
-                    fields: Object.keys(contract_mutation_fields).reduce(
-                      (acc, key) => ({
-                        ...acc,
-                        [key]: {
-                          type: contract_mutation_fields[key].args.actions.type
-                        }
-                      }),
-                      {}
-                    )
-                  })
+              type: new GraphQLNonNull(
+                new GraphQLList(
+                  new GraphQLNonNull(
+                    new GraphQLInputObjectType({
+                      name: 'transactions_type',
+                      fields: Object.keys(contract_mutation_fields).reduce(
+                        (acc, key) => ({
+                          ...acc,
+                          [key]: {
+                            type: contract_mutation_fields[key].args.actions
+                              .type
+                          }
+                        }),
+                        {}
+                      )
+                    })
+                  )
                 )
               )
             },

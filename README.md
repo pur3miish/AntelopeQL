@@ -54,7 +54,7 @@ The core function to build and execute a GraphQL request for EOSIO based blockch
 | `arg.broadcast` | bool? | Specifies if mutation will return `packed transaction` or `transaction receipt`. |
 | `arg.private_keys` | Array\<string>? | List of EOSIO wif private keys. |
 | `extensions` | object? | Extend the GraphQL schema by providing mutations and query fields. |
-| `extensions.queries_fields` | object? | GraphQL query fields. |
+| `extensions.query_fields` | object? | GraphQL query fields. |
 | `extensions.mutation_fields` | object? | GraphQL mutation fields. |
 
 **Returns:** [packed_transaction](#type-packed_transaction) | [transaction_receipt](#type-transaction_receipt) — Response from the SmartQL (graphql) query.
@@ -192,4 +192,4 @@ The packed transaction type.
 | `soft_fail` | string | objectively failed (not executed), error handler executed. |
 | `hard_fail` | string | objectively failed and error handler objectively failed thus no state change. |
 | `delayed` | string | transaction delayed/deferred/scheduled for future execution. |
-| `expired` | string | transaction expired and storage space refuned to user. |
+| `expired` | string | transaction expired and storage space refunded to user. |

@@ -27,9 +27,6 @@ function ast_to_input_types(ABI_AST) {
     ) => {
       const handle_base_fields = (baseValue, fields = []) => {
         const field = ABI_AST.structs.find(({ name }) => baseValue == name)
-        if (!field)
-          throw new TypeError(`Could not find base value “${baseValue}” on ABI`)
-
         if (field.base == '') return [...field.fields, ...fields]
         return handle_base_fields(field.base, fields)
       }

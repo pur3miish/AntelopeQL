@@ -13,7 +13,8 @@ const server = http
         query,
         broadcast: true,
         rpc_url: 'https://jungle.relocke.io',
-        contracts: ['eosio', 'eosio.token', 'relocke']
+        // contracts: ['eosio', 'eosio.token', 'relocke'],
+        contracts: ['4343kekistan', 'eosio.token']
       }).then(async data => {
         response.writeHead(200, { 'Content-Type': 'application/json' })
         response.end(JSON.stringify(data), 'utf-8')
