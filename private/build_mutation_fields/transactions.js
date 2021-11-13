@@ -29,9 +29,9 @@ const build_transactions_mutation_fields = (
 ) =>
   Object.keys(contract_mutation_fields).length
     ? {
-        transactions: {
+        contract_mutations: {
           description:
-            'Perform a series of atomic transactions across multiple `EOSIO` smart contracts (1 -> x).',
+            'Update multiple `smart contracts` in one mutation ([atomicity](https://en.wikipedia.org/wiki/Atomicity_(database_systems))).',
           type: broadcast ? transaction_receipt_type : packed_transaction_type,
           args: {
             actions: {
@@ -65,6 +65,7 @@ const build_transactions_mutation_fields = (
             { rpc_url, private_keys = [] }
           ) {
             let _actions = []
+
             let _context_free_actions = []
             for (const action of actions) {
               const contract = Object.keys(action)[0]

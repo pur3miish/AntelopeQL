@@ -12,9 +12,12 @@ const server = http
       SmartQL({
         query,
         broadcast: true,
-        rpc_url: 'https://jungle.relocke.io',
-        // contracts: ['eosio', 'eosio.token', 'relocke'],
-        contracts: ['4343kekistan', 'eosio.token']
+        // rpc_url: 'https://eos.relocke.io',
+        rpc_url: 'http://127.0.0.1:8888',
+        // rpc_url: 'https://jungle.relocke.io',
+        private_keys: ['5K7xR2C8mBzMo4aMPJyBPp7Njc3XvszeJSfTApa51rc2d54rrd3'],
+        // contracts: ['eosio.reserv']
+        contracts: ['nutrientjrnl']
       }).then(async data => {
         response.writeHead(200, { 'Content-Type': 'application/json' })
         response.end(JSON.stringify(data), 'utf-8')

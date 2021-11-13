@@ -6,28 +6,24 @@
  * @returns {object} Error object
  */
 function handleErrors(errors) {
-  if (Array.isArray(errors))
-    try {
-      return {
-        errors: errors.map(error => ({
-          ...error,
-          message: JSON.parse(error.message)
-        }))
-      }
-    } catch (err) {
-      return {
-        errors: errors.map(error => ({
-          ...error,
-          message: error.message
-        }))
-      }
-    }
-  else if (errors.name == 'GraphQLError') return { errors: errors.toJSON() }
-  else if (errors.name == 'SyntaxError') return { errors }
-  else if (errors.name == 'TypeError' || errors.name == 'RangeError')
-    return { errors: [{ message: errors.message }] }
+  if (!errors) return
 
-  return { errors: JSON.parse(errors.message) }
+  try {
+    return {
+      errors: errors.map(error => ({
+        ...error,
+        message: (() => {
+          try {
+            return JSON.parse(error.message)
+          } catch (err) {
+            return error.message
+          }
+        })()
+      }))
+    }
+  } catch (err) {
+    return { errors: [{ message: 'Internal server error.' }] }
+  }
 }
 
 module.exports = handleErrors

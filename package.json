@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "7.0.0-beta-13",
+  "version": "7.0.0-beta-22",
   "description": "A GraphQL implementation for intereacting with EOSIO based smart contract blockchains.",
   "main": "public/index.js",
   "scripts": {
@@ -65,7 +65,7 @@
     "eslint-plugin-jsdoc": "^35.5.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "graphql": "^16.0.0",
+    "graphql": "^16.0.1",
     "jsdoc-md": "^11.0.0",
     "nodemon": "^2.0.14",
     "prettier": "^2.4.1",
@@ -73,7 +73,7 @@
   },
   "peerDependencies": {
     "eos-ecc": "^2",
-    "graphql": "^16"
+    "graphql": "^16.0.1"
   },
   "dependencies": {
     "base58-js": "^1.0.0",

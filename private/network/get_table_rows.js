@@ -19,7 +19,8 @@ const get_table_by_row = async (args, rpc_url) => {
     },
     body: JSON.stringify({
       ...args,
-      json: true
+      json: true,
+      show_payer: false
     })
   })
 

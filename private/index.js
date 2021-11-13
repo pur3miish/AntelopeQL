@@ -13,6 +13,8 @@ const abi_to_ast = require('./abi_to_ast.js')
 const build_mutation_fields = require('./build_mutation_fields/index.js')
 const transactions = require('./build_mutation_fields/transactions.js')
 const build_query_fields = require('./build_query_fields/index.js')
+const push_transaction = require('./chain_mutation_fields/push_transaction.js')
+const chain_queries_fields = require('./chain_queries_fields/index.js')
 const get_abi = require('./network/get_abi.js')
 
 /**
@@ -110,20 +112,30 @@ async function SmartQL(
     mutation_fields: {}
   }
 ) {
+  let documentAST
   try {
-    const documentAST = parse(new Source(query))
-    let eosio_mutation_fields = {}
-    const abis = []
-    for (const contract of contracts) abis.push(get_abi({ rpc_url, contract }))
+    documentAST = parse(new Source(query))
+  } catch (err) {
+    return { errors: [err.toJSON()] }
+  }
 
-    let _abi_ast = {}
+  let eosio_mutation_fields = {}
+  const abis = []
+  for (const contract of contracts) abis.push(get_abi({ rpc_url, contract }))
 
-    // const abis = await Promise.all(fetch_abis)
-    let index = 0
-    for await (const { abi } of abis) {
+  let _abi_ast = {}
+
+  let index = 0
+  try {
+    for await (const { abi, error } of abis) {
       if (!abi)
-        throw new TypeError(
-          `No smart contract available for “${contracts[index]}”.`
+        throw new Error(
+          JSON.stringify([
+            {
+              message: `No smart contract found for “${contracts[index]}”.`,
+              ...error
+            }
+          ])
         )
 
       const abi_ast = abi_to_ast(abi, contracts[index])
@@ -138,7 +150,7 @@ async function SmartQL(
 
       query_fields = {
         ...query_fields,
-        ...build_query_fields(abi_ast, true)
+        ...build_query_fields(abi_ast)
       }
 
       eosio_mutation_fields = {
@@ -148,50 +160,64 @@ async function SmartQL(
 
       index++
     }
-
-    const queries = new GraphQLObjectType({
-      name: 'Query',
-      description: 'Query for the `EOSIO` blockchain.',
-      fields: query_fields
-    })
-
-    const mutations = new GraphQLObjectType({
-      name: 'Mutation',
-      description: 'GraphQL mutations for `EOSIO` blockchains.',
-      fields: {
-        ...mutation_fields,
-        ...eosio_mutation_fields,
-        ...transactions(eosio_mutation_fields, _abi_ast, broadcast)
-      }
-    })
-
-    const schema = new GraphQLSchema({
-      query: queries,
-      mutation: mutations
-    })
-
-    const queryErrors = validate(schema, documentAST)
-    if (queryErrors.length) throw new Error(JSON.stringify(queryErrors))
-
-    const { errors, ...data } = await execute({
-      schema: schema,
-      document: documentAST,
-      rootValue: '',
-      contextValue: {
-        rpc_url,
-        private_keys
-      },
-      variableValues: variables,
-      operationName,
-      fieldResolver: (rootValue, args, ctx, { fieldName }) =>
-        rootValue[fieldName]
-    })
-
-    if (errors) throw errors
-    return data
-  } catch (errors) {
-    return handleErrors(errors)
+  } catch (err) {
+    return handleErrors(JSON.parse(err.message))
   }
+
+  const queries = new GraphQLObjectType({
+    name: 'Query',
+    description: 'Query data from the blockchain.',
+
+    fields: {
+      blockchain: {
+        description: `Retrieve various stats and data for the state of the blockchain (including account and currency info).`,
+        type: new GraphQLObjectType({
+          name: 'blockchain',
+          fields: {
+            ...chain_queries_fields
+          }
+        }),
+        resolve() {
+          return {}
+        }
+      },
+      ...query_fields
+    }
+  })
+
+  const mutations = new GraphQLObjectType({
+    name: 'Mutation',
+    description: 'Update the state of various `smart contracts`.',
+    fields: {
+      push_transaction,
+      ...mutation_fields,
+      ...eosio_mutation_fields,
+      ...transactions(eosio_mutation_fields, _abi_ast, broadcast)
+    }
+  })
+
+  const schema = new GraphQLSchema({
+    query: queries,
+    mutation: mutations
+  })
+
+  const queryErrors = validate(schema, documentAST)
+  if (queryErrors.length) return { errors: queryErrors }
+
+  const { errors, data } = await execute({
+    schema: schema,
+    document: documentAST,
+    rootValue: '',
+    contextValue: {
+      rpc_url,
+      private_keys
+    },
+    variableValues: variables,
+    operationName,
+    fieldResolver: (rootValue, args, ctx, { fieldName }) => rootValue[fieldName]
+  })
+
+  return { ...handleErrors(errors), data }
 }
 
 module.exports = SmartQL

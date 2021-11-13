@@ -51,7 +51,7 @@ function abi_to_ast(ABI, contract) {
   }
 
   // Handle ABI variant types.
-  if (abi_ast.variants && abi_ast.variants.length) {
+  if (abi_ast.variants && abi_ast.variants.length)
     abi_ast.structs = abi_ast.structs.concat(
       ...abi_ast.variants.map(({ name, types }) => ({
         name,
@@ -63,9 +63,7 @@ function abi_to_ast(ABI, contract) {
       }))
     )
 
-    delete abi_ast.variants
-  }
-
+  delete abi_ast.variants
   delete abi_ast.ricardian_clauses
   delete abi_ast.error_messages
   delete abi_ast.action_results

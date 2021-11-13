@@ -87,13 +87,16 @@ function table_scope(abi_ast) {
       }
     },
     async resolve(_, args, { rpc_url }) {
-      return get_table_by_scope(
+      const { error, ...data } = await get_table_by_scope(
         {
           code: abi_ast.contract,
           ...args
         },
         rpc_url
       )
+
+      if (error) throw new Error(JSON.stringify(error))
+      return data
     }
   }
 }

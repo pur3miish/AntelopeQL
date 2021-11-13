@@ -1,5 +1,5 @@
 'use strict'
-const { GraphQLList, GraphQLObjectType, GraphQLString } = require('graphql')
+const { GraphQLList, GraphQLObjectType, GraphQLError } = require('graphql')
 const get_table_rows = require('../network/get_table_rows')
 const ast_to_object_types = require('./ast_to_object_types')
 const query_argument_fields = require('./query_argument_fields.js')
@@ -11,20 +11,11 @@ const generate_table_scope = require('./table_entries.js')
  * @name build_query
  * @kind function
  * @param {object} ABI_AST Abstract syntax tree of ABI.
- * @param {bool} no_query Removes Query fied for contracts without query fields.
  * @returns {object} GraphQL query fields.
  * @ignore
  */
-function build_query_fields(ABI_AST, no_query) {
-  if (!ABI_AST.tables || !ABI_AST.tables.length)
-    if (no_query) return
-    else
-      return {
-        NO_QUERY: {
-          description: 'Placeholder query.',
-          type: GraphQLString
-        }
-      }
+function build_query_fields(ABI_AST) {
+  if (!ABI_AST.tables || !ABI_AST.tables.length) return
 
   const ast_object_types = ast_to_object_types(ABI_AST)
 
@@ -47,8 +38,10 @@ function build_query_fields(ABI_AST, no_query) {
               table: Object.keys(item)[0],
               ...arg
             }
-            const { rows, error } = await get_table_rows(table_arg, rpc_url)
-            if (error) throw new Error(JSON.stringify(error))
+
+            const { error, rows } = await get_table_rows(table_arg, rpc_url)
+
+            if (error) throw new GraphQLError(JSON.stringify(error))
             return rows
           }
         }
@@ -60,7 +53,7 @@ function build_query_fields(ABI_AST, no_query) {
   return {
     [ABI_AST.gql_contract]: {
       name: ABI_AST.gql_contract,
-      description: `Query \`${ABI_AST.contract}\` smart contract.`,
+      description: `Retrieve data from the \`${ABI_AST.contract}\` smart contract.`,
       type: new GraphQLObjectType({
         name: ABI_AST.gql_contract,
         description: `Below are a list of tables to query on the \`${ABI_AST.contract}\` smart contract.`,

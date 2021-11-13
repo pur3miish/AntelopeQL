@@ -26,7 +26,7 @@ const transaction_receipt_type = new GraphQLObjectType({
   fields: () => ({
     transaction_id: {
       type: GraphQLID,
-      description: 'EOSIO blockchain transaction id “reciept”'
+      description: '`eosio` blockchain transaction id “reciept”'
     },
     block_num: {
       type: GraphQLInt,
