@@ -27,11 +27,28 @@ async function serialize_transaction_data({
       else throw new Error(`Expected base field “${base}” in ABI`)
     }
 
-    const handleFields = fields =>
+    const handleFields = fields => {
       fields.forEach(({ name, type }) => {
-        if (type.endsWith('$')) type = type.replace('$', '')
+        // Variant types
+        if (type.endsWith('$')) {
+          const _type = type.slice(0, -1)
+          const _struct = findStruct(_type)
+
+          if (_struct)
+            return abi_to_ast({ struct: _struct, ast, data: data[name] })
+          else
+            ast.push({
+              name,
+              type,
+              data: data[name]
+            })
+        }
+
+        // Optional types
         if (type.endsWith('?')) {
-          type = type.replace('?', '')
+          const _type = type.slice(0, -1)
+          const _struct = findStruct(_type)
+
           if (data[name] == undefined)
             return ast.push({
               name: name + '_length',
@@ -44,9 +61,16 @@ async function serialize_transaction_data({
             type: 'bool',
             data: true
           })
+
+          if (_struct)
+            return abi_to_ast({ struct: _struct, ast, data: data[name] })
+
+          ast.push({ name, type: _type, data: data[name] })
         }
+
+        // List types
         if (type.endsWith('[]')) {
-          if (!data[name]) throw new TypeError(`Expected “${name}” array`)
+          // Serializes the length of the array
           ast.push({
             name: name + '_length',
             type: 'varuint32',
@@ -60,17 +84,36 @@ async function serialize_transaction_data({
           })
         }
 
-        // handle variants and optional types.
-        const _struct = findStruct(type)
-        if (_struct)
+        // handle variants.
+        const variant_struct = findStruct(type)
+        if (variant_struct) {
+          const variant_key = Object.keys(data[name])[0]
+          let variant_index
+          variant_struct.fields = variant_struct.fields.filter(
+            ({ name: n }, index) => {
+              if (n == variant_key) {
+                variant_index = index
+                return true
+              }
+            }
+          )
+          // adds variant index to array to be serialized.
+          ast.push({
+            name: 'variant_index',
+            type: 'varuint32',
+            data: variant_index
+          })
+
           return abi_to_ast({
-            struct: _struct,
+            struct: variant_struct,
             ast,
             data: data[name]
           })
+        }
 
         return ast.push({ name, type, data: data[name] })
       })
+    }
 
     if (fields.length) handleFields(fields)
 

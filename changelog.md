@@ -15,6 +15,7 @@
 - Added no query argument option, where the smart contract has no query.
 - Can now handle account names that begin with numerical values.
 - Optional arguments supported.
+- Added support for variant types.
 
 ## Patch
 

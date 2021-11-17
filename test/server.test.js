@@ -12,11 +12,11 @@ const server = http
       SmartQL({
         query,
         broadcast: true,
-        // rpc_url: 'https://eos.relocke.io',
         rpc_url: 'http://127.0.0.1:8888',
-        // rpc_url: 'https://jungle.relocke.io',
-        private_keys: ['5K7xR2C8mBzMo4aMPJyBPp7Njc3XvszeJSfTApa51rc2d54rrd3'],
-        // contracts: ['eosio.reserv']
+        private_keys: [
+          '5K7xR2C8mBzMo4aMPJyBPp7Njc3XvszeJSfTApa51rc2d54rrd3',
+          '5JWuEZQHLpUw8na4g8Fr99ZnPiuhtQjrvJLn6xBwUBnQmYBF3Z2'
+        ],
         contracts: ['nutrientjrnl']
       }).then(async data => {
         response.writeHead(200, { 'Content-Type': 'application/json' })
@@ -26,4 +26,4 @@ const server = http
   })
   .listen(3002)
 
-server.close()
+// server.close()

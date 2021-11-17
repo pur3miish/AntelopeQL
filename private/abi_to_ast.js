@@ -47,6 +47,7 @@ function abi_to_ast(ABI, contract) {
         fields: [{ name: new_type_name, type }]
       }))
     )
+
     delete abi_ast.types
   }
 
@@ -54,11 +55,11 @@ function abi_to_ast(ABI, contract) {
   if (abi_ast.variants && abi_ast.variants.length)
     abi_ast.structs = abi_ast.structs.concat(
       ...abi_ast.variants.map(({ name, types }) => ({
-        name,
+        name: name,
         base: '',
         fields: types.map(item => ({
           name: item,
-          type: item
+          type: item + '$'
         }))
       }))
     )

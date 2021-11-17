@@ -33,8 +33,9 @@ function ast_to_input_types(ABI_AST) {
 
       if (base !== '') struct_fields = handle_base_fields(base, struct_fields)
 
-      const handle_input_GraphQLObjectType = objectType =>
-        new GraphQLInputObjectType(objectType)
+      const handle_input_GraphQLObjectType = objectType => {
+        return new GraphQLInputObjectType(objectType)
+      }
 
       return {
         ...acc,
@@ -43,8 +44,7 @@ function ast_to_input_types(ABI_AST) {
           fields: () => {
             const graphql_type_fields = struct_fields.reduce(
               (acc, { name: struct_field_name, type: struct_field_type }) => {
-                let isListType
-                let optionType
+                let isListType, optionType, handle_type
                 /**
                  * abi field list (array) item.
                  */
@@ -64,8 +64,10 @@ function ast_to_input_types(ABI_AST) {
                 /**
                  * variant type
                  */
-                if (struct_field_type.endsWith('$'))
+                if (struct_field_type.endsWith('$')) {
+                  optionType = true
                   struct_field_type = struct_field_type.slice(0, -1)
+                }
 
                 /**
                  * Check if a struct_field_type is a struct.
@@ -74,17 +76,17 @@ function ast_to_input_types(ABI_AST) {
                   ({ name }) => name == struct_field_type
                 )
 
-                /**
-                 * This generates the types from a series of conditionals
-                 * based on ABI data.
-                 */
-                const handle_type = field_struct
-                  ? abi_ast[field_struct.name]
-                  : eos_types[struct_field_type]
-                  ? eos_types[struct_field_type]
-                  : GraphQLString
+                // const variant_type = !!(
+                //   field_struct && field_struct.name.startsWith('variant')
+                // )
+
+                if (field_struct) handle_type = abi_ast[field_struct.name]
+                else if (eos_types[struct_field_type])
+                  handle_type = eos_types[struct_field_type]
+                else handle_type = GraphQLString
 
                 let type
+
                 if (optionType)
                   type = isListType ? new GraphQLList(handle_type) : handle_type
                 else
