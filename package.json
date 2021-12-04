@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "7.0.0-beta-23",
+  "version": "7.0.0-beta-25",
   "description": "A GraphQL implementation for intereacting with EOSIO based smart contract blockchains.",
   "main": "public/index.js",
   "scripts": {

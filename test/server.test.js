@@ -13,6 +13,7 @@ const server = http
         query,
         broadcast: true,
         rpc_url: 'http://127.0.0.1:8888',
+        // rpc_url: 'https://jungle.relocke.io',
         private_keys: [
           '5K7xR2C8mBzMo4aMPJyBPp7Njc3XvszeJSfTApa51rc2d54rrd3',
           '5JWuEZQHLpUw8na4g8Fr99ZnPiuhtQjrvJLn6xBwUBnQmYBF3Z2'

@@ -8,6 +8,7 @@ const {
   GraphQLString
 } = require('graphql')
 const fetch = require('isomorphic-fetch')
+const name_type = require('../eosio_types/name_type')
 
 const variants_type = new GraphQLObjectType({
   name: 'variants_type',
@@ -146,7 +147,7 @@ const abi = {
   args: {
     account_name: {
       description: 'Name of the account that holds the smart contract.',
-      type: new GraphQLNonNull(GraphQLString)
+      type: new GraphQLNonNull(name_type)
     }
   },
   async resolve(_, { account_name }, { rpc_url }) {

@@ -22,7 +22,7 @@ const producer_list_type = new GraphQLObjectType({
       type: new GraphQLList(GraphQLString)
     },
     is_active: {
-      type: new GraphQLList(GraphQLInt)
+      type: GraphQLInt
     },
     url: {
       type: new GraphQLList(GraphQLString)
