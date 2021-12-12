@@ -25,7 +25,7 @@ const producer_list_type = new GraphQLObjectType({
       type: GraphQLInt
     },
     url: {
-      type: new GraphQLList(GraphQLString)
+      type: GraphQLString
     },
     unpaid_blocks: {
       type: new GraphQLList(GraphQLInt)
