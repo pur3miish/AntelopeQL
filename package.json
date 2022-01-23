@@ -1,12 +1,12 @@
 {
   "name": "smartql",
   "version": "7.0.0",
-  "description": "A GraphQL implementation for intereacting with EOSIO based smart contract blockchains.",
+  "description": "A GraphQL implementation for interacting with EOSIO based smart contract blockchains.",
   "main": "public/index.js",
   "scripts": {
     "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
     "prepare:jsdoc": "jsdoc-md",
-    "prepare:prettier": "prettier --write README.md && prettier --write changelog.md && prettier --write examples/*",
+    "prepare:prettier": "prettier --write readme.md && prettier --write changelog.md && prettier --write examples/*",
     "test": "npm run test:eslint && npm run test:prettier",
     "test:api": "coverage-node test/index.test.mjs",
     "test:eslint": "eslint .",
