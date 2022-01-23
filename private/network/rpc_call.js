@@ -17,7 +17,9 @@ async function rpc_call(url, body) {
   } catch (err) {
     if (err.errno == 'ENOTFOUND')
       throw new Error(
-        'We are having trouble talking to the blockchain, please check your internet connection.'
+        JSON.stringify({
+          errors: [{ message: 'Please check your internet connection.' }]
+        })
       )
   }
 }
