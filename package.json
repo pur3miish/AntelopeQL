@@ -70,13 +70,13 @@
     "test-director": "^7.0.0"
   },
   "peerDependencies": {
-    "eos-ecc": "^2",
-    "graphql": "^16.0.1"
+    "eos-ecc": "*",
+    "graphql": "*"
   },
   "dependencies": {
-    "base58-js": "^1.0.0",
-    "eosio-wasm-js": "^1.0.0",
+    "base58-js": "*",
+    "eosio-wasm-js": "*",
     "isomorphic-fetch": "^3.0.0",
-    "ripemd160-js": "^1.1.1"
+    "ripemd160-js": "*"
   }
 }
