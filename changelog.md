@@ -1,6 +1,11 @@
 # SmartQL changelog
 
-# 7.0.0-beta
+# 7.0.1
+
+- Dependency updated.
+- Fixes [#2](https://github.com/pur3miish/base58-js/issues/2).
+
+# 7.0.0
 
 ## Major
 
