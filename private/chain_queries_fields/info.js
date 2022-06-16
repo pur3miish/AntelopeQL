@@ -1,7 +1,7 @@
 'use strict'
 
-const { GraphQLError, GraphQLObjectType, GraphQLString } = require('graphql')
-const fetch = require('isomorphic-fetch')
+const { GraphQLObjectType, GraphQLString } = require('graphql')
+const get_info = require('../network/get_info')
 
 const info_type = new GraphQLObjectType({
   name: 'info_type',
@@ -82,16 +82,7 @@ const info = {
   type: info_type,
   args: {},
   async resolve(_, args, { rpc_url }) {
-    const req = await fetch(rpc_url + '/v1/chain/get_info', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    const { error, ...data } = await req.json()
-    if (error && error.details) throw new GraphQLError(JSON.stringify(error))
-
-    return data
+    return get_info({ rpc_url })
   }
 }
 module.exports = info

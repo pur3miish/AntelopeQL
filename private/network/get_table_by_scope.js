@@ -12,11 +12,6 @@ const rpc_call = require('./rpc_call')
  */
 const get_table_by_scope = async (args, rpc_url) => {
   const res = await rpc_call(rpc_url + '/v1/chain/get_table_by_scope', {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      'content-type': 'application/json'
-    },
     body: JSON.stringify({
       ...args,
       json: true

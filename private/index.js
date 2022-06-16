@@ -116,27 +116,35 @@ async function SmartQL(
   try {
     documentAST = parse(new Source(query))
   } catch (err) {
-    return { errors: [err.toJSON()] }
+    return { errors: [err.toJSON()] } // if there is a query error return.
   }
 
   let eosio_mutation_fields = {}
   const abis = []
-  for (const contract of contracts) abis.push(get_abi({ rpc_url, contract }))
+
+  // Fetch the relevant ABIs for EOSIO accounts.
+  try {
+    for (const contract of contracts)
+      abis.push(await get_abi({ rpc_url, contract }))
+  } catch (err) {
+    return { errors: [JSON.parse(err.message)] }
+  }
 
   let _abi_ast = {}
 
   let index = 0
+
   try {
-    for await (const { abi, error } of abis) {
+    for (const { abi, error } of abis) {
       if (!abi)
-        throw new Error(
-          JSON.stringify([
+        return {
+          errors: [
             {
               message: `No smart contract found for “${contracts[index]}”.`,
               ...error
             }
-          ])
-        )
+          ]
+        }
 
       const abi_ast = abi_to_ast(abi, contracts[index])
 

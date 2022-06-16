@@ -22,6 +22,18 @@ $ npm i graphql eos-ecc # peer dependencies
 
 _If you plan on signing with a 3rd party tool or are just making queries [eos-ecc](https://github.com/pur3miish/eos-ecc) is not needed._
 
+# ReLocke endpoints
+
+ReLocke uses load balancers and connects to several different block producers to optimise requests for uptime and speed.
+
+## Testnet (Jungle testnet)
+
+<https://jungle.relocke.io>
+
+## EOS production
+
+<https://eos.relocke.io>
+
 # Support
 
 - [Node.js](https://nodejs.org/en/) `>= 12`
@@ -29,6 +41,24 @@ _If you plan on signing with a 3rd party tool or are just making queries [eos-ec
 - GraphQL 15
 
 Consider a [BigInt](https://caniuse.com/?search=bigint) polyfill library for safari 13.
+
+## RPC URL
+
+You need to ensure that the block producers that you connect to over the RPC URL support the http endpoints listed below.
+
+- [get_account](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_account)
+- [get_accounts_by_authorizers](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_accounts_by_authorizers)
+- [get_api](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_abi)
+- [get_block](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_block)
+- [get_block_info](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_block_info)
+- [get_currency_balance](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_currency_balance)
+- [get_currency_stats](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_currency_stats)
+- [get_info](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_info)
+- [get_producers](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_producers)
+- [get_required_keys](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_required_keys)
+- [get_table_by_scope](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_table_by_scope)
+- [get_table_rows](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_table_rows)
+- [push_transaction](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/push_transaction)
 
 # API
 

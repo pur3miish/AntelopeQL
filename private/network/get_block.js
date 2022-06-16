@@ -11,11 +11,6 @@ const rpc_call = require('./rpc_call')
  */
 async function get_block({ block_num_or_id, rpc_url }) {
   const info = await rpc_call(`${rpc_url}/v1/chain/get_block`, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      'content-type': 'application/json'
-    },
     body: JSON.stringify({
       block_num_or_id,
       json: true

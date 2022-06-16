@@ -9,13 +9,8 @@ const rpc_call = require('./rpc_call')
  * @returns {object} Get info object.
  */
 async function get_info({ rpc_url }) {
-  const info = await rpc_call(`${rpc_url}/v1/chain/get_info`, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      'content-type': 'application/json'
-    }
-  })
+  const info = await rpc_call(`${rpc_url}/v1/chain/get_info`, {})
+
   return info
 }
 

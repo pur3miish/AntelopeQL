@@ -1,6 +1,19 @@
 # SmartQL changelog
 
+# 7.1.0
+
+## Major
+
+- RPC Error reporting is more descriptive.
+
+## Patch
+
+- Added ReLocke (EOS and Jungle) rpc url end points to read me.
+- Added list of endpoints BPs need to support.
+
 # 7.0.1
+
+## Patch
 
 - Dependency updated.
 - Fixes [#2](https://github.com/pur3miish/base58-js/issues/2).

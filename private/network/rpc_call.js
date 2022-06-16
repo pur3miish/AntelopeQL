@@ -11,17 +11,35 @@ const fetch = require('isomorphic-fetch')
  * @ignore
  */
 async function rpc_call(url, body) {
+  let request = {}
   try {
-    const request = await fetch(url, body)
-    return request.json()
+    request = await fetch(url, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json'
+      },
+      ...body
+    })
   } catch (err) {
-    if (err.errno == 'ENOTFOUND')
-      throw new Error(
-        JSON.stringify({
-          errors: [{ message: 'Please check your internet connection.' }]
-        })
-      )
+    request = { url }
+    request.statusText = err.message
   }
+
+  if (String(request.status).startsWith('2')) return request.json()
+
+  let message = {
+    message: `request to ${request.url} failed, reason: ${request.statusText}`,
+    blockchain: {}
+  }
+
+  try {
+    message.blockchain = await request.json()
+  } catch (err) {
+    // catch error if no .json object on errror.
+  }
+
+  throw new Error(JSON.stringify(message))
 }
 
 module.exports = rpc_call

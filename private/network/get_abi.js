@@ -20,17 +20,14 @@ const rpc_call = require('./rpc_call')
  * @ignore
  */
 async function get_abi({ contract, rpc_url }) {
-  return rpc_call(`${rpc_url}/v1/chain/get_abi`, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      'content-type': 'application/json'
-    },
+  const data = await rpc_call(`${rpc_url}/v1/chain/get_abi`, {
     body: JSON.stringify({
       account_name: contract.replace(/^[.]{1}/gmu, ''),
       json: true
     })
   })
+
+  return data
 }
 
 module.exports = get_abi

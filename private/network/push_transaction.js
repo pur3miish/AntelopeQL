@@ -12,11 +12,6 @@ const rpc_call = require('./rpc_call')
  */
 const push_transaction = async ({ transaction, signatures, rpc_url }) => {
   const trx = await rpc_call(`${rpc_url}/v1/chain/push_transaction`, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      'content-type': 'application/json'
-    },
     body: JSON.stringify({
       signatures,
       compression: 0,

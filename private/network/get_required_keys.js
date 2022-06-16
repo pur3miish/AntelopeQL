@@ -12,17 +12,13 @@ const rpc_call = require('./rpc_call')
  */
 async function get_required_keys({ rpc_url, transaction, available_keys }) {
   const info = await rpc_call(`${rpc_url}/v1/chain/get_required_keys`, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      'content-type': 'application/json'
-    },
     body: JSON.stringify({
       transaction,
       available_keys,
       json: true
     })
   })
+
   return info
 }
 
