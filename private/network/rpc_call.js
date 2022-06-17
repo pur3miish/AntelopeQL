@@ -28,18 +28,18 @@ async function rpc_call(url, body) {
 
   if (String(request.status).startsWith('2')) return request.json()
 
-  let message = {
-    message: `request to ${request.url} failed, reason: ${request.statusText}`,
-    blockchain: {}
+  let error = {
+    message: `request to ${request.url} failed, reason: ${request.statusText}`
   }
 
   try {
-    message.blockchain = await request.json()
+    const req_data = await request.json()
+    error.blockchain = req_data
   } catch (err) {
-    // catch error if no .json object on errror.
+    // catch if no body on request.
   }
 
-  throw new Error(JSON.stringify(message))
+  throw new Error(JSON.stringify(error))
 }
 
 module.exports = rpc_call

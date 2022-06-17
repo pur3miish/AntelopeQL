@@ -8,7 +8,8 @@ const {
   GraphQLString
 } = require('graphql')
 const fetch = require('isomorphic-fetch')
-const name_type = require('../eosio_types/name_type')
+const name_type = require('../eosio_types/name_type.js')
+const get_abi = require('../network/get_abi.js')
 
 const variants_type = new GraphQLObjectType({
   name: 'variants_type',
@@ -151,26 +152,12 @@ const abi = {
     }
   },
   async resolve(_, { account_name }, { rpc_url }) {
-    const req = await fetch(rpc_url + '/v1/chain/get_abi', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ account_name })
+    const { abi } = await get_abi({
+      rpc_url,
+      contract: account_name
     })
 
-    const { abi, error } = await req.json()
-    if (error && error.details) {
-      if (
-        error.details[0].message.startsWith('unknown key (eosio::chain::name):')
-      )
-        throw new GraphQLError(`Account “${account_name}” does not exist.`)
-      throw new GraphQLError(JSON.stringify(error))
-    }
-
-    if (abi) return abi
-
-    throw new GraphQLError('No Smart contract found.')
+    return abi
   }
 }
 

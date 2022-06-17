@@ -6,6 +6,7 @@ const {
   GraphQLString
 } = require('graphql')
 const fetch = require('isomorphic-fetch')
+const get_currency_stats = require('../network/get_currency_stats')
 
 const currency_stats_type = new GraphQLObjectType({
   name: 'currency_stats_type',
@@ -34,18 +35,9 @@ const currency_stats = {
     }
   },
   async resolve(_, args, { rpc_url }) {
-    const req = await fetch(rpc_url + '/v1/chain/get_currency_stats', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ ...args, json: true })
-    })
+    const currency = await get_currency_stats({ rpc_url, ...args })
 
-    const { error, ...data } = await req.json()
-    if (error && error.details) throw new GraphQLError(JSON.stringify(error))
-
-    return Object.values(data)[0]
+    return currency[args.symbol]
   }
 }
 

@@ -1,13 +1,12 @@
 'use strict'
 
 const {
-  GraphQLError,
   GraphQLInt,
   GraphQLList,
   GraphQLObjectType,
   GraphQLString
 } = require('graphql')
-const fetch = require('isomorphic-fetch')
+const get_producers = require('../network/get_producers.js')
 
 const producer_list_type = new GraphQLObjectType({
   name: 'producer_list_type',
@@ -68,19 +67,7 @@ const producers = {
     }
   },
   async resolve(_, args, { rpc_url }) {
-    const req = await fetch(rpc_url + '/v1/chain/get_producers', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ ...args, json: true })
-    })
-
-    const { error, ...data } = await req.json()
-
-    if (error && error.details)
-      throw new GraphQLError(JSON.strinfigy(error.details))
-    return data
+    return get_producers({ rpc_url, ...args })
   }
 }
 module.exports = producers

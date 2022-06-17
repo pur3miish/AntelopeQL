@@ -12,7 +12,7 @@ function handleErrors(errors) {
     return {
       errors: errors.map(error => ({
         ...error,
-        message: (() => {
+        ...(() => {
           try {
             return JSON.parse(error.message)
           } catch (err) {

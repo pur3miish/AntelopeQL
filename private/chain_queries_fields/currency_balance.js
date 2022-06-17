@@ -1,12 +1,7 @@
 'use strict'
 
-const {
-  GraphQLError,
-  GraphQLList,
-  GraphQLNonNull,
-  GraphQLString
-} = require('graphql')
-const fetch = require('isomorphic-fetch')
+const { GraphQLList, GraphQLNonNull, GraphQLString } = require('graphql')
+const get_currency_balance = require('../network/get_currency_balance.js')
 
 const currency_balance = {
   description: 'Retrieve current balance.',
@@ -28,20 +23,7 @@ const currency_balance = {
     }
   },
   async resolve(_, args, { rpc_url }) {
-    const req = await fetch(rpc_url + '/v1/chain/get_currency_balance', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ ...args, json: true })
-    })
-
-    const data = await req.json()
-
-    if (data.error && data.error.details)
-      throw new GraphQLError(JSON.stringify(data.error))
-
-    return data
+    return get_currency_balance({ rpc_url, ...args })
   }
 }
 

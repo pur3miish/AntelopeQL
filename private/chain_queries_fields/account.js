@@ -13,6 +13,7 @@ const fetch = require('isomorphic-fetch')
 const asset_type = require('../eosio_types/asset_type.js')
 const name_type = require('../eosio_types/name_type.js')
 const public_key_type = require('../eosio_types/public_key_type.js')
+const get_account = require('../network/get_account.js')
 
 const resource_type = new GraphQLObjectType({
   name: 'resource_type',
@@ -163,7 +164,7 @@ const account_type = new GraphQLObjectType({
   })
 })
 
-const get_account = {
+const account = {
   description: `Retreive various details about a specific account on the blockchain.`,
   type: account_type,
   args: {
@@ -173,28 +174,8 @@ const get_account = {
     }
   },
   async resolve(_, { account_name }, { rpc_url }) {
-    const req = await fetch(rpc_url + '/v1/chain/get_account', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ account_name, json: true })
-    })
-
-    const { error, ...data } = await req.json()
-    if (error && error.details) {
-      if (
-        error.details[0].message.startsWith(
-          'unknown key (boost::tuples::tuple<bool, eosio::chain::name, boost::tuples::null_type, boost::tuples::null_type, boost::tuples::null_type, boost::tuples::null_type, boost::tuples::null_type, boost::tuples::null_type, boost::tuples::null_type, boost::tuples::null_type>):'
-        )
-      )
-        throw new GraphQLError(`Account “${account_name}” does not exist.`)
-
-      throw new GraphQLError(JSON.stringify(error))
-    }
-
-    return data
+    return get_account({ rpc_url, account_name })
   }
 }
 
-module.exports = get_account
+module.exports = account

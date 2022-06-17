@@ -10,7 +10,8 @@ const {
 const fetch = require('isomorphic-fetch')
 const authorization_type = require('../build_mutation_fields/types/authorization_type.js')
 const name_type = require('../eosio_types/name_type.js')
-const public_key_type = require('../eosio_types/public_key_type')
+const public_key_type = require('../eosio_types/public_key_type.js')
+const get_account_by_authorizers = require('../network/get_accounts_by_authorizers.js')
 
 const authorizing_account_type = new GraphQLObjectType({
   name: 'authorizing_account_type',
@@ -73,21 +74,14 @@ const accounts_by_authorizers = {
     }
   },
   async resolve(_, { accounts = [], keys, authorization = [] }, { rpc_url }) {
-    const req = await fetch(rpc_url + '/v1/chain/get_accounts_by_authorizers', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        keys,
-        accounts: [...accounts, ...authorization]
-      })
+    const acc = await get_account_by_authorizers({
+      rpc_url,
+      authorization,
+      accounts,
+      keys
     })
 
-    const { error, ...data } = await req.json()
-    if (error && error.details) throw new GraphQLError(JSON.stringify(error))
-
-    return data
+    return acc
   }
 }
 

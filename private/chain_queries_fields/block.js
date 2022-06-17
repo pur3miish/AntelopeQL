@@ -1,13 +1,12 @@
 'use strict'
 
 const {
-  GraphQLError,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString
 } = require('graphql')
-const fetch = require('isomorphic-fetch')
+const get_block = require('../network/get_block.js')
 
 const authorization_type = new GraphQLObjectType({
   name: 'authorization_query_type',
@@ -218,18 +217,7 @@ const block = {
     }
   },
   async resolve(_, { block_num_or_id }, { rpc_url }) {
-    const req = await fetch(rpc_url + '/v1/chain/get_block', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ block_num_or_id })
-    })
-
-    const { error, ...data } = await req.json()
-    if (error && error.details) throw new GraphQLError(JSON.stringify(error))
-
-    return data
+    return get_block({ rpc_url, block_num_or_id })
   }
 }
 
