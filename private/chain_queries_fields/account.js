@@ -6,10 +6,8 @@ const {
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
-  GraphQLString,
-  GraphQLError
+  GraphQLString
 } = require('graphql')
-const fetch = require('isomorphic-fetch')
 const asset_type = require('../eosio_types/asset_type.js')
 const name_type = require('../eosio_types/name_type.js')
 const public_key_type = require('../eosio_types/public_key_type.js')

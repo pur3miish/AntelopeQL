@@ -1,13 +1,11 @@
 'use strict'
 
 const {
-  GraphQLError,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString
 } = require('graphql')
-const fetch = require('isomorphic-fetch')
 const name_type = require('../eosio_types/name_type.js')
 const get_abi = require('../network/get_abi.js')
 

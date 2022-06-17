@@ -1,11 +1,5 @@
 'use strict'
-const {
-  GraphQLError,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLString
-} = require('graphql')
-const fetch = require('isomorphic-fetch')
+const { GraphQLNonNull, GraphQLObjectType, GraphQLString } = require('graphql')
 const get_currency_stats = require('../network/get_currency_stats')
 
 const currency_stats_type = new GraphQLObjectType({
