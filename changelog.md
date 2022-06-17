@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# 7.2.0
+
+## Major
+
+- Changes to reported error object.
+
 # 7.1.0
 
 ## Major
