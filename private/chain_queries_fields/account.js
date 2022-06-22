@@ -12,6 +12,7 @@ const asset_type = require('../eosio_types/asset_type.js')
 const name_type = require('../eosio_types/name_type.js')
 const public_key_type = require('../eosio_types/public_key_type.js')
 const get_account = require('../network/get_account.js')
+const block = require('./block.js')
 
 const resource_type = new GraphQLObjectType({
   name: 'resource_type',
@@ -172,7 +173,24 @@ const account = {
     }
   },
   async resolve(_, { account_name }, { rpc_url }) {
-    return get_account({ rpc_url, account_name })
+    try {
+      const data = await get_account({ rpc_url, account_name })
+      return data
+    } catch (err) {
+      const { blockchain } = JSON.parse(err.message)
+      if (
+        blockchain.error.details[0].message.startsWith(
+          'unknown key (boost::tuples::tuple<bool, eosio::chain::name'
+        )
+      )
+        throw new Error(
+          JSON.stringify({
+            message: 'No account by that name found.',
+            blockchain
+          })
+        )
+      else throw Error(err.message)
+    }
   }
 }
 
