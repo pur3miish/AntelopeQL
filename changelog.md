@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# 7.3.0
+
+## Major
+
+- SmartQL query blockchain get account will return a more descriptive error.
+
 # 7.2.0
 
 ## Major
