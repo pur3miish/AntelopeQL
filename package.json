@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "7.3.0",
+  "version": "8.0.0",
   "description": "A GraphQL implementation for interacting with EOSIO based smart contract blockchains.",
   "main": "public/index.js",
   "scripts": {
@@ -66,6 +66,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "graphql": "^16.0.1",
     "jsdoc-md": "^11.0.0",
+    "nodemon": "^2.0.18",
     "prettier": "2.7",
     "test-director": "^8.0.2"
   },
