@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# 8.0.0
+
+## Major
+
+- Now supports eosio update authorizations mutation.
+
 # 7.3.0
 
 ## Major
