@@ -16,7 +16,7 @@ function handleErrors(errors) {
           try {
             return JSON.parse(error.message)
           } catch (err) {
-            return error.message
+            return { message: error.message }
           }
         })()
       }))
