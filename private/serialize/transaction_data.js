@@ -14,6 +14,11 @@ async function serialize_transaction_data({
   data: ast_data,
   abi_ast
 }) {
+  if (!abi_ast)
+    throw new Error(
+      `serialize_transaction_data - expected ABI AST to be suppplied`
+    )
+
   const findStruct = struct_name =>
     abi_ast.structs.find(({ name }) => name == struct_name)
 
@@ -27,50 +32,13 @@ async function serialize_transaction_data({
       else throw new Error(`Expected base field “${base}” in ABI`)
     }
 
-    const handleFields = fields => {
+    const handleFields = fields =>
       fields.forEach(({ name, type }) => {
-        // Variant types
-        if (type.endsWith('$')) {
-          const _type = type.slice(0, -1)
-          const _struct = findStruct(_type)
-
-          if (_struct)
-            return abi_to_ast({ struct: _struct, ast, data: data[name] })
-          else
-            ast.push({
-              name,
-              type,
-              data: data[name]
-            })
-        }
-
-        // Optional types
-        if (type.endsWith('?')) {
-          const _type = type.slice(0, -1)
-          const _struct = findStruct(_type)
-
-          if (data[name] == undefined)
-            return ast.push({
-              name: name + '_length',
-              type: 'bool',
-              data: false
-            })
-
-          ast.push({
-            name: name + '_length',
-            type: 'bool',
-            data: true
-          })
-
-          if (_struct)
-            return abi_to_ast({ struct: _struct, ast, data: data[name] })
-
-          ast.push({ name, type: _type, data: data[name] })
-        }
-
-        // List types
+        if (data[name] == undefined) throw new Error(`Expected “${name}”`)
+        if (type.endsWith('$')) type = type.replace('$', '')
+        if (type.endsWith('?')) type = type.replace('?', '')
         if (type.endsWith('[]')) {
-          // Serializes the length of the array
+          if (!data[name]) throw new Error(`Expected “${name}” array`)
           ast.push({
             name: name + '_length',
             type: 'varuint32',
@@ -84,36 +52,17 @@ async function serialize_transaction_data({
           })
         }
 
-        // handle variants.
-        const variant_struct = findStruct(type)
-        if (variant_struct) {
-          const variant_key = Object.keys(data[name])[0]
-          let variant_index
-          variant_struct.fields = variant_struct.fields.filter(
-            ({ name: n }, index) => {
-              if (n == variant_key) {
-                variant_index = index
-                return true
-              }
-            }
-          )
-          // adds variant index to array to be serialized.
-          ast.push({
-            name: 'variant_index',
-            type: 'varuint32',
-            data: variant_index
-          })
-
+        // handle variants and optional types.
+        const _struct = findStruct(type)
+        if (_struct)
           return abi_to_ast({
-            struct: variant_struct,
+            struct: _struct,
             ast,
             data: data[name]
           })
-        }
 
         return ast.push({ name, type, data: data[name] })
       })
-    }
 
     if (fields.length) handleFields(fields)
 
@@ -129,7 +78,6 @@ async function serialize_transaction_data({
   }))
 
   const serialize = await Promise.all(ast_map)
-
   return serialize.reduce((acc, { data }) => (acc += data), '')
 }
 
