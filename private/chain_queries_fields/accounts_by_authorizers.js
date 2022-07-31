@@ -71,7 +71,11 @@ const accounts_by_authorizers = {
       type: new GraphQLList(public_key_type)
     }
   },
-  async resolve(_, { accounts = [], keys, authorization = [] }, { rpc_url }) {
+  async resolve(
+    _,
+    { accounts = [], keys = [], authorization = [] },
+    { rpc_url }
+  ) {
     const acc = await get_account_by_authorizers({
       rpc_url,
       authorization,
