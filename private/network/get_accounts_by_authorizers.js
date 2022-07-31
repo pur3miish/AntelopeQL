@@ -21,12 +21,13 @@ async function get_account_by_authorizers({
     `${rpc_url}/v1/chain/get_accounts_by_authorizers`,
     {
       body: JSON.stringify({
-        keys,
+        keys: await Promise.all(keys),
         accounts: [...accounts, ...authorization],
         json: true
       })
     }
   )
+
   return info
 }
 
