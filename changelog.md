@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# 8.0.1
+
+## Minor
+
+- Fixes to `get_accounts_by_authorizers`, added default array to keys resolver argument and await the public key scalar type as it returns a promise.
+
 # 8.0.0
 
 ## Major
