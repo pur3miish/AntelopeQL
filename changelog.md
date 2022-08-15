@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# 8.1.1
+
+## Patch
+
+- Bug fixe, mutation error @@iterator issue resolved.
+
 # 8.1.0
 
 ## Minor

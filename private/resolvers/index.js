@@ -1,12 +1,12 @@
 'use strict'
 
+const { public_key_from_private, sign_txn } = require('eos-ecc')
 const get_block = require('../network/get_block.js')
 const get_info = require('../network/get_info.js')
 const get_required_keys = require('../network/get_required_keys.js')
 const serialize_actions = require('../serialize/actions.js')
 const serialize_extensions = require('../serialize/extensions.js')
 const serialize_header = require('../serialize/transaction_header.js')
-
 /**
  * The object structure required for Actions to be serialised.
  * @kind typedef
@@ -83,10 +83,9 @@ async function resolver({
     }))
   }
 
-  const { public_key_from_private, sign_txn } = require('eos-ecc')
-
   let required_keys = []
   let key_chain = []
+
   if (private_keys.length) {
     // Remove any duplicate keys.
     private_keys = [...new Set(private_keys)]
@@ -100,14 +99,13 @@ async function resolver({
         }))
       ))
     )
-
-    required_keys.push(
-      ...(await get_required_keys({
+    required_keys = (
+      await get_required_keys({
         rpc_url,
         transaction,
         available_keys: key_chain.map(({ public_key }) => public_key)
-      }))
-    )
+      })
+    ).required_keys
   }
 
   return {
