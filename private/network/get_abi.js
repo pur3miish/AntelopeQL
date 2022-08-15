@@ -1,5 +1,5 @@
 'use strict'
-const rpc_call = require('./rpc_call')
+const rpc_call = require('./rpc_call.js')
 
 /**
  * EOS account name base32 - characters 1-5, a-z and dot.

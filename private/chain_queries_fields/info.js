@@ -1,7 +1,7 @@
 'use strict'
 
 const { GraphQLObjectType, GraphQLString } = require('graphql')
-const get_info = require('../network/get_info')
+const get_info = require('../network/get_info.js')
 
 const info_type = new GraphQLObjectType({
   name: 'info_type',

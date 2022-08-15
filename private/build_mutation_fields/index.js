@@ -127,7 +127,6 @@ function build_mutation_fields(abi_ast, broadcast) {
         if (broadcast)
           return broadcast_resolver({
             ...packed_transaction,
-            private_keys,
             rpc_url
           })
         else return packed_transaction

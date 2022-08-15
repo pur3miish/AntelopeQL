@@ -1,5 +1,5 @@
 'use strict'
-const rpc_call = require('./rpc_call')
+const rpc_call = require('./rpc_call.js')
 /**
  * Returns list of block producers.
  * @param {object} arg Argument.

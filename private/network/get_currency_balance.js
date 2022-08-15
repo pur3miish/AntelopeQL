@@ -1,6 +1,6 @@
 'use strict'
 
-const rpc_call = require('./rpc_call')
+const rpc_call = require('./rpc_call.js')
 
 /**
  * Returns an object containing various details about a specific block on the blockchain.

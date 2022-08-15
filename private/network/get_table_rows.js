@@ -1,5 +1,5 @@
 'use strict'
-const rpc_call = require('./rpc_call')
+const rpc_call = require('./rpc_call.js')
 
 /**
  * Retrieves a table for the smart contract by row.

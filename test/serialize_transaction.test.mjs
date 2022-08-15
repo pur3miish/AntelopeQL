@@ -163,9 +163,7 @@ export default tests => {
 
     transfer_queries.forEach(async (query, index) => {
       const {
-        data: {
-          eosio_token: { transaction_body }
-        }
+        data: { eosio_token }
       } = await SmartQL({
         query,
         rpc_url,
@@ -174,7 +172,7 @@ export default tests => {
       })
 
       ok(
-        transaction_body == serialized[index],
+        eosio_token.transaction_body == serialized[index],
         'Serilaized EOS token transfer ' + index + 1
       )
     })

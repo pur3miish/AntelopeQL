@@ -2,6 +2,7 @@
 
 const get_block = require('../network/get_block.js')
 const get_info = require('../network/get_info.js')
+const get_required_keys = require('../network/get_required_keys.js')
 const serialize_actions = require('../serialize/actions.js')
 const serialize_extensions = require('../serialize/extensions.js')
 const serialize_header = require('../serialize/transaction_header.js')
@@ -28,6 +29,7 @@ const serialize_header = require('../serialize/transaction_header.js')
  * @param {Actions} arg.context_free_actions context free actions.
  * @param {Array} arg.transaction_extensions transaction extensions.
  * @param {string} arg.rpc_url URL of the nodeos EOSIO instance.
+ * @param {Array<string>} arg.private_keys List of EOSIO private keys.
  * @returns {Packed_transaction} packed transaction.
  * @ignore
  */
@@ -36,7 +38,8 @@ async function resolver({
   actions,
   rpc_url,
   context_free_actions = [],
-  transaction_extensions = []
+  transaction_extensions = [],
+  private_keys = []
 }) {
   // EOS transaction body
   const transaction_body =
@@ -69,20 +72,64 @@ async function resolver({
   // Generates a transaction header for a EOS transaction.
   const transaction_header = serialize_header(header)
 
+  const transaction = {
+    ...header,
+    expiration: new Date(expiration).toISOString().split('.')[0],
+    context_free_actions,
+    transaction_extensions,
+    actions: actions.map(({ action, ...data }) => ({
+      name: action,
+      ...data
+    }))
+  }
+
+  const { public_key_from_private, sign_txn } = require('eos-ecc')
+
+  let required_keys = []
+  let key_chain = []
+  if (private_keys.length) {
+    // Remove any duplicate keys.
+    private_keys = [...new Set(private_keys)]
+
+    // Validate wif private keys and calc the corresponding public key(s).
+    key_chain.push(
+      ...(await Promise.all(
+        [...private_keys].map(async pk => ({
+          public_key: await public_key_from_private(pk),
+          private_key: pk
+        }))
+      ))
+    )
+
+    required_keys.push(
+      ...(await get_required_keys({
+        rpc_url,
+        transaction,
+        available_keys: key_chain.map(({ public_key }) => public_key)
+      }))
+    )
+  }
+
   return {
-    chain_id,
     transaction_header,
     transaction_body,
-    transaction: {
-      ...header,
-      expiration: new Date(expiration).toISOString().split('.')[0],
-      context_free_actions,
-      transaction_extensions,
-      actions: actions.map(({ action, ...data }) => ({
-        name: action,
-        ...data
-      }))
-    }
+    signatures: await Promise.all(
+      required_keys.map(key => {
+        return sign_txn({
+          hex: chain_id + transaction_header + transaction_body,
+          wif_private_key: key_chain.find(({ public_key }) => key == public_key)
+            .private_key
+        })
+      })
+    ),
+    meta_signatures: await Promise.all(
+      private_keys.map(wif_private_key =>
+        sign_txn({
+          hex: chain_id + transaction_header + transaction_body,
+          wif_private_key
+        })
+      )
+    )
   }
 }
 

@@ -1,5 +1,5 @@
 'use strict'
-const rpc_call = require('./rpc_call')
+const rpc_call = require('./rpc_call.js')
 
 /**
  * Retrieve a table by scope.

@@ -1,6 +1,6 @@
 'use strict'
 const { GraphQLNonNull, GraphQLObjectType, GraphQLString } = require('graphql')
-const get_currency_stats = require('../network/get_currency_stats')
+const get_currency_stats = require('../network/get_currency_stats.js')
 
 const currency_stats_type = new GraphQLObjectType({
   name: 'currency_stats_type',

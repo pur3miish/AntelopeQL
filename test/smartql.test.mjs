@@ -15,7 +15,7 @@ export default tests => {
         }
       `,
       rpc_url,
-      contract: ['eosio.token']
+      contracts: ['eosio.token']
     })
 
     ok(query_data.eosio_token.account[0].balance.match(/^[0-9.]+[\sA-Z]+$/gmu))
@@ -46,7 +46,7 @@ export default tests => {
         }
       `,
       rpc_url,
-      contract: ['eosio.token'],
+      contracts: ['eosio.token'],
       broadcast: false
     })
 

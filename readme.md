@@ -194,6 +194,8 @@ The packed transaction type.
 | `chain_id` | string | Hash representing the blockchain. |
 | `transaction_header` | string | Hex string representing the serialized transaction header. |
 | `transaction_body` | string | Hex string representing the serialized transaction body. |
+| `signatures` | Array\<string> | List of required signatures to satisfy authorizations. |
+| `meta_signatures` | Array\<string> | List of all signatures from the supplied private keys. |
 
 ---
 
