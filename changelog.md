@@ -1,8 +1,18 @@
 # SmartQL changelog
 
-# 8.0.1
+# 8.1.0
 
 ## Minor
+
+- Added `signatures` and `meta signatures` to the graphql mutation non broadcast `packed_transaction_type`.
+
+## Patch
+
+- Added .js extention to files.
+
+# 8.0.1
+
+## Patch
 
 - Fixes to `get_accounts_by_authorizers`, added default array to keys resolver argument and await the public key scalar type as it returns a promise.
 
