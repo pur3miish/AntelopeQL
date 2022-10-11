@@ -11,19 +11,15 @@ const rpc_call = require('./rpc_call.js')
  * @returns {Array<strings>} List of public keys required for authorizing transactions..
  */
 async function get_required_keys({ rpc_url, transaction, available_keys }) {
-  try {
-    const info = await rpc_call(`${rpc_url}/v1/chain/get_required_keys`, {
-      body: JSON.stringify({
-        transaction,
-        available_keys,
-        json: true
-      })
+  const info = await rpc_call(`${rpc_url}/v1/chain/get_required_keys`, {
+    body: JSON.stringify({
+      transaction,
+      available_keys,
+      json: true
     })
+  })
 
-    return info
-  } catch (err) {
-    return []
-  }
+  return info
 }
 
 module.exports = get_required_keys
