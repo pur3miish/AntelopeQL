@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# 8.1.2
+
+## Patch
+
+- `get_required_keys` now provides a more descriptive error for missing keys.
+
 # 8.1.1
 
 ## Patch
