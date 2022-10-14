@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "8.1.2",
+  "version": "9.0.0",
   "description": "A GraphQL implementation for interacting with EOSIO based smart contract blockchains.",
   "main": "public/index.js",
   "scripts": {
