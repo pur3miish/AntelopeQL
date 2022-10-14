@@ -1,7 +1,9 @@
 'use strict'
 
-const { GraphQLList, GraphQLNonNull, GraphQLString } = require('graphql')
+const { GraphQLList, GraphQLNonNull } = require('graphql')
 const transaction_receipt_type = require('../build_mutation_fields/types/transaction_receipt_type.js')
+const bytes_type = require('../eosio_types/bytes_type')
+const signature_type = require('../eosio_types/signature_type.js')
 const push_txn = require('../network/push_transaction.js')
 
 const push_transaction = {
@@ -11,11 +13,11 @@ const push_transaction = {
     packed_trx: {
       description:
         'Serialized transaction is a hexadecimal string `transaction_header` + `transaction_body`.',
-      type: new GraphQLNonNull(GraphQLString)
+      type: new GraphQLNonNull(bytes_type)
     },
     signatures: {
       description: 'List of signatures required to authorize transaction',
-      type: new GraphQLList(new GraphQLNonNull(GraphQLString))
+      type: new GraphQLList(new GraphQLNonNull(signature_type))
     }
   },
   async resolve(_, { packed_trx, signatures }, { rpc_url }) {

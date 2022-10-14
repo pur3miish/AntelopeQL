@@ -22,7 +22,6 @@ export { default as public_key_type } from '../private/eosio_types/public_key_ty
 export { default as eosio_types } from '../private/eosio_types/index.js'
 // resolver
 export { default as resolver } from '../private/resolvers/index.js'
-export { default as broadcast_resolver } from '../private/resolvers/broadcast.js'
 // serialize
 export { default as serialize_actions } from '../private/serialize/actions.js'
 export { default as serialize_extension } from '../private/serialize/extensions.js'

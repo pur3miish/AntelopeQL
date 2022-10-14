@@ -9,35 +9,42 @@ export default tests => {
     async () => {
       const update_auth_query = /* GraphQL */ `
         mutation {
-          eosio(
-            actions: {
-              updateauth: {
-                account: "relockechain"
-                permission: "active"
-                parent: "owner"
-                auth: {
-                  threshold: 2
-                  keys: [
-                    {
-                      key: "EOS8GZG8ohHvxyeimP6QvBokmPamtLTwGsVJugcXbFnHtYjJQMotH"
-                      weight: 1
+          serialize_transaction(
+            actions: [
+              {
+                eosio: {
+                  updateauth: {
+                    account: "relockechain"
+                    permission: "active"
+                    parent: "owner"
+                    auth: {
+                      threshold: 2
+                      keys: [
+                        {
+                          key: "EOS8GZG8ohHvxyeimP6QvBokmPamtLTwGsVJugcXbFnHtYjJQMotH"
+                          weight: 1
+                        }
+                        {
+                          key: "EOS7QpboRz6DFBtzaHbN6pJZq8HX99w4ZWqsGsdzPzQgUgP9ESgfy"
+                          weight: 1
+                        }
+                      ]
+                      accounts: [
+                        {
+                          weight: 1
+                          permission: {
+                            actor: "relockechain"
+                            permission: "poo"
+                          }
+                        }
+                      ]
+                      waits: [{ wait_sec: 2, weight: 3 }]
                     }
-                    {
-                      key: "EOS7QpboRz6DFBtzaHbN6pJZq8HX99w4ZWqsGsdzPzQgUgP9ESgfy"
-                      weight: 1
-                    }
-                  ]
-                  accounts: [
-                    {
-                      weight: 1
-                      permission: { actor: "relockechain", permission: "poo" }
-                    }
-                  ]
-                  waits: [{ wait_sec: 2, weight: 3 }]
+                    authorization: { actor: "relockechain" }
+                  }
                 }
-                authorization: { actor: "relockechain" }
               }
-            }
+            ]
           ) {
             chain_id
             transaction_header
@@ -48,30 +55,34 @@ export default tests => {
 
       const update_auth_query_two = /* GraphQL */ `
         mutation {
-          eosio(
-            actions: {
-              updateauth: {
-                account: "relockechain"
-                permission: "active"
-                parent: "owner"
-                auth: {
-                  threshold: 2
-                  keys: [
-                    {
-                      key: "EOS8GZG8ohHvxyeimP6QvBokmPamtLTwGsVJugcXbFnHtYjJQMotH"
-                      weight: 1
+          serialize_transaction(
+            actions: [
+              {
+                eosio: {
+                  updateauth: {
+                    account: "relockechain"
+                    permission: "active"
+                    parent: "owner"
+                    auth: {
+                      threshold: 2
+                      keys: [
+                        {
+                          key: "EOS8GZG8ohHvxyeimP6QvBokmPamtLTwGsVJugcXbFnHtYjJQMotH"
+                          weight: 1
+                        }
+                        {
+                          key: "EOS7QpboRz6DFBtzaHbN6pJZq8HX99w4ZWqsGsdzPzQgUgP9ESgfy"
+                          weight: 1
+                        }
+                      ]
+                      accounts: []
+                      waits: []
                     }
-                    {
-                      key: "EOS7QpboRz6DFBtzaHbN6pJZq8HX99w4ZWqsGsdzPzQgUgP9ESgfy"
-                      weight: 1
-                    }
-                  ]
-                  accounts: []
-                  waits: []
+                    authorization: { actor: "relockechain" }
+                  }
                 }
-                authorization: { actor: "relockechain" }
               }
-            }
+            ]
           ) {
             chain_id
             transaction_header
@@ -82,7 +93,7 @@ export default tests => {
 
       const {
         data: {
-          eosio: { transaction_body }
+          serialize_transaction: { transaction_body }
         }
       } = await SmartQL({
         query: update_auth_query,
@@ -99,7 +110,7 @@ export default tests => {
 
       const {
         data: {
-          eosio: { transaction_body: tx2 }
+          serialize_transaction: { transaction_body: tx2 }
         }
       } = await SmartQL({
         query: update_auth_query_two,
@@ -119,15 +130,17 @@ export default tests => {
   tests.add('EOS token transfer', async () => {
     const query = /* GraphQL */ `
       mutation {
-        eosio_token(
+        serialize_transaction(
           actions: [
             {
-              transfer: {
-                to: "relockechain"
-                from: "relockeblock"
-                memo: ""
-                quantity: "0.1234 EOS"
-                authorization: { actor: "relockeblock" }
+              eosio_token: {
+                transfer: {
+                  to: "relockechain"
+                  from: "relockeblock"
+                  memo: ""
+                  quantity: "0.1234 EOS"
+                  authorization: { actor: "relockeblock" }
+                }
               }
             }
           ]
@@ -138,15 +151,17 @@ export default tests => {
     `
     const query2 = /* GraphQL */ `
       mutation {
-        eosio_token(
+        serialize_transaction(
           actions: [
             {
-              transfer: {
-                to: "relockechain"
-                from: "relockeblock"
-                memo: "The quick brown fox jumps over the lazy dog."
-                quantity: "0.1234 EOS"
-                authorization: { actor: "relockeblock" }
+              eosio_token: {
+                transfer: {
+                  to: "relockechain"
+                  from: "relockeblock"
+                  memo: "The quick brown fox jumps over the lazy dog."
+                  quantity: "0.1234 EOS"
+                  authorization: { actor: "relockeblock" }
+                }
               }
             }
           ]
@@ -163,7 +178,7 @@ export default tests => {
 
     transfer_queries.forEach(async (query, index) => {
       const {
-        data: { eosio_token }
+        data: { serialize_transaction }
       } = await SmartQL({
         query,
         rpc_url,
@@ -172,7 +187,7 @@ export default tests => {
       })
 
       ok(
-        eosio_token.transaction_body == serialized[index],
+        serialize_transaction.transaction_body == serialized[index],
         'Serilaized EOS token transfer ' + index + 1
       )
     })

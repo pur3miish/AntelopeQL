@@ -22,21 +22,25 @@ export default tests => {
 
     const {
       data: {
-        eosio_token: { transaction_body }
+        serialize_transaction: { transaction_body }
       }
     } = await SmartQL({
       query: /* GraphQL */ `
         mutation {
-          eosio_token(
-            actions: {
-              transfer: {
-                to: "relocke"
-                from: "eosio"
-                memo: "0"
-                quantity: "50000.0000 EOS"
-                authorization: { actor: "eosio" }
+          serialize_transaction(
+            actions: [
+              {
+                eosio_token: {
+                  transfer: {
+                    to: "relocke"
+                    from: "eosio"
+                    memo: "0"
+                    quantity: "50000.0000 EOS"
+                    authorization: { actor: "eosio" }
+                  }
+                }
               }
-            }
+            ]
             configuration: { delay_sec: 4, max_cpu_usage_ms: 0 }
           ) {
             chain_id

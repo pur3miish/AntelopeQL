@@ -1,3 +1,4 @@
+// eslint-disable-next-line node/no-missing-import
 import TestDirector from 'test-director'
 import serialize_transactions from './serialize_transaction.test.mjs'
 import smartql from './smartql.test.mjs'

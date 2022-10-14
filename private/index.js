@@ -25,21 +25,21 @@ const get_abi = require('./network/get_abi.js')
  * @param {string} arg.query GraphQL query string.
  * @param {object} [arg.operationName] GraphQL opperation name.
  * @param {object} [arg.variables] GraphQL variables.
- * @param {Array<string>} arg.contracts List of accounts that holds smart contracts.
+ * @param {Array<string>} arg.contracts List of contracts.
  * @param {string} arg.rpc_url [Nodeos](https://developers.eos.io/manuals/eos/v2.1/nodeos/index) endpoint URL.
- * @param {bool} [arg.broadcast] Specifies if mutation will return `packed transaction` or `transaction receipt`.
- * @param {Array<string>} [arg.private_keys] List of EOSIO wif private keys.
- * @param {object} [extensions] Extend the GraphQL schema by providing mutations and query fields.
+ * @param {object} [extensions] Extend the GraphQL schema by providing additional mutations and query fields.
  * @param {object} [extensions.query_fields] GraphQL query fields.
  * @param {object} [extensions.mutation_fields] GraphQL mutation fields.
- * @returns {packed_transaction | transaction_receipt} Response from the SmartQL (graphql) query.
+ * @returns {packed_transaction} Response from the SmartQL (graphql) query.
  * @example <caption>Ways to `require`.</caption>
  * ```js
  * const { SmartQL } = require('smartql')
+ * const { sign_txn } = require('eos-ecc')
  * ```
  * @example <caption>Ways to `import`.</caption>
  * ```js
  * import { SmartQL } from 'smartql'
+ * import { sign_txn } from 'eos-ecc'
  * ```
  * @example <caption>SmartQL query - Get account balance.</caption>
  * ```GraphQL
@@ -66,57 +66,71 @@ const get_abi = require('./network/get_abi.js')
  * @example <caption>SmartQL mutation - Transfer EOS tokens with memo.</caption>
  * ```GraphQL
  * mutation {
- *  eosio_token(
- *    actions: {
- *      transfer: {
- *        to: eoshackathon,
- *        from: pur3miish222,
- *        quantity: "4.6692 EOS",
- *        memo: "Feigenbaum constant",
- *        authorization: { actor: pur3miish222 }
- *      }
- *    }
+ *  serialize_transaction(
+ *    actions: [{eosio_token: {transfer: {to: eoshackathon, from: pur3miish222, quantity: "4.6692 EOS", memo: "Feigenbaum constant", authorization: {actor: pur3miish222}}}}]
  *  ) {
- *    transaction_id
+ *    chain_id
+ *    transaction_header
+ *    transaction_body
  *  }
- * }
+ *}
  * ```
  *
  * ```js
  * SmartQL({
- *   query: mutation,
+ *   query: serialize_transaction,
  *   rpc_url: 'https://eos.relocke.io',
  *   contracts: ['eosio.token'],
- *   private_keys: ['5K7…']
  * }).then(console.log)
  * ```
  * The logged output was
  * "data": {
  *   "transfer": {
- *     "transaction_id": "855ff441ebfc20d0909f81b97ac41ebe29bffbdf996545439ac79bf2e5f4f4ec"
+ *      "chain_id": "2a02a0…",
+ *      "transaction_header": "fa453…",
+ *      "transaction_body": "82dfe45…"
  *   }
  *  }
+ *
+ *  ```GraphQL
+ *   mutation ($signatures: [signature!]) {
+ *     push_transaction(packed_trx: "fa453…", signatures: $signatures) {
+ *       transaction_id
+ *     }
+ *   }
+ * ```
+ *```js
+ *  SmartQL({
+ *       query: push_transaction,
+ *       variables: {
+ *         signatures: [
+ *           await sign_txn({
+ *             hex: 'fa453…',
+ *             wif_private_key:
+ *               '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+ *           })
+ *         ]
+ *       },
+ *       rpc_url: 'https://eos.relocke.io'
+ *     }).then(console.log)
+ * ```
+ * Logged output is successful when transaction_id is present.
+ *
  */
 async function SmartQL(
-  {
-    query,
-    contracts,
-    rpc_url,
-    variables,
-    operationName,
-    broadcast = true,
-    private_keys = []
-  },
+  { query, variables, operationName, contracts = [], rpc_url },
   { query_fields = {}, mutation_fields = {} } = {
     query_fields: {},
     mutation_fields: {}
   }
 ) {
+  if (!rpc_url) throw new TypeError('Please provide `rpc_url` string.')
+
   let documentAST
   try {
     documentAST = parse(new Source(query))
   } catch (err) {
-    return { errors: [err.toJSON()] } // if there is a query error return.
+    return { errors: [err.toJSON()] } // If there is a query error return.
   }
 
   let eosio_mutation_fields = {}
@@ -132,23 +146,21 @@ async function SmartQL(
 
   let _abi_ast = {}
 
-  let index = 0
-
   try {
-    for (const { abi, error } of abis) {
+    for (const { abi, error, account_name } of abis) {
       if (!abi)
         return {
           errors: [
             {
-              message: `No smart contract found for “${contracts[index]}”.`,
+              message: `No smart contract found for “${account_name}”.`,
               ...error
             }
           ]
         }
 
-      const abi_ast = abi_to_ast(abi, contracts[index])
+      const abi_ast = abi_to_ast(abi, account_name)
 
-      let ast_name = contracts[index].replace(/[.]+/gmu, '_')
+      let ast_name = account_name.replace(/[.]+/gmu, '_')
       ast_name = ast_name.match(/^[1-5]/gmu) ? '_' + ast_name : ast_name
 
       _abi_ast = {
@@ -163,10 +175,8 @@ async function SmartQL(
 
       eosio_mutation_fields = {
         ...eosio_mutation_fields,
-        ...build_mutation_fields(abi_ast, broadcast)
+        ...build_mutation_fields(abi_ast)
       }
-
-      index++
     }
   } catch (err) {
     return handleErrors(JSON.parse(err.message))
@@ -199,8 +209,7 @@ async function SmartQL(
     fields: {
       push_transaction,
       ...mutation_fields,
-      ...eosio_mutation_fields,
-      ...transactions(eosio_mutation_fields, _abi_ast, broadcast)
+      ...transactions(eosio_mutation_fields, _abi_ast)
     }
   })
 
@@ -217,8 +226,7 @@ async function SmartQL(
     document: documentAST,
     rootValue: '',
     contextValue: {
-      rpc_url,
-      private_keys
+      rpc_url
     },
     variableValues: variables,
     operationName,

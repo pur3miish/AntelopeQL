@@ -24,7 +24,6 @@ exports.public_key_type = require('../private/eosio_types/public_key_type.js')
 exports.eosio_types = require('../private/eosio_types/index.js')
 // resolvers
 exports.resolver = require('../private/resolvers/index.js')
-exports.broadcast_resolver = require('../private/resolvers/broadcast.js')
 // serialize
 exports.serialize_actions = require('../private/serialize/actions.js')
 exports.serialize_extensions = require('../private/serialize/extensions.js')

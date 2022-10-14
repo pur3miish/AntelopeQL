@@ -1,5 +1,22 @@
 # SmartQL changelog
 
+# 9.0.0
+
+## Major
+
+- Removed internal signature in favour of serialised transaction type.
+- Simplified mutation schema to include two mutations fields, `serialize_transaction` and `push_transaction`.
+- Removed broadcast type.
+
+## Minor
+
+- `eosio_types/bytes` no longer serilaizes data on return.
+- `bytes` type is now used for `push_transaction` mutation `packed_trx`.
+
+## Patch
+
+- depen updates.
+
 # 8.1.2
 
 ## Patch

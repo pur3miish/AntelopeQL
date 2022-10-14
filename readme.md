@@ -4,11 +4,7 @@
 
 [![NPM Package](https://img.shields.io/npm/v/smartql.svg)](https://www.npmjs.org/package/smartql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/smartql/blob/main/LICENSE)
 
-> _Smart contracts & GraphQL._
-
 A GraphQL implementation for interacting with EOSIO based blockchains.
-
-_See a working example of [SmartQL](https://smartql.relocke.io?1=eosio&2=eosio.token)._
 
 # Setup
 
@@ -17,48 +13,16 @@ $ npm i smartql
 ```
 
 ```shell
-$ npm i graphql eos-ecc # peer dependencies
+$ npm i graphql eos-ecc # for generating ECC signatures.
 ```
-
-_If you plan on signing with a 3rd party tool or are just making queries [eos-ecc](https://github.com/pur3miish/eos-ecc) is not needed._
-
-# ReLocke endpoints
-
-ReLocke uses load balancers and connects to several different block producers to optimise requests for uptime and speed.
-
-## Testnet (Jungle testnet)
-
-<https://jungle.relocke.io>
-
-## EOS production
-
-<https://eos.relocke.io>
 
 # Support
 
 - [Node.js](https://nodejs.org/en/) `>= 12`
 - [Browser list](https://github.com/browserslist/browserslist) `> 0.5%, not OperaMini all, not IE > 0, not dead`
-- GraphQL 15
+- [GraphQL](https://github.com/graphql/graphql-js) `>15`
 
 Consider a [BigInt](https://caniuse.com/?search=bigint) polyfill library for safari 13.
-
-## RPC URL
-
-You need to ensure that the block producers that you connect to over the RPC URL support the http endpoints listed below.
-
-- [get_account](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_account)
-- [get_accounts_by_authorizers](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_accounts_by_authorizers)
-- [get_api](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_abi)
-- [get_block](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_block)
-- [get_block_info](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_block_info)
-- [get_currency_balance](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_currency_balance)
-- [get_currency_stats](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_currency_stats)
-- [get_info](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_info)
-- [get_producers](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_producers)
-- [get_required_keys](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_required_keys)
-- [get_table_by_scope](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_table_by_scope)
-- [get_table_rows](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_table_rows)
-- [push_transaction](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/push_transaction)
 
 # API
 
@@ -79,15 +43,13 @@ The core function to build and execute a GraphQL request for EOSIO based blockch
 | `arg.query` | string | GraphQL query string. |
 | `arg.operationName` | object? | GraphQL opperation name. |
 | `arg.variables` | object? | GraphQL variables. |
-| `arg.contracts` | Array\<string> | List of accounts that holds smart contracts. |
+| `arg.contracts` | Array\<string> | List of contracts. |
 | `arg.rpc_url` | string | [Nodeos](https://developers.eos.io/manuals/eos/v2.1/nodeos/index) endpoint URL. |
-| `arg.broadcast` | bool? | Specifies if mutation will return `packed transaction` or `transaction receipt`. |
-| `arg.private_keys` | Array\<string>? | List of EOSIO wif private keys. |
-| `extensions` | object? | Extend the GraphQL schema by providing mutations and query fields. |
+| `extensions` | object? | Extend the GraphQL schema by providing additional mutations and query fields. |
 | `extensions.query_fields` | object? | GraphQL query fields. |
 | `extensions.mutation_fields` | object? | GraphQL mutation fields. |
 
-**Returns:** [packed_transaction](#type-packed_transaction) | [transaction_receipt](#type-transaction_receipt) — Response from the SmartQL (graphql) query.
+**Returns:** [packed_transaction](#type-packed_transaction) — Response from the SmartQL (graphql) query.
 
 ### Examples
 
@@ -95,12 +57,14 @@ _Ways to `require`._
 
 > ```js
 > const { SmartQL } = require('smartql')
+> const { sign_txn } = require('eos-ecc')
 > ```
 
 _Ways to `import`._
 
 > ```js
 > import { SmartQL } from 'smartql'
+> import { sign_txn } from 'eos-ecc'
 > ```
 
 _SmartQL query - Get account balance._
@@ -129,32 +93,50 @@ _SmartQL mutation - Transfer EOS tokens with memo._
 
 > ```GraphQL
 > mutation {
->  eosio_token(
->    actions: {
->      transfer: {
->        to: eoshackathon,
->        from: pur3miish222,
->        quantity: "4.6692 EOS",
->        memo: "Feigenbaum constant",
->        authorization: { actor: pur3miish222 }
->      }
->    }
+>  serialize_transaction(
+>    actions: [{eosio_token: {transfer: {to: eoshackathon, from: pur3miish222, quantity: "4.6692 EOS", memo: "Feigenbaum constant", authorization: {actor: pur3miish222}}}}]
 >  ) {
->    transaction_id
+>    chain_id
+>    transaction_header
+>    transaction_body
 >  }
 > }
 > ```
 >
 > ```js
 > SmartQL({
->   query: mutation,
+>   query: serialize_transaction,
 >   rpc_url: 'https://eos.relocke.io',
->   contracts: ['eosio.token'],
->   private_keys: ['5K7…']
+>   contracts: ['eosio.token']
 > }).then(console.log)
 > ```
 >
-> The logged output was "data": { "transfer": { "transaction_id": "855ff441ebfc20d0909f81b97ac41ebe29bffbdf996545439ac79bf2e5f4f4ec" } }
+> The logged output was "data": { "transfer": { "chain_id": "2a02a0…", "transaction_header": "fa453…", "transaction_body": "82dfe45…" } }
+>
+> ```GraphQL
+>  mutation ($signatures: [signature!]) {
+>    push_transaction(packed_trx: "fa453…", signatures: $signatures) {
+>      transaction_id
+>    }
+>  }
+> ```
+>
+> ```js
+> SmartQL({
+>   query: push_transaction,
+>   variables: {
+>     signatures: [
+>       await sign_txn({
+>         hex: 'fa453…',
+>         wif_private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
+>       })
+>     ]
+>   },
+>   rpc_url: 'https://eos.relocke.io'
+> }).then(console.log)
+> ```
+>
+> Logged output is successful when transaction_id is present.
 
 ---
 
@@ -194,8 +176,6 @@ The packed transaction type.
 | `chain_id` | string | Hash representing the blockchain. |
 | `transaction_header` | string | Hex string representing the serialized transaction header. |
 | `transaction_body` | string | Hex string representing the serialized transaction body. |
-| `signatures` | Array\<string> | List of required signatures to satisfy authorizations. |
-| `meta_signatures` | Array\<string> | List of all signatures from the supplied private keys. |
 
 ---
 

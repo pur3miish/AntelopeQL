@@ -11,7 +11,5 @@ const mutation = /* GraphQL */ `
 SmartQL({
   query: mutation,
   contract: ['relocke'],
-  rpc_url: 'http://127.0.0.1:8888',
-  broadcast: true,
-  private_keys: ['5K7xR2C8mBzMo4aMPJyBPp7Njc3XvszeJSfTApa51rc2d54rrd3']
+  rpc_url: 'http://127.0.0.1:8888'
 }).then(data => data)

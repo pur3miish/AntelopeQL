@@ -6,9 +6,10 @@ In this example we are updating the EOS account ihack4google account authority.
 
 ```GraphQL
 mutation {
-  eosio(
-    actions: {
-      updateauth:{
+serialize_transaction(
+  actions: [{
+   	eosio: {
+    	 updateauth:{
         account: "ihack4google"
         permission: "active",
         parent: "owner",
@@ -34,15 +35,15 @@ mutation {
           actor:"ihack4google"
         }
       }
-    }
-  ) {
-    transaction_id
-    block_time
-    resource_cost {
-      cpu_usage_us
-      net_usage_words
-      status
-    }
+  	}
+	}],
+  configuration: {
+    max_cpu_usage_ms: 2 # Set the maximum amount of CPU for the txn.
+  }
+) {
+    chain_id
+	  transaction_header
+	  transaction_body
   }
 }
 ```
@@ -55,9 +56,7 @@ const SmartQL = require('smartql')
 SmartQL({
   query, // The GraphQL query string.
   rpc_url: 'https://eos.relocke.io', // end point to send request.
-  broadcast: true, // specifies if the txn will be signed & pushed.
-  private_keys: ['5…'],
-  contract: 'eosio' // The smart contract are interacting with.
+  contracts: ['eosio'] // The smart contract are interacting with.
 }).then(console.log)
 ```
 
