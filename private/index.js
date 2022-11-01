@@ -94,7 +94,7 @@ const get_abi = require('./network/get_abi.js')
  *
  *  ```GraphQL
  *   mutation ($signatures: [signature!]) {
- *     push_transaction(packed_trx: "fa453…", signatures: $signatures) {
+ *     push_transaction(transaction_header: "fa453…", transaction_body: "fafa…" signatures: $signatures) {
  *       transaction_id
  *     }
  *   }
@@ -105,7 +105,7 @@ const get_abi = require('./network/get_abi.js')
  *       variables: {
  *         signatures: [
  *           await sign_txn({
- *             hex: 'fa453…',
+ *             hex: 'fa453…', // <chain_id><transaction_header><transaction_body>
  *             wif_private_key:
  *               '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
  *           })

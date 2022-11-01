@@ -4,7 +4,7 @@
 
 [![NPM Package](https://img.shields.io/npm/v/smartql.svg)](https://www.npmjs.org/package/smartql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/smartql/blob/main/LICENSE)
 
-A GraphQL implementation for interacting with EOSIO based blockchains.
+A [GraphQL](https://graphql.org/) implementation for interacting with [EOSIO]([https://medium.com/coinmonks/difference-between-eosio-software-and-eos-blockchain-13bcc57d1d9d]) based blockchains.
 
 # Setup
 
@@ -13,16 +13,14 @@ $ npm i smartql
 ```
 
 ```shell
-$ npm i graphql eos-ecc # for generating ECC signatures.
+$ npm i graphql eos-ecc # for generating EOSIO signatures.
 ```
 
 # Support
 
-- [Node.js](https://nodejs.org/en/) `>= 12`
+- [Node.js](https://nodejs.org/en/) `>= 15`
 - [Browser list](https://github.com/browserslist/browserslist) `> 0.5%, not OperaMini all, not IE > 0, not dead`
-- [GraphQL](https://github.com/graphql/graphql-js) `>15`
-
-Consider a [BigInt](https://caniuse.com/?search=bigint) polyfill library for safari 13.
+- [GraphQL](https://github.com/graphql/graphql-js) `>= 15`
 
 # API
 
@@ -115,7 +113,7 @@ _SmartQL mutation - Transfer EOS tokens with memo._
 >
 > ```GraphQL
 >  mutation ($signatures: [signature!]) {
->    push_transaction(packed_trx: "fa453…", signatures: $signatures) {
+>    push_transaction(transaction_header: "fa453…", transaction_body: "fafa…" signatures: $signatures) {
 >      transaction_id
 >    }
 >  }
@@ -127,7 +125,7 @@ _SmartQL mutation - Transfer EOS tokens with memo._
 >   variables: {
 >     signatures: [
 >       await sign_txn({
->         hex: 'fa453…',
+>         hex: 'fa453…', // <chain_id><transaction_header><transaction_body>
 >         wif_private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
 >       })
 >     ]

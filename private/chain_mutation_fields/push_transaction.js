@@ -10,9 +10,12 @@ const push_transaction = {
   description: 'Push a serialized transaction to the blockchain.',
   type: transaction_receipt_type,
   args: {
-    packed_trx: {
-      description:
-        'Serialized transaction is a hexadecimal string `transaction_header` + `transaction_body`.',
+    transaction_header: {
+      description: 'Serialized transaction header (transaction meta data).',
+      type: new GraphQLNonNull(bytes_type)
+    },
+    transaction_body: {
+      description: 'Serialised transaction body (transaction instructions).',
       type: new GraphQLNonNull(bytes_type)
     },
     signatures: {
