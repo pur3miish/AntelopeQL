@@ -1,5 +1,15 @@
 # SmartQL changelog
 
+# 10.0.0
+
+## Major
+
+- `push_transaction` mutation inputs are more intuitive (include `transaction_body` & `transaction_header`).
+
+## Minor
+
+- readme.md more descriptive.
+
 # 9.0.0
 
 ## Major
