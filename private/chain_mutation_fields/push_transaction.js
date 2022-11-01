@@ -23,9 +23,13 @@ const push_transaction = {
       type: new GraphQLList(new GraphQLNonNull(signature_type))
     }
   },
-  async resolve(_, { packed_trx, signatures }, { rpc_url }) {
+  async resolve(
+    _,
+    { transaction_header, transaction_body, signatures },
+    { rpc_url }
+  ) {
     return push_txn({
-      transaction: packed_trx,
+      transaction: transaction_header + transaction_body,
       signatures,
       rpc_url
     })

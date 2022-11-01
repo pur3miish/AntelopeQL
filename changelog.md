@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# 10.0.1
+
+## Patch
+
+- Fixes to push transaction mutation resolver.
+
 # 10.0.0
 
 ## Major
