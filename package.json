@@ -18,7 +18,7 @@
     "private"
   ],
   "engines": {
-    "node": "^12.20.1 || >= 13.2"
+    "node": ">=15"
   },
   "exports": {
     ".": {
