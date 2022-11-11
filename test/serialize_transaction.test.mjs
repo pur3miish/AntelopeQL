@@ -1,5 +1,5 @@
 import { ok } from 'assert'
-import { SmartQL } from '../public/index.js'
+import SmartQL from '../index.js'
 
 const rpc_url = 'https://jungle.relocke.io'
 

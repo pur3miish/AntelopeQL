@@ -10,8 +10,8 @@ const signature_type = new GraphQLScalarType({
     if (signature == '') return ''
     if (typeof signature !== 'string')
       throw new TypeError('Expected signature to be string')
-    const prefix = signature.substr(0, 7)
-    if (prefix != 'SIG_K1_')
+
+    if (signature.slice(0, 7) != 'SIG_K1_')
       throw new TypeError('Signature prefix is should be SIG_K1_.')
     return signature
   }

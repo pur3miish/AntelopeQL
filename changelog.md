@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# 11.0.0
+
+## Major
+
+- Changed export folder strucutre
+
 # 10.0.1
 
 ## Patch

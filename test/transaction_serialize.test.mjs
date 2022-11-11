@@ -1,6 +1,6 @@
 import { strictEqual } from 'assert'
-import actions from '../private/serialize/actions.js'
-import transaction_header from '../private/serialize/transaction_header.js'
+import actions from '../public/serialize/actions.js'
+import transaction_header from '../public/serialize/transaction_header.js'
 
 export default tests => {
   tests.add('transaction header serialisation', () => {

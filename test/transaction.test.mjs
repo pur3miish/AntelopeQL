@@ -1,4 +1,4 @@
-import { SmartQL } from '../public/index.mjs'
+import SmartQL from '../index.js'
 
 const mutation = /* GraphQL */ `
   mutation {

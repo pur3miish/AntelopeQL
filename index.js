@@ -8,15 +8,14 @@ const {
   Source,
   parse
 } = require('graphql')
-const handleErrors = require('../private/handle_errors.js')
-const abi_to_ast = require('./abi_to_ast.js')
-const build_mutation_fields = require('./build_mutation_fields/index.js')
-const transactions = require('./build_mutation_fields/transactions.js')
-const build_query_fields = require('./build_query_fields/index.js')
-const push_transaction = require('./chain_mutation_fields/push_transaction.js')
-const chain_queries_fields = require('./chain_queries_fields/index.js')
-const get_abi = require('./network/get_abi.js')
-
+const abi_to_ast = require('./public/abi_to_ast.js')
+const build_mutation_fields = require('./public/build_mutation_fields/index.js')
+const transactions = require('./public/build_mutation_fields/transactions.js')
+const build_query_fields = require('./public/build_query_fields/index.js')
+const blockchain = require('./public/build_query_fields/types/blockchain.js')
+const push_transaction = require('./public/chain_mutation_fields/push_transaction.js')
+const handleErrors = require('./public/handle_errors.js')
+const get_abi = require('./public/network/get_abi.js')
 /**
  * The core function to build and execute a GraphQL request for EOSIO based blockchains.
  * @name SmartQL
@@ -33,12 +32,12 @@ const get_abi = require('./network/get_abi.js')
  * @returns {packed_transaction} Response from the SmartQL (graphql) query.
  * @example <caption>Ways to `require`.</caption>
  * ```js
- * const { SmartQL } = require('smartql')
+ * const SmartQL = require('smartql')
  * const { sign_txn } = require('eos-ecc')
  * ```
  * @example <caption>Ways to `import`.</caption>
  * ```js
- * import { SmartQL } from 'smartql'
+ * import SmartQL from 'smartql'
  * import { sign_txn } from 'eos-ecc'
  * ```
  * @example <caption>SmartQL query - Get account balance.</caption>
@@ -185,20 +184,8 @@ async function SmartQL(
   const queries = new GraphQLObjectType({
     name: 'Query',
     description: 'Query data from the blockchain.',
-
     fields: {
-      blockchain: {
-        description: `Retrieve various stats and data for the state of the blockchain (including account and currency info).`,
-        type: new GraphQLObjectType({
-          name: 'blockchain',
-          fields: {
-            ...chain_queries_fields
-          }
-        }),
-        resolve() {
-          return {}
-        }
-      },
+      blockchain,
       ...query_fields
     }
   })

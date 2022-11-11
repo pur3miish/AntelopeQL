@@ -54,14 +54,14 @@ The core function to build and execute a GraphQL request for EOSIO based blockch
 _Ways to `require`._
 
 > ```js
-> const { SmartQL } = require('smartql')
+> const SmartQL = require('smartql')
 > const { sign_txn } = require('eos-ecc')
 > ```
 
 _Ways to `import`._
 
 > ```js
-> import { SmartQL } from 'smartql'
+> import SmartQL from 'smartql'
 > import { sign_txn } from 'eos-ecc'
 > ```
 

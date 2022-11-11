@@ -1,8 +1,7 @@
 {
   "name": "smartql",
-  "version": "10.0.1",
+  "version": "11.0.0-rc.1",
   "description": "A GraphQL implementation for interacting with EOSIO based smart contract blockchains.",
-  "main": "public/index.js",
   "scripts": {
     "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
     "prepare:jsdoc": "jsdoc-md",
@@ -15,16 +14,13 @@
   },
   "files": [
     "public",
-    "private"
+    "index.js"
   ],
   "engines": {
     "node": ">=15"
   },
   "exports": {
-    ".": {
-      "import": "./public/index.mjs",
-      "require": "./public/index.js"
-    },
+    ".": "./index.js",
     "./public/*": "./public/*",
     "./package": "./package.json",
     "./package.json": "./package.json"
