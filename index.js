@@ -8,14 +8,12 @@ const {
   Source,
   parse
 } = require('graphql')
-const abi_to_ast = require('./public/abi_to_ast.js')
-const build_mutation_fields = require('./public/build_mutation_fields/index.js')
-const transactions = require('./public/build_mutation_fields/transactions.js')
-const build_query_fields = require('./public/build_query_fields/index.js')
 const blockchain = require('./public/build_query_fields/types/blockchain.js')
 const push_transaction = require('./public/chain_mutation_fields/push_transaction.js')
+const fields_from_abis = require('./public/fields_from_abis.js')
 const handleErrors = require('./public/handle_errors.js')
 const get_abi = require('./public/network/get_abi.js')
+
 /**
  * The core function to build and execute a GraphQL request for EOSIO based blockchains.
  * @name SmartQL
@@ -26,9 +24,6 @@ const get_abi = require('./public/network/get_abi.js')
  * @param {object} [arg.variables] GraphQL variables.
  * @param {Array<string>} arg.contracts List of contracts.
  * @param {string} arg.rpc_url [Nodeos](https://developers.eos.io/manuals/eos/v2.1/nodeos/index) endpoint URL.
- * @param {object} [extensions] Extend the GraphQL schema by providing additional mutations and query fields.
- * @param {object} [extensions.query_fields] GraphQL query fields.
- * @param {object} [extensions.mutation_fields] GraphQL mutation fields.
  * @returns {packed_transaction} Response from the SmartQL (graphql) query.
  * @example <caption>Ways to `require`.</caption>
  * ```js
@@ -116,13 +111,13 @@ const get_abi = require('./public/network/get_abi.js')
  * Logged output is successful when transaction_id is present.
  *
  */
-async function SmartQL(
-  { query, variables, operationName, contracts = [], rpc_url },
-  { query_fields = {}, mutation_fields = {} } = {
-    query_fields: {},
-    mutation_fields: {}
-  }
-) {
+async function SmartQL({
+  query,
+  variables,
+  operationName,
+  contracts = [],
+  rpc_url
+}) {
   if (!rpc_url) throw new TypeError('Please provide `rpc_url` string.')
 
   let documentAST
@@ -132,7 +127,6 @@ async function SmartQL(
     return { errors: [err.toJSON()] } // If there is a query error return.
   }
 
-  let eosio_mutation_fields = {}
   const abis = []
 
   // Fetch the relevant ABIs for EOSIO accounts.
@@ -143,43 +137,11 @@ async function SmartQL(
     return { errors: [JSON.parse(err.message)] }
   }
 
-  let _abi_ast = {}
+  abis.forEach(abi => {
+    if (abi.errors) throw abi.errors
+  })
 
-  try {
-    for (const { abi, error, account_name } of abis) {
-      if (!abi)
-        return {
-          errors: [
-            {
-              message: `No smart contract found for “${account_name}”.`,
-              ...error
-            }
-          ]
-        }
-
-      const abi_ast = abi_to_ast(abi, account_name)
-
-      let ast_name = account_name.replace(/[.]+/gmu, '_')
-      ast_name = ast_name.match(/^[1-5]/gmu) ? '_' + ast_name : ast_name
-
-      _abi_ast = {
-        ..._abi_ast,
-        [ast_name]: abi_ast
-      }
-
-      query_fields = {
-        ...query_fields,
-        ...build_query_fields(abi_ast)
-      }
-
-      eosio_mutation_fields = {
-        ...eosio_mutation_fields,
-        ...build_mutation_fields(abi_ast)
-      }
-    }
-  } catch (err) {
-    return handleErrors(JSON.parse(err.message))
-  }
+  const { query_fields, mutation_fields } = fields_from_abis(abis)
 
   const queries = new GraphQLObjectType({
     name: 'Query',
@@ -195,8 +157,7 @@ async function SmartQL(
     description: 'Update the state of various `smart contracts`.',
     fields: {
       push_transaction,
-      ...mutation_fields,
-      ...transactions(eosio_mutation_fields, _abi_ast)
+      ...mutation_fields
     }
   })
 
@@ -212,9 +173,7 @@ async function SmartQL(
     schema: schema,
     document: documentAST,
     rootValue: '',
-    contextValue: {
-      rpc_url
-    },
+    contextValue: { rpc_url },
     variableValues: variables,
     operationName,
     fieldResolver: (rootValue, args, ctx, { fieldName }) => rootValue[fieldName]

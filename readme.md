@@ -43,9 +43,6 @@ The core function to build and execute a GraphQL request for EOSIO based blockch
 | `arg.variables` | object? | GraphQL variables. |
 | `arg.contracts` | Array\<string> | List of contracts. |
 | `arg.rpc_url` | string | [Nodeos](https://developers.eos.io/manuals/eos/v2.1/nodeos/index) endpoint URL. |
-| `extensions` | object? | Extend the GraphQL schema by providing additional mutations and query fields. |
-| `extensions.query_fields` | object? | GraphQL query fields. |
-| `extensions.mutation_fields` | object? | GraphQL mutation fields. |
 
 **Returns:** [packed_transaction](#type-packed_transaction) — Response from the SmartQL (graphql) query.
 

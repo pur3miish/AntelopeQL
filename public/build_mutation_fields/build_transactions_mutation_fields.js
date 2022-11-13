@@ -57,11 +57,13 @@ const build_transactions_mutation_fields = (
           async resolve(
             _,
             { actions, configuration = configuration_default_value },
-            { rpc_url }
+            { rpc_url, dataResolver }
           ) {
             let _actions = []
-
             let _context_free_actions = []
+
+            if (dataResolver) actions = await dataResolver(actions)
+
             for (const action of actions) {
               const contract = Object.keys(action)[0]
               for await (const contract_actions of action[contract])

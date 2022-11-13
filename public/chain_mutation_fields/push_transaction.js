@@ -26,13 +26,16 @@ const push_transaction = {
   async resolve(
     _,
     { transaction_header, transaction_body, signatures },
-    { rpc_url }
+    { rpc_url, dataResolver }
   ) {
-    return push_txn({
+    let data = {
       transaction: transaction_header + transaction_body,
-      signatures,
-      rpc_url
-    })
+      signatures
+    }
+
+    if (dataResolver) data = await dataResolver(data)
+
+    return push_txn({ ...data, rpc_url })
   }
 }
 
