@@ -1,22 +1,22 @@
 import { deepStrictEqual, ok, rejects, strictEqual, throws } from 'assert'
-import asset_type from '../public/eosio_types/asset_type.js'
-import block_time_stamp from '../public/eosio_types/block_timestamp_type.js'
-import bool from '../public/eosio_types/boolean_type.js'
-import bytes from '../public/eosio_types/bytes_type.js'
-import extended_asset from '../public/eosio_types/extended_asset_type.js'
-import generate_checksum from '../public/eosio_types/generate_checksum_type.js'
-import generate_float_type from '../public/eosio_types/generate_float_type.js'
-import generate_int_type from '../public/eosio_types/generate_int_type.js'
-import generate_uint_type from '../public/eosio_types/generate_uint_type.js'
-import name from '../public/eosio_types/name_type.js'
-import public_key from '../public/eosio_types/public_key_type.js'
-import signature from '../public/eosio_types/signature_type.js'
-import symbol_code from '../public/eosio_types/symbol_code_type.js'
-import symbol from '../public/eosio_types/symbol_type.js'
-import time_point_sec from '../public/eosio_types/time_point_sec_type.js'
-import time_point from '../public/eosio_types/time_point_type.js'
-import varint32 from '../public/eosio_types/varint32_type.js'
-import varuint32 from '../public/eosio_types/varuint32_type.js'
+import asset_type from '../eosio_types/asset_type.js'
+import block_time_stamp from '../eosio_types/block_timestamp_type.js'
+import bool from '../eosio_types/boolean_type.js'
+import bytes from '../eosio_types/bytes_type.js'
+import extended_asset from '../eosio_types/extended_asset_type.js'
+import generate_checksum from '../eosio_types/generate_checksum_type.js'
+import generate_float_type from '../eosio_types/generate_float_type.js'
+import generate_int_type from '../eosio_types/generate_int_type.js'
+import generate_uint_type from '../eosio_types/generate_uint_type.js'
+import name from '../eosio_types/name_type.js'
+import public_key from '../eosio_types/public_key_type.js'
+import signature from '../eosio_types/signature_type.js'
+import symbol_code from '../eosio_types/symbol_code_type.js'
+import symbol from '../eosio_types/symbol_type.js'
+import time_point_sec from '../eosio_types/time_point_sec_type.js'
+import time_point from '../eosio_types/time_point_type.js'
+import varint32 from '../eosio_types/varint32_type.js'
+import varuint32 from '../eosio_types/varuint32_type.js'
 
 export default tests => {
   tests.add('EOSIO types - validating parse values', async () => {
@@ -51,7 +51,7 @@ export default tests => {
       '2021-03-01T12:26:42.147'
     )
     deepStrictEqual(bool.parseValue(true), true)
-    ok(bytes.parseValue('ff') == '02ff')
+    ok(bytes.parseValue('ff') == 'ff')
     throws(() => bytes.parseValue('kl'))
     ok(bytes.parseValue('') == '')
     deepStrictEqual(

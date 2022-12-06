@@ -4,134 +4,143 @@
 
 [![NPM Package](https://img.shields.io/npm/v/smartql.svg)](https://www.npmjs.org/package/smartql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/smartql/blob/main/LICENSE)
 
-A [GraphQL](https://graphql.org/) implementation for interacting with [EOSIO]([https://medium.com/coinmonks/difference-between-eosio-software-and-eos-blockchain-13bcc57d1d9d]) based blockchains.
+A [GraphQL](https://graphql.org/) implementation for interacting with EOSIO **(Antelope)** based blockchains.
 
 # Setup
 
 ```shell
 $ npm i smartql
-```
-
-```shell
-$ npm i graphql eos-ecc # for generating EOSIO signatures.
+$ npm i graphql # peer dependency
 ```
 
 # Support
 
-- [Node.js](https://nodejs.org/en/) `>= 15`
-- [Browser list](https://github.com/browserslist/browserslist) `> 0.5%, not OperaMini all, not IE > 0, not dead`
-- [GraphQL](https://github.com/graphql/graphql-js) `>= 15`
+- [Node.js](https://nodejs.org/en/) `>= 15`.
+- [Browser list](https://github.com/browserslist/browserslist) `> 0.5%, not OperaMini all, not IE > 0, not dead`.
+- [GraphQL](https://github.com/graphql/graphql-js) `>= 15`.
 
 # API
 
-- [function SmartQL](#function-smartql)
+- [function build_graphql_fields_from_abis](#function-build_graphql_fields_from_abis)
+- [function smartql](#function-smartql)
 - [type authorization](#type-authorization)
 - [type Bandwidth_cost](#type-bandwidth_cost)
 - [type packed_transaction](#type-packed_transaction)
+- [type SmartQLRPC](#type-smartqlrpc)
 - [type transaction_receipt](#type-transaction_receipt)
 - [type transaction_status](#type-transaction_status)
 
-## function SmartQL
+## function build_graphql_fields_from_abis
 
-The core function to build and execute a GraphQL request for EOSIO based blockchains.
+Build GraphQL query and mutation fields for a given list of ABI lists.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `arg` | object | Argument. |
-| `arg.query` | string | GraphQL query string. |
-| `arg.operationName` | object? | GraphQL opperation name. |
-| `arg.variables` | object? | GraphQL variables. |
-| `arg.contracts` | Array\<string> | List of contracts. |
-| `arg.rpc_url` | string | [Nodeos](https://developers.eos.io/manuals/eos/v2.1/nodeos/index) endpoint URL. |
+| `abi_list` | Array\<object> | Argument. |
+| `abi_list.abi` | object | Application binary interface (ABI) for the smart contract. |
+| `abi_list.account_name` | string | The account name holding the smart contract. |
 
-**Returns:** [packed_transaction](#type-packed_transaction) — Response from the SmartQL (graphql) query.
+**Returns:** object — SmartQL fields.
 
 ### Examples
 
 _Ways to `require`._
 
 > ```js
-> const SmartQL = require('smartql')
-> const { sign_txn } = require('eos-ecc')
+> const build_graphql_fields_from_abis = require('smartql/build_graphql_fields_from_abis')
 > ```
 
 _Ways to `import`._
 
 > ```js
-> import SmartQL from 'smartql'
-> import { sign_txn } from 'eos-ecc'
+> import build_graphql_fields_from_abis from 'smartql/build_graphql_fields_from_abis'
 > ```
 
-_SmartQL query - Get account balance._
+_`Usage` in a vanilla GraphQL API._
 
-> ```GraphQL
->  query {
->     eosio_token {
->          account(arg: { scope: "pur3miish222" }) {
->            balance
->          }
->     }
->  }
-> ```
->
 > ```js
-> SmartQL({
->   query,
->   contracts: ['eosio.token'],
->   rpc_url: 'https://eos.relocke.io'
-> }).then(console.log)
-> ```
+> const smartql_rpc = { fetch, rpc_url: 'https://eos.relocke.io' } // Your fetch implimentation.
+> const ABI_list = [{ account_name: 'eosio.token', abi: … }]
+> const { mutation_fields, query_fields, ast_list } =
+>   build_graphql_fields_from_abis(ABI_list)
 >
-> The logged output was: { "data": { "account": \[{ "balance": "… EOS" }] }
+> // GraphQL query with `eosio.token` queries.
+> const queries = new GraphQLObjectType({
+>   name: 'Query',
+>   fields: query_fields
+> })
+>
+> const action_fields = actions(mutation_fields)
+>
+> // GraphQL mutation with `eosio.token` actions added.
+> const mutations = new GraphQLObjectType({
+>   name: 'Mutation',
+>   fields: {
+>     push_transaction: push_transaction(action_fields, ast_list),
+>     serialize_transaction: serialize_transaction(action_fields, ast_list),
+>     push_serialized_transaction
+>   }
+> })
+>
+> const schema = new GraphQLSchema({
+>   query: queries,
+>   mutation: mutations
+> })
+>
+> const document = parse(new Source(query)) // GraphQL document.
+>
+> return execute({
+>   schema,
+>   document,
+>   rootValue: '',
+>   contextValue: { smartql_rpc },
+>   fieldResolver(rootValue, args, ctx, { fieldName }) {
+>     return rootValue[fieldName]
+>   }
+> })
+> ```
 
-_SmartQL mutation - Transfer EOS tokens with memo._
+---
 
-> ```GraphQL
-> mutation {
->  serialize_transaction(
->    actions: [{eosio_token: {transfer: {to: eoshackathon, from: pur3miish222, quantity: "4.6692 EOS", memo: "Feigenbaum constant", authorization: {actor: pur3miish222}}}}]
->  ) {
->    chain_id
->    transaction_header
->    transaction_body
->  }
-> }
-> ```
->
+## function smartql
+
+The core function for interacting with blockchain.
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| `GraphQLQuery` | object | Object that [GraphQL.execute](https://graphql.org/graphql-js/execution/#:~:text=execute,-export%20function%20execute&text=Implements%20the%20%22Evaluating%20requests%22%20section,immediately%20explaining%20the%20invalid%20input.) will consume. |
+| `GraphQLQuery.query` | string | GraphQL query that will instuct SmartQL what CRUD operation to perform on the EOSIO based blockchain. |
+| `GraphQLQuery.variableValues` | object? | GraphQL variables. |
+| `GraphQLQuery.operationName` | string? | GraphQL operation name (query resolution). |
+| `SmartQL` | object | Argument |
+| `SmartQL.contracts` | Array\<string>? | List of EOSIO accounts that hold smart contract you wish to interact with. |
+| `SmartQL.private_keys` | Array\<string>? | List of wif private keys that will be used to sign transaction actions aka mutations. |
+| `smartql_rpc` | [SmartQLRPC](#type-smartqlrpc) | Argument. |
+
+### Examples
+
+_Ways to `require`._
+
 > ```js
-> SmartQL({
->   query: serialize_transaction,
->   rpc_url: 'https://eos.relocke.io',
->   contracts: ['eosio.token']
-> }).then(console.log)
+> const smartql = require('smartql')
 > ```
->
-> The logged output was "data": { "transfer": { "chain_id": "2a02a0…", "transaction_header": "fa453…", "transaction_body": "82dfe45…" } }
->
-> ```GraphQL
->  mutation ($signatures: [signature!]) {
->    push_transaction(transaction_header: "fa453…", transaction_body: "fafa…" signatures: $signatures) {
->      transaction_id
->    }
->  }
-> ```
->
+
+_Ways to `import`._
+
 > ```js
-> SmartQL({
->   query: push_transaction,
->   variables: {
->     signatures: [
->       await sign_txn({
->         hex: 'fa453…', // <chain_id><transaction_header><transaction_body>
->         wif_private_key: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
->       })
->     ]
->   },
->   rpc_url: 'https://eos.relocke.io'
-> }).then(console.log)
+> import smartql from 'smartql'
+> ```
+
+_`Usage`_
+
+> ```js
+> import fetch from 'isomorphic-fetch' // Your fetch implementation.
+> const query = `{ eosio_token { accounts(arg: { scope: "relockeblock" }){ balance } } }`
+> const smartql_rpc = { fetch, rpc_url: 'https://eos.relocke.io' } // connection configuration
+> smartql({ query }, { contracts: ['eosio.token'] }, smartql_rpc }).then(console.log)
 > ```
 >
-> Logged output is successful when transaction_id is present.
+> > Logged output was "data": {"eosio_token": {"accounts": \[{"balance": "100.0211 EOS"}]}}}
 
 ---
 
@@ -171,6 +180,19 @@ The packed transaction type.
 | `chain_id` | string | Hash representing the blockchain. |
 | `transaction_header` | string | Hex string representing the serialized transaction header. |
 | `transaction_body` | string | Hex string representing the serialized transaction body. |
+
+---
+
+## type SmartQLRPC
+
+SmartQL’s remote procedure call (RPC) object for interacting with EOSIO based blockchains.
+
+**Type:** object
+
+| Property | Type | Description |
+| :-- | :-- | :-- |
+| `fetch` | Function | Your fetch implimentation. |
+| `rpc_url` | string | Remote proceedure call (RPC) Uniform Resource Locator (URL). |
 
 ---
 

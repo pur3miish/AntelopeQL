@@ -1,29 +1,49 @@
 {
   "name": "smartql",
-  "version": "11.0.0-rc.3",
-  "description": "A GraphQL implementation for interacting with EOSIO based smart contract blockchains.",
+  "version": "11.0.0-rc.5",
+  "description": "A GraphQL implementation for interacting with EOSIO Antelope based blockchains.",
   "scripts": {
     "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
     "prepare:jsdoc": "jsdoc-md",
-    "prepare:prettier": "prettier --write readme.md && prettier --write changelog.md && prettier --write examples/*",
+    "prepare:prettier": "prettier --write readme.md && prettier --write changelog.md",
     "test": "npm run test:eslint && npm run test:prettier",
-    "test:api": "coverage-node test/index.test.mjs",
+    "test:api": "ALLOW_MISSING_COVERAGE=1 coverage-node test/index.test.mjs",
     "test:eslint": "eslint .",
     "test:prettier": "prettier -c .",
     "prepublishOnly": "npm test"
   },
   "files": [
-    "public",
-    "index.js"
+    "blockchain",
+    "eosio_types",
+    "graphql_input_types",
+    "graphql_object_types",
+    "build_graphql_fields_from_abis.js",
+    "eos_abi_to_graphql_ast.js",
+    "mutation_resolver.js",
+    "push_serialized_transaction.js",
+    "push_transaction_rpc.js",
+    "push_transaction.js",
+    "query_resolver.js",
+    "serialize_transaction.js",
+    "smartql.js"
   ],
   "engines": {
     "node": ">=15"
   },
+  "sideEffects": false,
   "exports": {
-    ".": "./index.js",
-    "./public/*": "./public/*",
-    "./package": "./package.json",
-    "./package.json": "./package.json"
+    "./blockchain/index.js": "./blockchain/index.js",
+    "./eosio_types/index.js": "./eosio_types/index.js",
+    "./build_graphql_fields_from_abis.js": "./build_graphql_fields_from_abis.js",
+    "./eos_abi_to_graphql_ast.js": "./build_graphql_fields_from_abis.js",
+    "./mutation_resolver.js": "./mutation_resolver.js",
+    "./package.json": "./package.json",
+    "./push_serialized_transaction.js": "./push_serialized_transaction.js",
+    "./push_transaction_rpc.js": "./push_transaction_rpc.js",
+    "./push_transaction.js": "./push_transaction.js",
+    "./query_resolver.js": "./query_resolver.js",
+    "./serialize_transaction.js": "./serialize_transaction.js",
+    ".": "./smartql.js"
   },
   "repository": {
     "type": "git",
@@ -56,21 +76,23 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-compat": "^4.0.1",
     "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jsdoc": "^39.3.6",
+    "eslint-plugin-jsdoc": "^37",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
     "graphql": "^16.6.0",
+    "isomorphic-fetch": "^3.0.0",
     "jsdoc-md": "^11.0.0",
+    "nodemon": "^2.0.20",
     "prettier": "2.7",
     "test-director": "^10.0.0"
   },
   "peerDependencies": {
-    "graphql": "*"
+    "graphql": "^16.6.0"
   },
   "dependencies": {
     "base58-js": "*",
-    "eosio-wasm-js": "*",
-    "isomorphic-fetch": "^3.0.0",
+    "eos-ecc": "^3.1.0",
+    "eosio-wasm-js": "^2.1.0-rc",
     "ripemd160-js": "*"
   }
 }

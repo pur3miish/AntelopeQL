@@ -1,144 +1,124 @@
-import { ok } from 'assert'
-import SmartQL from '../index.js'
+import { deepStrictEqual } from 'assert'
+import { createRequire } from 'module'
+import {
+  GraphQLObjectType,
+  GraphQLSchema,
+  Source,
+  execute,
+  parse,
+  validate
+} from 'graphql'
+import fetch from 'isomorphic-fetch'
+import build_graphql_fields_from_abis from '../build_graphql_fields_from_abis.js'
+import actions from '../graphql_input_types/actions.js'
+import serialize_transaction from '../serialize_transaction.js'
 
-const rpc_url = 'https://jungle.relocke.io'
+const require = createRequire(import.meta.url)
+const ABI_LIST = [
+  { account_name: 'eosio', abi: require('./abis/eosio.json') },
+  { account_name: 'eosio.token', abi: require('./abis/eosio.token.json') },
+  { account_name: 'nutrijournal', abi: require('./abis/nutrientjrn.abi.json') }
+]
 
-export default tests => {
-  tests.add(
-    'SmartQL serialized transaction output Update authorization.',
-    async () => {
-      const update_auth_query = /* GraphQL */ `
-        mutation {
-          serialize_transaction(
-            actions: [
-              {
-                eosio: {
-                  updateauth: {
-                    account: "relockechain"
-                    permission: "active"
-                    parent: "owner"
-                    auth: {
-                      threshold: 2
-                      keys: [
-                        {
-                          key: "EOS8GZG8ohHvxyeimP6QvBokmPamtLTwGsVJugcXbFnHtYjJQMotH"
-                          weight: 1
-                        }
-                        {
-                          key: "EOS7QpboRz6DFBtzaHbN6pJZq8HX99w4ZWqsGsdzPzQgUgP9ESgfy"
-                          weight: 1
-                        }
-                      ]
-                      accounts: [
-                        {
-                          weight: 1
-                          permission: {
-                            actor: "relockechain"
-                            permission: "poo"
-                          }
-                        }
-                      ]
-                      waits: [{ wait_sec: 2, weight: 3 }]
-                    }
-                    authorization: { actor: "relockechain" }
-                  }
-                }
-              }
-            ]
-          ) {
-            chain_id
-            transaction_header
-            transaction_body
-          }
-        }
-      `
+const { mutation_fields, query_fields, ast_list } =
+  build_graphql_fields_from_abis(ABI_LIST)
 
-      const update_auth_query_two = /* GraphQL */ `
-        mutation {
-          serialize_transaction(
-            actions: [
-              {
-                eosio: {
-                  updateauth: {
-                    account: "relockechain"
-                    permission: "active"
-                    parent: "owner"
-                    auth: {
-                      threshold: 2
-                      keys: [
-                        {
-                          key: "EOS8GZG8ohHvxyeimP6QvBokmPamtLTwGsVJugcXbFnHtYjJQMotH"
-                          weight: 1
-                        }
-                        {
-                          key: "EOS7QpboRz6DFBtzaHbN6pJZq8HX99w4ZWqsGsdzPzQgUgP9ESgfy"
-                          weight: 1
-                        }
-                      ]
-                      accounts: []
-                      waits: []
-                    }
-                    authorization: { actor: "relockechain" }
-                  }
-                }
-              }
-            ]
-          ) {
-            chain_id
-            transaction_header
-            transaction_body
-          }
-        }
-      `
+const queries = new GraphQLObjectType({
+  name: 'Query',
+  description: 'Query table data from EOSIO blockchain.',
+  fields: query_fields
+})
 
-      const {
-        data: {
-          serialize_transaction: { transaction_body }
-        }
-      } = await SmartQL({
-        query: update_auth_query,
-        contracts: ['eosio'],
-        broadcast: 0,
-        rpc_url
-      })
+const action_fields = actions(mutation_fields)
+const mutations = new GraphQLObjectType({
+  name: 'Mutation',
+  description: 'Push transactions to the blockchain.',
+  fields: {
+    serialize_transaction: serialize_transaction(action_fields, ast_list)
+  }
+})
 
-      ok(
-        transaction_body ==
-          '00010000000000ea30550040cbdaa86c52d501309d69484144a3ba00000000a8ed32327f309d69484144a3ba00000000a8ed32320000000080ab26a702000000020003bd31e9df14045cc250caa8a08b6732f116dbf981c1eb4ac8de226a325d5800bb010000034c43ad3d5058ac72785e3e835e1c1c9d80fbf9891f5ed733881d52443d433c21010001309d69484144a3ba00000000000028ad010001020000000300000000000000000000000000000000000000000000000000000000000000000000',
-        'Update auth transaction data'
-      )
+const schema = new GraphQLSchema({ query: queries, mutation: mutations })
 
-      const {
-        data: {
-          serialize_transaction: { transaction_body: tx2 }
-        }
-      } = await SmartQL({
-        query: update_auth_query_two,
-        contracts: ['eosio'],
-        broadcast: 0,
-        rpc_url: 'https://jungle.relocke.io'
-      })
+const SmartQL = query => {
+  const document = parse(new Source(query))
+  const queryErrors = validate(schema, document)
+  if (queryErrors.length) throw queryErrors
 
-      ok(
-        tx2 ==
-          '00010000000000ea30550040cbdaa86c52d501309d69484144a3ba00000000a8ed323267309d69484144a3ba00000000a8ed32320000000080ab26a702000000020003bd31e9df14045cc250caa8a08b6732f116dbf981c1eb4ac8de226a325d5800bb010000034c43ad3d5058ac72785e3e835e1c1c9d80fbf9891f5ed733881d52443d433c2101000000000000000000000000000000000000000000000000000000000000000000000000',
-        'Update auth transaction data 2'
-      )
+  const smartql_rpc = { fetch, rpc_url: 'https://api.kylin.alohaeos.com' }
+
+  return execute({
+    schema,
+    document,
+    contextValue: {
+      smartql_rpc
+    },
+    fieldResolver(rootValue, args, ctx, { fieldName }) {
+      return rootValue[fieldName]
     }
-  )
+  })
+}
 
-  tests.add('EOS token transfer', async () => {
-    const query = /* GraphQL */ `
+export default async tests => {
+  tests.add('serialize_transaction mutations', async () => {
+    const eosio_setparams = /* GraphQL */ `
       mutation {
         serialize_transaction(
           actions: [
             {
+              eosio: {
+                setparams: {
+                  params: {
+                    blockchain_parameters_t: {
+                      max_block_net_usage: 45
+                      target_block_net_usage_pct: 90
+                      max_transaction_net_usage: 4
+                      base_per_transaction_net_usage: 4
+                      net_usage_leeway: 4
+                      context_free_discount_net_usage_num: 4
+                      context_free_discount_net_usage_den: 100
+                      max_block_cpu_usage: 4
+                      target_block_cpu_usage_pct: 4
+                      max_transaction_cpu_usage: 4
+                      min_transaction_cpu_usage: 4
+                      max_transaction_lifetime: 4
+                      deferred_trx_expiration_window: 567
+                      max_transaction_delay: 45
+                      max_inline_action_size: 4
+                      max_inline_action_depth: 4
+                      max_authority_depth: 94
+                      max_action_return_value_size: 984
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        ) {
+          transaction_body
+        }
+      }
+    `
+
+    deepStrictEqual(
+      (await SmartQL(eosio_setparams)).data.serialize_transaction
+        .transaction_body,
+      '010000000000ea30550000c0d25c53b3c200482d000000000000005a00000004000000040000000400000004000000640000000400000004000000040000000400000004000000370200002d0000000400000004005e00d803000000000000000000000000000000000000000000000000000000000000000000000000',
+      'eosio::setparams'
+    )
+
+    const context_free_action = /* GraphQL */ `
+      mutation {
+        serialize_transaction(
+          actions: [
+            { nutrijournal: { login: { account: "relockeblock" } } }
+            {
               eosio_token: {
                 transfer: {
-                  to: "relockechain"
-                  from: "relockeblock"
+                  from: "nutrijournal"
+                  to: "relockeblock"
                   memo: ""
-                  quantity: "0.1234 EOS"
+                  quantity: "0.0001 EOS"
                   authorization: { actor: "relockeblock" }
                 }
               }
@@ -149,18 +129,80 @@ export default tests => {
         }
       }
     `
-    const query2 = /* GraphQL */ `
+
+    deepStrictEqual(
+      (await SmartQL(context_free_action)).data.serialize_transaction
+        .transaction_body,
+      '0110cdbc9a3e77b39e0000000080e9188d000800118d474144a3ba0100a6823403ea3055000000572d3ccdcd0100118d474144a3ba00000000a8ed32322110cdbc9a3e77b39e00118d474144a3ba010000000000000004454f530000000000000000000000000000000000000000000000000000000000000000000000000000',
+      'context free action with eosio.token transfer.'
+    )
+
+    const eosio_update_auth = /* GraphQL */ `
+      mutation updateauth {
+        serialize_transaction(
+          actions: [
+            {
+              eosio: {
+                updateauth: {
+                  authorization: { actor: "relockeblock" }
+                  account: "relocke"
+                  permission: "active"
+                  parent: "owner"
+                  authorized_by: "relockeblock"
+                  auth: {
+                    keys: [
+                      {
+                        key: "EOS5FfrbHXE3oC3BDZNCTHEqkxEQFGJSeQMnq8yWa2eJLdZYYP6TU"
+                        weight: 1
+                      }
+                      {
+                        key: "EOS6hMLF2sPrxhu9SK4dJ9LaZimfzgfmP7uX1ahUPJUcUpS4p2G39"
+                        weight: 2
+                      }
+                    ]
+                    waits: [{ wait_sec: 14, weight: 2 }]
+                    threshold: 1
+                    accounts: [
+                      {
+                        weight: 2
+                        permission: {
+                          actor: "nutrijournal"
+                          permission: "active"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        ) {
+          transaction_body
+        }
+      }
+    `
+
+    deepStrictEqual(
+      (await SmartQL(eosio_update_auth)).data.serialize_transaction
+        .transaction_body,
+      '00010000000000ea30550040cbdaa86c52d50100118d474144a3ba00000000a8ed32328701000000404144a3ba00000000a8ed32320000000080ab26a70100000002000230181e888a73d27774005d50cdbd1b34f0d9d62a02077682187e9c3b39f1e0ca01000002ee19f0d3ca1c117ce6e066d57fbb3b1bab6db917d60fc22d501d97857e01ef1402000110cdbc9a3e77b39e00000000a8ed32320200010e000000020000118d474144a3ba000000000000000000000000000000000000000000000000000000000000000000',
+      'eosio::updateauth.'
+    )
+
+    const powerup_query = /* GraphQL */ `
       mutation {
         serialize_transaction(
           actions: [
             {
-              eosio_token: {
-                transfer: {
-                  to: "relockechain"
-                  from: "relockeblock"
-                  memo: "The quick brown fox jumps over the lazy dog."
-                  quantity: "0.1234 EOS"
-                  authorization: { actor: "relockeblock" }
+              eosio: {
+                powerup: {
+                  authorization: { actor: nutrijournal }
+                  days: 1
+                  payer: nutrijournal
+                  receiver: nutrijournal
+                  net_frac: "900000"
+                  cpu_frac: "900000"
+                  max_payment: "0.5000 EOS"
                 }
               }
             }
@@ -170,26 +212,79 @@ export default tests => {
         }
       }
     `
-    const transfer_queries = [query, query2]
-    const serialized = [
-      '000100a6823403ea3055000000572d3ccdcd0100118d474144a3ba00000000a8ed32322100118d474144a3ba309d69484144a3bad20400000000000004454f530000000000000000000000000000000000000000000000000000000000000000000000000000',
-      '000100a6823403ea3055000000572d3ccdcd0100118d474144a3ba00000000a8ed32324d00118d474144a3ba309d69484144a3bad20400000000000004454f53000000002c54686520717569636b2062726f776e20666f78206a756d7073206f76657220746865206c617a7920646f672e000000000000000000000000000000000000000000000000000000000000000000'
-    ]
 
-    transfer_queries.forEach(async (query, index) => {
-      const {
-        data: { serialize_transaction }
-      } = await SmartQL({
-        query,
-        rpc_url,
-        broadcast: 0,
-        contracts: ['eosio.token']
-      })
+    deepStrictEqual(
+      (await SmartQL(powerup_query)).data.serialize_transaction
+        .transaction_body,
+      '00010000000000ea3055000000a0eaab38ad0110cdbc9a3e77b39e00000000a8ed32323410cdbc9a3e77b39e10cdbc9a3e77b39e01000000a0bb0d0000000000a0bb0d0000000000881300000000000004454f5300000000000000000000000000000000000000000000000000000000000000000000000000',
+      'eosio::powerup serialization.'
+    )
 
-      ok(
-        serialize_transaction.transaction_body == serialized[index],
-        'Serilaized EOS token transfer ' + index + 1
-      )
-    })
+    const nutrientjrnl_addnutrient = /* GraphQL */ `
+      mutation transation {
+        serialize_transaction(
+          actions: [
+            {
+              nutrijournal: {
+                addnutrient: {
+                  nutrient: water
+                  hashname: "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81"
+                  fullname: "water"
+                  essential: true
+                  classification: "macronutrient"
+                  info: [
+                    {
+                      text: "Water contains one part oxygen and two parts hydrogen."
+                      ref: [2, 34]
+                    }
+                    { text: "water is essential to life.", ref: [1, 2, 6] }
+                  ]
+                  foods: ["apples", "oranges"]
+                  authorization: [{ actor: "nutrijournal" }]
+                }
+              }
+            }
+          ]
+        ) {
+          transaction_body
+        }
+      }
+    `
+
+    deepStrictEqual(
+      (await SmartQL(nutrientjrnl_addnutrient)).data.serialize_transaction
+        .transaction_body,
+      '000110cdbc9a3e77b39e00f254ee663d53320110cdbc9a3e77b39e00000000a8ed3232d0010000000080abb2e101039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81010577617465720101010d6d6163726f6e75747269656e740236576174657220636f6e7461696e73206f6e652070617274206f787967656e20616e642074776f20706172747320687964726f67656e2e02020000000000000022000000000000001b776174657220697320657373656e7469616c20746f206c6966652e03010000000000000002000000000000000600000000000000020000000060156b35000000002b36cda5000000000000000000000000000000000000000000000000000000000000000000',
+      'nutrijournal::addnutrient'
+    )
+
+    const optional_example_nutrientjrnl = /* GraphQL */ `
+      mutation transation {
+        serialize_transaction(
+          actions: [
+            {
+              nutrijournal: {
+                addnutrient: {
+                  nutrient: water
+                  fullname: "water"
+                  classification: "macronutrient"
+                  info: []
+                  foods: []
+                  authorization: [{ actor: "nutrijournal" }]
+                }
+              }
+            }
+          ]
+        ) {
+          transaction_body
+        }
+      }
+    `
+    deepStrictEqual(
+      (await SmartQL(optional_example_nutrientjrnl)).data.serialize_transaction
+        .transaction_body,
+      '000110cdbc9a3e77b39e00f254ee663d53320110cdbc9a3e77b39e00000000a8ed3232220000000080abb2e1000105776174657200010d6d6163726f6e75747269656e740000000000000000000000000000000000000000000000000000000000000000000000',
+      'nutrijournal::addnutrient with optional arguments'
+    )
   })
 }

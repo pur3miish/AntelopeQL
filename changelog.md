@@ -4,7 +4,7 @@
 
 ## Major
 
-- Changed export folder strucutre
+- Changed export folder strucutre.
 
 # 10.0.1
 
