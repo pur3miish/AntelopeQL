@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "11.0.0-rc.5",
+  "version": "11.0.0-rc.16",
   "description": "A GraphQL implementation for interacting with EOSIO Antelope based blockchains.",
   "scripts": {
     "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
@@ -32,6 +32,8 @@
   },
   "sideEffects": false,
   "exports": {
+    "./graphql_object_types/*": "./graphql_object_types/*",
+    "./graphql_input_types/*": "./graphql_input_types/*",
     "./blockchain/index.js": "./blockchain/index.js",
     "./eosio_types/index.js": "./eosio_types/index.js",
     "./build_graphql_fields_from_abis.js": "./build_graphql_fields_from_abis.js",
