@@ -93,7 +93,7 @@ async function get_transaction_body(actions, ast_list) {
         else if ($info.list && datum !== undefined)
           for await (const d of datum) serialize_list.push({ type, value: d })
         else if (datum !== undefined)
-          serialize_list.push({ type, value: datum }) // native eoio types than can be serialised.
+          serialize_list.push({ type, value: datum }) // Native eoio types than can be serialised.
       }
 
       return serialize_list
