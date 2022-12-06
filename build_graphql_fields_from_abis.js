@@ -28,7 +28,11 @@ const {
  * ```
  * @example <caption>`Usage` in a vanilla GraphQL API.</caption>
  * ```js
- * const smartql_rpc = { fetch, rpc_url: 'https://eos.relocke.io' } // Your fetch implimentation.
+ * import actions_type from 'smartql/graphql_input_types/actions.js'
+ * import serialize_transaction from 'smartql/graphql_input_types/actions.js'
+ * import push_transaction from 'smartql/push_transaction.js'
+ *
+ * const smartql_rpc = { fetch, rpc_url: 'https://eos.relocke.io' }
  * const ABI_list = [{ account_name: 'eosio.token', abi: … }]
  * const { mutation_fields, query_fields, ast_list } =
  *   build_graphql_fields_from_abis(ABI_list)
@@ -39,7 +43,7 @@ const {
  *   fields: query_fields
  * })
  *
- * const action_fields = actions(mutation_fields)
+ * const action_fields = actions_type(mutation_fields)
  *
  * // GraphQL mutation with `eosio.token` actions added.
  * const mutations = new GraphQLObjectType({
