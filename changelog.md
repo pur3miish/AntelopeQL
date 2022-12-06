@@ -5,6 +5,8 @@
 ## Major
 
 - Changed export folder strucutre.
+- SmartQL core function argument changes.
+- Added `build_graphql_fields_from_abis` function to build customizable functions.
 
 # 10.0.1
 
