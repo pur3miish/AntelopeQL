@@ -5,7 +5,7 @@ const packed_transaction_type = require('./graphql_object_types/packed_transacti
 const mutation_resolver = require('./mutation_resolver.js')
 
 const serialize_transaction = (actions, ast_list) => ({
-  description: 'Serialise a list of actions into atomic binary instruction.',
+  description: 'Serialise a list of actions into an atomic binary instruction.',
   type: new GraphQLNonNull(packed_transaction_type),
   args: {
     actions: {
