@@ -6,6 +6,10 @@
 
 A [GraphQL](https://graphql.org/) implementation for interacting with EOSIO **(Antelope)** based blockchains.
 
+### Motivation
+
+Integrate EOSIO ([Antelope](https://antelope.io/)) based blockchains into your GraphQL API.
+
 # Setup
 
 ```shell
@@ -23,7 +27,6 @@ $ npm i graphql # peer dependency
 
 - [function build_graphql_fields_from_abis](#function-build_graphql_fields_from_abis)
 - [function smartql](#function-smartql)
-- [type authorization](#type-authorization)
 - [type Bandwidth_cost](#type-bandwidth_cost)
 - [type packed_transaction](#type-packed_transaction)
 - [type SmartQLRPC](#type-smartqlrpc)
@@ -59,7 +62,11 @@ _Ways to `import`._
 _`Usage` in a vanilla GraphQL API._
 
 > ```js
-> const smartql_rpc = { fetch, rpc_url: 'https://eos.relocke.io' } // Your fetch implimentation.
+> import actions_type from 'smartql/graphql_input_types/actions.js'
+> import serialize_transaction from 'smartql/graphql_input_types/actions.js'
+> import push_transaction from 'smartql/push_transaction.js'
+>
+> const smartql_rpc = { fetch, rpc_url: 'https://eos.relocke.io' }
 > const ABI_list = [{ account_name: 'eosio.token', abi: … }]
 > const { mutation_fields, query_fields, ast_list } =
 >   build_graphql_fields_from_abis(ABI_list)
@@ -70,7 +77,7 @@ _`Usage` in a vanilla GraphQL API._
 >   fields: query_fields
 > })
 >
-> const action_fields = actions(mutation_fields)
+> const action_fields = actions_type(mutation_fields)
 >
 > // GraphQL mutation with `eosio.token` actions added.
 > const mutations = new GraphQLObjectType({
@@ -141,19 +148,6 @@ _`Usage`_
 > ```
 >
 > > Logged output was "data": {"eosio_token": {"accounts": \[{"balance": "100.0211 EOS"}]}}}
-
----
-
-## type authorization
-
-The action authorization type for action validation.
-
-**Type:** object
-
-| Property     | Type   | Description                                      |
-| :----------- | :----- | :----------------------------------------------- |
-| `actor`      | string | Name of the account that is trying to authorize. |
-| `permission` | string | Name of the `permission` of the the `actor`      |
 
 ---
 
