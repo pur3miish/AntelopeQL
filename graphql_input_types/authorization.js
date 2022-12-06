@@ -10,6 +10,7 @@ const name_type = require('../eosio_types/name_type.js')
  * @type {object}
  * @prop {string} actor Name of the account that is trying to authorize.
  * @prop {string} permission Name of the `permission` of the the `actor`
+ * @ignore
  */
 
 const authorization_type = new GraphQLInputObjectType({
