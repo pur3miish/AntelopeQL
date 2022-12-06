@@ -6,7 +6,7 @@
     "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
     "prepare:jsdoc": "jsdoc-md",
     "prepare:prettier": "prettier --write readme.md && prettier --write changelog.md",
-    "test": "npm run test:eslint && npm run test:prettier",
+    "test": "npm run test:api && npm run test:eslint && npm run test:prettier",
     "test:api": "ALLOW_MISSING_COVERAGE=1 coverage-node test/index.test.mjs",
     "test:eslint": "eslint .",
     "test:prettier": "prettier -c .",
@@ -92,7 +92,7 @@
   "dependencies": {
     "base58-js": "*",
     "eos-ecc": "^3.1.0",
-    "eosio-wasm-js": "^2.1.0-rc",
+    "eosio-wasm-js": "^2.1.0",
     "ripemd160-js": "*"
   }
 }
