@@ -4,6 +4,7 @@
 
 ## Major
 
+- Added support for context free actions [#12](https://github.com/relocke/smartql/issues/12).
 - Changed export folder strucutre.
 - SmartQL core function argument changes.
 - Added `build_graphql_fields_from_abis` function to build customizable functions.
