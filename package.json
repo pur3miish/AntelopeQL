@@ -34,17 +34,17 @@
   "exports": {
     "./graphql_object_types/*": "./graphql_object_types/*",
     "./graphql_input_types/*": "./graphql_input_types/*",
-    "./blockchain/index.js": "./blockchain/index.js",
-    "./eosio_types/index.js": "./eosio_types/index.js",
+    "./eosio_types/*": "./eosio_types/*",
+    "./blockchain/*": "./blockchain/*",
     "./build_graphql_fields_from_abis.js": "./build_graphql_fields_from_abis.js",
     "./eos_abi_to_graphql_ast.js": "./build_graphql_fields_from_abis.js",
     "./mutation_resolver.js": "./mutation_resolver.js",
-    "./package.json": "./package.json",
+    "./query_resolver.js": "./query_resolver.js",
     "./push_serialized_transaction.js": "./push_serialized_transaction.js",
     "./push_transaction_rpc.js": "./push_transaction_rpc.js",
     "./push_transaction.js": "./push_transaction.js",
-    "./query_resolver.js": "./query_resolver.js",
     "./serialize_transaction.js": "./serialize_transaction.js",
+    "./package.json": "./package.json",
     ".": "./smartql.js"
   },
   "repository": {
