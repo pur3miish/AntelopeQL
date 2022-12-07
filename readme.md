@@ -135,6 +135,7 @@ _`Usage`_
 > import fetch from 'isomorphic-fetch' // Your fetch implementation.
 > const query = `{ eosio_token { accounts(arg: { scope: "relockeblock" }){ balance } } }`
 > const smartql_rpc = { fetch, rpc_url: 'https://eos.relocke.io' } // connection configuration
+>
 > smartql({ query }, { contracts: ['eosio.token'] }, smartql_rpc }).then(console.log)
 > ```
 >
