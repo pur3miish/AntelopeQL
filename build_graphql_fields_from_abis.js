@@ -11,7 +11,7 @@ const {
 } = require('./eos_abi_to_graphql_ast.js')
 
 /**
- * Build GraphQL query and mutation fields for a given list of ABI lists.
+ * Builds GraphQL query and mutation fields from a list of ABIs. These GraphQL fields can readily be consumed by a GraphQL Schema, enabling developers the ability to integrate a varienty of Antelope based blockchains into their GraphQL service.
  * @name build_graphql_fields_from_abis
  * @kind function
  * @param {Array<object>} abi_list Argument.
