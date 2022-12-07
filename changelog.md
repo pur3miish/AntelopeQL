@@ -8,6 +8,10 @@
 - SmartQL core function argument changes.
 - Added `build_graphql_fields_from_abis` function to build customizable functions.
 
+## Patch
+
+- typo fixes to `serialize`.
+
 # 10.0.1
 
 ## Patch
@@ -28,7 +32,7 @@
 
 ## Major
 
-- Removed internal signature in favour of serialised transaction type.
+- Removed internal signature in favour of serialized transaction type.
 - Simplified mutation schema to include two mutations fields, `serialize_transaction` and `push_transaction`.
 - Removed broadcast type.
 
