@@ -20,13 +20,13 @@ const {
  * @returns {object} SmartQL fields.
  * @example <caption>Ways to `require`.</caption>
  * ```js
- * const build_graphql_fields_from_abis = require('smartql/build_graphql_fields_from_abis')
+ * const build_graphql_fields_from_abis = require('smartql/build_graphql_fields_from_abis.js')
  * ```
  * @example <caption>Ways to `import`.</caption>
  * ```js
- * import build_graphql_fields_from_abis from 'smartql/build_graphql_fields_from_abis'
+ * import build_graphql_fields_from_abis from 'smartql/build_graphql_fields_from_abis.js'
  * ```
- * @example <caption>`Usage` in a vanilla GraphQL API.</caption>
+ * @example <caption>`Usage` in a custom GraphQL API.</caption>
  * ```js
  * import actions_type from 'smartql/graphql_input_types/actions.js'
  * import serialize_transaction from 'smartql/graphql_input_types/actions.js'
