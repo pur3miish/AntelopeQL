@@ -9,6 +9,7 @@ const get_block = require('./get_block.js')
 const get_currency_balance = require('./get_currency_balance.js')
 const get_currency_stats = require('./get_currency_stats.js')
 const get_info = require('./get_info.js')
+const get_table = require('./get_table_by_scope.js')
 
 const blockchain_field = {
   description: `Retrieve infomation about the blockchain, cryptocurrency and accounts.`,
@@ -22,7 +23,8 @@ const blockchain_field = {
       get_currency_balance,
       get_currency_stats,
       get_info,
-      deserialize_action_data
+      deserialize_action_data,
+      get_table
     }
   }),
   resolve(_, __, { smartql_rpc: { fetch, rpc_url } }) {
