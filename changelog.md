@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# Next
+
+## Patch
+
+- Fixed to smartql JSDoc example in readme.
+
 # 11.0.0
 
 ## Major
@@ -8,7 +14,6 @@
 - Changed export folder strucutre.
 - SmartQL core function argument changes.
 - Added `build_graphql_fields_from_abis` function to build customisable GraphQL fields for integrating into your GraphQL service.
-
 
 ## Patch
 

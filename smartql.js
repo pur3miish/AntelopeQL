@@ -51,7 +51,7 @@ const serialize_transaction = require('./serialize_transaction.js')
  * const query = `{ eosio_token { accounts(arg: { scope: "relockeblock" }){ balance } } }`
  * const smartql_rpc = { fetch, rpc_url: 'https://eos.relocke.io' } // connection configuration
  *
- * smartql({ query }, { contracts: ['eosio.token'] }, smartql_rpc }).then(console.log)
+ * smartql({ query }, { contracts: ['eosio.token'] }, smartql_rpc).then(console.log)
  * ```
  * > Logged output was "data": {"eosio_token": {"accounts": [{"balance": "100.0211 EOS"}]}}}
  */
