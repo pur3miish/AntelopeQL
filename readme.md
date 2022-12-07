@@ -4,11 +4,7 @@
 
 [![NPM Package](https://img.shields.io/npm/v/smartql.svg)](https://www.npmjs.org/package/smartql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/smartql/blob/main/LICENSE)
 
-A [GraphQL](https://graphql.org/) implementation for interacting with EOSIO **(Antelope)** based blockchains.
-
-### Motivation
-
-Integrate EOSIO ([Antelope](https://antelope.io/)) based blockchains into your GraphQL API.
+A [GraphQL](https://graphql.org/) implementation for interacting with **[Antelope](https://antelope.io/)** **(EOSIO)** based blockchains.
 
 # Setup
 
@@ -27,15 +23,10 @@ $ npm i graphql # peer dependency
 
 - [function build_graphql_fields_from_abis](#function-build_graphql_fields_from_abis)
 - [function smartql](#function-smartql)
-- [type Bandwidth_cost](#type-bandwidth_cost)
-- [type packed_transaction](#type-packed_transaction)
-- [type SmartQLRPC](#type-smartqlrpc)
-- [type transaction_receipt](#type-transaction_receipt)
-- [type transaction_status](#type-transaction_status)
 
 ## function build_graphql_fields_from_abis
 
-Build GraphQL query and mutation fields for a given list of ABI lists.
+Builds GraphQL query and mutation fields from a list of ABIs. These GraphQL fields can readily be consumed by a GraphQL Schema, enabling developers the ability to integrate a varienty of Antelope based blockchains into their GraphQL service.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
@@ -122,7 +113,7 @@ The core function for interacting with blockchain.
 | `SmartQL` | object | Argument |
 | `SmartQL.contracts` | Array\<string>? | List of EOSIO accounts that hold smart contract you wish to interact with. |
 | `SmartQL.private_keys` | Array\<string>? | List of wif private keys that will be used to sign transaction actions aka mutations. |
-| `smartql_rpc` | [SmartQLRPC](#type-smartqlrpc) | Argument. |
+| `smartql_rpc` | SmartQLRPC | Argument. |
 
 ### Examples
 
@@ -148,71 +139,3 @@ _`Usage`_
 > ```
 >
 > > Logged output was "data": {"eosio_token": {"accounts": \[{"balance": "100.0211 EOS"}]}}}
-
----
-
-## type Bandwidth_cost
-
-Bandwidth reciept for EOSIO transaction.
-
-| Property | Type | Description |
-| :-- | :-- | :-- |
-| `net_usage_words` | number | Consumption of network bandwidth (bytes). |
-| `cpu_usage_us` | number | Consumption of CPU bandwidth (µs). |
-| `status` | Transaction_status | Transaction receipt status Enum. |
-
----
-
-## type packed_transaction
-
-The packed transaction type.
-
-**Type:** object
-
-| Property | Type | Description |
-| :-- | :-- | :-- |
-| `chain_id` | string | Hash representing the blockchain. |
-| `transaction_header` | string | Hex string representing the serialized transaction header. |
-| `transaction_body` | string | Hex string representing the serialized transaction body. |
-
----
-
-## type SmartQLRPC
-
-SmartQL’s remote procedure call (RPC) object for interacting with EOSIO based blockchains.
-
-**Type:** object
-
-| Property | Type | Description |
-| :-- | :-- | :-- |
-| `fetch` | Function | Your fetch implimentation. |
-| `rpc_url` | string | Remote proceedure call (RPC) Uniform Resource Locator (URL). |
-
----
-
-## type transaction_receipt
-
-**Type:** object
-
-| Property | Type | Description |
-| :-- | :-- | :-- |
-| `transaction_id` | string | ID of the transaction. |
-| `block_num` | number | Block number where teh transaction can be found. |
-| `block_time` | stiring | The time of the transaction. |
-| `producer_block_id` | string | The block producer ID that processed the transaction. |
-| `resource_cost` | bandwidth_cost | Network cost for the transaction. |
-| `scheduled` | bool | Scheduled transactions are executed at a later time. |
-
----
-
-## type transaction_status
-
-**Type:** enum
-
-| Property | Type | Description |
-| :-- | :-- | :-- |
-| `executed` | string | succeed, no error handler executed. |
-| `soft_fail` | string | objectively failed (not executed), error handler executed. |
-| `hard_fail` | string | objectively failed and error handler objectively failed thus no state change. |
-| `delayed` | string | transaction delayed/deferred/scheduled for future execution. |
-| `expired` | string | transaction expired and storage space refunded to user. |

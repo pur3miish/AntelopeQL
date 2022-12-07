@@ -3,7 +3,7 @@
 const { GraphQLError } = require('graphql')
 
 /**
- * Pushes a serialised transaction to the blockchain.
+ * Pushes a serialized transaction to the blockchain.
  * @param {object} root Argument
  * @param {string} root.transaction_header Serialized transaction header.
  * @param {string} root.transaction_body Serialized transaction body.

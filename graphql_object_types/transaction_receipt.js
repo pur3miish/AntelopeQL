@@ -21,6 +21,7 @@ const authorizing_account_type = require('./authorization.js')
  * @prop {string} hard_fail objectively failed and error handler objectively failed thus no state change.
  * @prop {string} delayed transaction delayed/deferred/scheduled for future execution.
  * @prop {string} expired transaction expired and storage space refunded to user.
+ * @ignore
  */
 const transaction_status = new GraphQLEnumType({
   name: 'transaction_receipt_status',
@@ -57,6 +58,7 @@ const transaction_status = new GraphQLEnumType({
  * @prop {number} net_usage_words Consumption of network bandwidth (bytes).
  * @prop {number} cpu_usage_us Consumption of CPU bandwidth (µs).
  * @prop {Transaction_status} status Transaction receipt status Enum.
+ * @ignore
  */
 const bandwidth_cost_type = new GraphQLObjectType({
   name: 'bandwidth_cost',
@@ -117,6 +119,7 @@ const action_trace_type = new GraphQLObjectType({
  * @prop {string} producer_block_id The block producer ID that processed the transaction.
  * @prop {bandwidth_cost} resource_cost Network cost for the transaction.
  * @prop {bool} scheduled Scheduled transactions are executed at a later time.
+ * @ignore
  */
 const transaction_receipt_type = new GraphQLObjectType({
   name: 'transaction_receipt',

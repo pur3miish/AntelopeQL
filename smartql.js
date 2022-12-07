@@ -22,6 +22,7 @@ const serialize_transaction = require('./serialize_transaction.js')
  * @type {object}
  * @prop {Function} fetch Your fetch implimentation.
  * @prop {string} rpc_url Remote proceedure call (RPC) Uniform Resource Locator (URL).
+ * @ignore
  */
 
 /**
@@ -49,6 +50,7 @@ const serialize_transaction = require('./serialize_transaction.js')
  * import fetch from 'isomorphic-fetch' // Your fetch implementation.
  * const query = `{ eosio_token { accounts(arg: { scope: "relockeblock" }){ balance } } }`
  * const smartql_rpc = { fetch, rpc_url: 'https://eos.relocke.io' } // connection configuration
+ *
  * smartql({ query }, { contracts: ['eosio.token'] }, smartql_rpc }).then(console.log)
  * ```
  * > Logged output was "data": {"eosio_token": {"accounts": [{"balance": "100.0211 EOS"}]}}}

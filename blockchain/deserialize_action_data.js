@@ -17,7 +17,7 @@ const deserialize_action_data = {
       type: new GraphQLNonNull(name_type)
     },
     binargs: {
-      description: 'Serialised action data.',
+      description: 'Serialized action data.',
       type: new GraphQLNonNull(bytes_type)
     }
   },

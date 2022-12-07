@@ -10,6 +10,7 @@ const { GraphQLObjectType, GraphQLString } = require('graphql')
  * @prop {string} chain_id Hash representing the blockchain.
  * @prop {string} transaction_header Hex string representing the serialized transaction header.
  * @prop {string} transaction_body Hex string representing the serialized transaction body.
+ * @ignore
  */
 const packed_transaction_type = new GraphQLObjectType({
   name: 'packed_transaction',
@@ -21,11 +22,11 @@ const packed_transaction_type = new GraphQLObjectType({
     },
     transaction_header: {
       type: GraphQLString,
-      description: 'Transaction header for TaPoS protection.'
+      description: 'Serialized transaction header _(TaPoS protection)_.'
     },
     transaction_body: {
       type: GraphQLString,
-      description: 'Packed serialized transaction instructions.'
+      description: 'Serialized transaction body _(bytecode instructions)_.'
     }
   }
 })
