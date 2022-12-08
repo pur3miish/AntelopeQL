@@ -1,63 +1,5 @@
 import { deepStrictEqual } from 'assert'
-import { createRequire } from 'module'
-import {
-  GraphQLObjectType,
-  GraphQLSchema,
-  Source,
-  execute,
-  parse,
-  validate
-} from 'graphql'
-import fetch from 'node-fetch'
-import build_graphql_fields_from_abis from '../build_graphql_fields_from_abis.js'
-import actions from '../graphql_input_types/actions.js'
-import serialize_transaction from '../serialize_transaction.js'
-
-const require = createRequire(import.meta.url)
-const ABI_LIST = [
-  { account_name: 'eosio', abi: require('./abis/eosio.json') },
-  { account_name: 'eosio.token', abi: require('./abis/eosio.token.json') },
-  { account_name: 'nutrijournal', abi: require('./abis/nutrientjrn.abi.json') }
-]
-
-const { mutation_fields, query_fields, ast_list } =
-  build_graphql_fields_from_abis(ABI_LIST)
-
-const queries = new GraphQLObjectType({
-  name: 'Query',
-  description: 'Query table data from EOSIO blockchain.',
-  fields: query_fields
-})
-
-const action_fields = actions(mutation_fields)
-const mutations = new GraphQLObjectType({
-  name: 'Mutation',
-  description: 'Push transactions to the blockchain.',
-  fields: {
-    serialize_transaction: serialize_transaction(action_fields, ast_list)
-  }
-})
-
-const schema = new GraphQLSchema({ query: queries, mutation: mutations })
-
-const SmartQL = query => {
-  const document = parse(new Source(query))
-  const queryErrors = validate(schema, document)
-  if (queryErrors.length) throw queryErrors
-
-  const smartql_rpc = { fetch, rpc_url: 'https://api.kylin.alohaeos.com' }
-
-  return execute({
-    schema,
-    document,
-    contextValue: {
-      smartql_rpc
-    },
-    fieldResolver(rootValue, args, ctx, { fieldName }) {
-      return rootValue[fieldName]
-    }
-  })
-}
+import SmartQL from './smartql_utility.mjs'
 
 export default async tests => {
   tests.add('serialize_transaction mutations', async () => {
@@ -285,6 +227,55 @@ export default async tests => {
         .transaction_body,
       '000110cdbc9a3e77b39e00f254ee663d53320110cdbc9a3e77b39e00000000a8ed3232220000000080abb2e1000105776174657200010d6d6163726f6e75747269656e740000000000000000000000000000000000000000000000000000000000000000000000',
       'nutrijournal::addnutrient with optional arguments'
+    )
+
+    const variantexample = /* GraphQL */ `
+      mutation {
+        serialize_transaction(
+          actions: [
+            {
+              relockeblock: {
+                variantex: {
+                  cool: { coolinfo: { lasetname: "locke", first: "john" } }
+                  authorization: { actor: "relockeblock" }
+                }
+              }
+            }
+          ]
+        ) {
+          transaction_body
+        }
+      }
+    `
+    deepStrictEqual(
+      (await SmartQL(variantexample)).data.serialize_transaction
+        .transaction_body,
+      '000100118d474144a3ba0000e82a4fe3aed90100118d474144a3ba00000000a8ed32320f010000000000301b7d056c6f636b65000000000000000000000000000000000000000000000000000000000000000000',
+      'variant ABI type example.'
+    )
+    const variantexample2 = /* GraphQL */ `
+      mutation {
+        serialize_transaction(
+          actions: [
+            {
+              relockeblock: {
+                variantex: {
+                  cool: { asset: "14.88 TOKEN" }
+                  authorization: { actor: "relockeblock" }
+                }
+              }
+            }
+          ]
+        ) {
+          transaction_body
+        }
+      }
+    `
+    deepStrictEqual(
+      (await SmartQL(variantexample2)).data.serialize_transaction
+        .transaction_body,
+      '000100118d474144a3ba0000e82a4fe3aed90100118d474144a3ba00000000a8ed32321100d00500000000000002544f4b454e0000000000000000000000000000000000000000000000000000000000000000000000',
+      'variant ABI type example2.'
     )
   })
 }

@@ -1,5 +1,8 @@
 # Testing and Troubleshooting
 
+**SmartQL tests are done with a local [nodeos](https://developers.eos.io/manuals/eos/v2.1/nodeos/index) blockchain.**
+
+
 ## RPC_URLs
 
 Ensure that the APIs you connect to support the http(s) endpoints listed below.
