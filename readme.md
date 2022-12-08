@@ -41,16 +41,16 @@ Builds GraphQL query and mutation fields from a list of ABIs. These GraphQL fiel
 _Ways to `require`._
 
 > ```js
-> const build_graphql_fields_from_abis = require('smartql/build_graphql_fields_from_abis')
+> const build_graphql_fields_from_abis = require('smartql/build_graphql_fields_from_abis.js')
 > ```
 
 _Ways to `import`._
 
 > ```js
-> import build_graphql_fields_from_abis from 'smartql/build_graphql_fields_from_abis'
+> import build_graphql_fields_from_abis from 'smartql/build_graphql_fields_from_abis.js'
 > ```
 
-_`Usage` in a vanilla GraphQL API._
+_`Usage` in a custom GraphQL API._
 
 > ```js
 > import actions_type from 'smartql/graphql_input_types/actions.js'
