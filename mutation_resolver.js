@@ -61,10 +61,23 @@ async function get_transaction_body(actions, ast_list) {
 
     const build_serialize_list = async (data, instructions) => {
       let serialize_list = []
+
       for (const instruction of instructions) {
         const { $info, name, type } = instruction
         const datum = data[name]
         const next_instruction = ast_list[contract][type] // Indicates that the AST type is not serialisable, but is another type on the AST list.
+
+        // Handles ABI variant types see https://en.cppreference.com/w/cpp/utility/variant
+        if ($info.variant) {
+          if (Object.keys(data).length > 1)
+            throw new Error(`Must only include one type for variant.`)
+          if (!datum) continue
+          else
+            serialize_list.push({
+              type: 'varuint32',
+              value: instructions.findIndex(i => i.type == type)
+            })
+        }
 
         if ($info.binary_ex) $info.optional = false // Binary extentions are optional (GraphQL types) but should not serialize an optional type.
 

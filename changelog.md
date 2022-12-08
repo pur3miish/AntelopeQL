@@ -6,6 +6,7 @@
 
 - `smartql` core function now doesn't throw an error when no actions are available on ABI.
 - Fixed to smartql JSDoc example in readme.
+- Fixed variant type bug in for query and data serialisation.
 
 # 11.0.0
 

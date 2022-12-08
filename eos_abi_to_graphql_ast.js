@@ -47,13 +47,14 @@ function handleStructs(structs) {
     for (const field of fields_with_base_fields) {
       const optional = !!field.type.match(/[$?]/gmu)
       const binary_ex = !!field.type.match(/\$/gmu)
+      const variant = !!field.type.match(/@/gmu)
       const list = !!field.type.match(/\[\]/gmu)
-      let type = field.type.replace(/[[\]?$]/gmu, '')
+      let type = field.type.replace(/[[\]?$@]/gmu, '')
       const object = !eosio_types[type]
       ast_fields[i] = {
         name: field.name,
         type,
-        $info: { object, optional, list, binary_ex }
+        $info: { object, optional, list, binary_ex, variant }
       }
       i++
     }
@@ -69,11 +70,12 @@ function handleStructs(structs) {
  */
 function eosio_abi_to_graphql_ast(abi) {
   const { types, variants } = abi
+
   const structs = [
     ...variants.map(({ name, types }) => ({
       name,
       base: '',
-      fields: types.map(item => ({ name: item, type: item }))
+      fields: types.map(item => ({ name: item, type: item + '$@' })) // @ indiacted a variant type and binary extention.
     })),
     ...types.map(({ new_type_name, type }) => ({
       name: new_type_name,
@@ -117,6 +119,7 @@ function get_graphql_fields_from_AST(AST, ABI, account_name = '') {
   let query_fields = {}
   const queryTypes = {}
   const GQL_TYPES = {}
+
   for (const table of tables) {
     let { name: table_name, type: table_type } = table
     table_name = table_name.replace(/\./gmu, '_')
@@ -125,15 +128,29 @@ function get_graphql_fields_from_AST(AST, ABI, account_name = '') {
     const buildQGL = (fields, acc = {}) => {
       for (const field of fields) {
         const { name, type, $info } = field
+
+        // Do this because of variant type from table.
+        const resolve = (data, args, context, { fieldName }) => {
+          if ($info.variant) return type == data[0] ? data[1] : null
+          return data[fieldName]
+        }
+
         if ($info.object) {
           if (!GQL_TYPES[type])
             GQL_TYPES[type] = new GraphQLObjectType({
               name: gql_account_name + type,
               fields: buildQGL(AST[type])
             })
-          acc = { ...acc, [name]: { type: Wrap(GQL_TYPES[type], $info) } }
+
+          acc = {
+            ...acc,
+            [name]: { type: Wrap(GQL_TYPES[type], $info), resolve }
+          }
         } else
-          acc = { ...acc, [name]: { type: Wrap(eosio_types[type], $info) } }
+          acc = {
+            ...acc,
+            [name]: { type: Wrap(eosio_types[type], $info), resolve }
+          }
       }
       return acc
     }
