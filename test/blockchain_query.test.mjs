@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch'
+import fetch from 'node-fetch'
 import deserialize_action_data from '../blockchain/deserialize_action_data.js'
 
 const smartql_rpc = {

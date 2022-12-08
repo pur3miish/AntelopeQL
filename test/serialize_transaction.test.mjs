@@ -8,7 +8,7 @@ import {
   parse,
   validate
 } from 'graphql'
-import fetch from 'isomorphic-fetch'
+import fetch from 'node-fetch'
 import build_graphql_fields_from_abis from '../build_graphql_fields_from_abis.js'
 import actions from '../graphql_input_types/actions.js'
 import serialize_transaction from '../serialize_transaction.js'

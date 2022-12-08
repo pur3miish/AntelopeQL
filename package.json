@@ -10,7 +10,8 @@
     "test:api": "ALLOW_MISSING_COVERAGE=1 coverage-node test/index.test.mjs",
     "test:eslint": "eslint .",
     "test:prettier": "prettier -c .",
-    "prepublishOnly": "npm test"
+    "prepublishOnly": "npm test",
+    "dev": "nodemon ./test/server.mjs"
   },
   "files": [
     "blockchain",
@@ -82,8 +83,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
     "graphql": "^16.6.0",
-    "isomorphic-fetch": "^3.0.0",
     "jsdoc-md": "^11.0.0",
+    "node-fetch": "^3.3.0",
     "nodemon": "^2.0.20",
     "prettier": "2.7",
     "test-director": "^10.0.0"
