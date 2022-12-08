@@ -4,6 +4,7 @@
 
 ## Patch
 
+- `smartql` core function now doesn't throw an error when no actions are available on ABI.
 - Fixed to smartql JSDoc example in readme.
 
 # 11.0.0

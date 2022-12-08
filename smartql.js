@@ -95,17 +95,27 @@ async function smartql(
       fields: { blockchain, ...query_fields }
     })
 
-    const action_fields = actions(mutation_fields)
+    let mutations
 
-    const mutations = new GraphQLObjectType({
-      name: 'Mutation',
-      description: 'Push transactions to the blockchain.',
-      fields: {
-        push_transaction: push_transaction(action_fields, ast_list),
-        serialize_transaction: serialize_transaction(action_fields, ast_list),
-        push_serialized_transaction
-      }
-    })
+    if (Object.keys(mutation_fields).length) {
+      const action_fields = actions(mutation_fields)
+      mutations = new GraphQLObjectType({
+        name: 'Mutation',
+        description: 'Push transactions to the blockchain.',
+        fields: {
+          push_transaction: push_transaction(action_fields, ast_list),
+          serialize_transaction: serialize_transaction(action_fields, ast_list),
+          push_serialized_transaction
+        }
+      })
+    } else
+      mutations = new GraphQLObjectType({
+        name: 'Mutation',
+        description: 'Push transactions to the blockchain.',
+        fields: {
+          push_serialized_transaction
+        }
+      })
 
     const schema = new GraphQLSchema({
       query: queries,
