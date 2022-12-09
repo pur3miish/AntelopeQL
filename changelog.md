@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# Next
+
+## Patch 11.0.2
+
+- Fixed `get_table` `limit` argument type, `boolean` is now `GraphQLInt`.
+
 # 11.0.1
 
 ## Patch

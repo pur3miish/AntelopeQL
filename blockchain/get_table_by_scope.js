@@ -6,7 +6,7 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLError,
-  GraphQLBoolean
+  GraphQLInt
 } = require('graphql')
 const name_type = require('../eosio_types/name_type.js')
 
@@ -54,8 +54,8 @@ const get_table = {
     limit: {
       description:
         'Limit number of results returned (how many items to return).',
-      type: GraphQLBoolean,
-      defaultValue: true
+      type: GraphQLInt,
+      defaultValue: 10
     },
     lower_bound: {
       description:
