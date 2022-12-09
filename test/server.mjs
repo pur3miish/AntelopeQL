@@ -9,13 +9,13 @@ const requestListener = function (req, res) {
   req.on('data', async d => {
     const smartql_rpc = { fetch: await fetch, rpc_url: 'http://127.0.0.1:8888' }
 
-    const { query } = JSON.parse(d.toString())
+    const { query, operationName } = JSON.parse(d.toString())
 
     const data = await SmartQL(
-      { query },
+      { query, operationName },
       {
         contracts: ['relockeblock'],
-        private_keys: [process.env.developer_pk]
+        private_keys: ['5JWuEZQHLpUw8na4g8Fr99ZnPiuhtQjrvJLn6xBwUBnQmYBF3Z2']
       },
       smartql_rpc
     )
