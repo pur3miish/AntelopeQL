@@ -5,6 +5,7 @@
 ## Patch
 
 - Added asset type checks (range errors).
+- Added symbol and symbol code type checks.
 
 # 11.0.2
 
