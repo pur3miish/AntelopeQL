@@ -18,7 +18,18 @@ An eosio symbol is an all uppercase string of 7 or less characters from [A-Z].
 
   `,
   name: 'symbol',
-  parseValue: symbol => symbol
+  parseValue: symbol => {
+    if (!symbol.match(/^[0-9]{1,2},[A-Z]{1,7}$/gmu))
+      throw new Error(
+        'Invalid symbol format, correct format is <precision,code>'
+      )
+    const [precision] = symbol.split(',')
+
+    if (!(precision > -1 && precision < 18))
+      throw new RangeError('Invalid symbol precision, maximum 18')
+
+    return symbol
+  }
 })
 
 module.exports = symbol_type
