@@ -1,6 +1,14 @@
 # SmartQL changelog
 
-## Patch 11.0.2
+# Next
+
+## Patch
+
+- Added asset type checks (range errors).
+
+# 11.0.2
+
+## Patch
 
 - Fixed `get_table` `limit` argument type, `boolean` is now `GraphQLInt`.
 
