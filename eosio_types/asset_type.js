@@ -24,7 +24,7 @@ An \`asset\` type describes a blockchain asset and includes a quantity and a sym
   parseValue(asset_string) {
     if (asset_string == '') return ''
 
-    if (!asset_string.match(/^\d+(\.)?\d+\s[A-Z]{1,7}$/gmu))
+    if (!asset_string.match(/^\d+(\.\d+)?\s[A-Z]{1,7}$/gmu))
       throw new TypeError('Invalid asset type supplied.')
 
     if (asset_string.replace(/[A-Z.\s]/gmu, '').length > 21)
