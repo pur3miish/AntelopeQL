@@ -71,19 +71,25 @@ function handleStructs(structs) {
 function eosio_abi_to_graphql_ast(abi) {
   const { types, variants } = abi
 
-  const structs = [
+  let structs = [
     ...variants.map(({ name, types }) => ({
       name,
       base: '',
       fields: types.map(item => ({ name: item, type: item + '$@' })) // @ indiacted a variant type and binary extention.
     })),
-    ...types.map(({ new_type_name, type }) => ({
-      name: new_type_name,
-      base: '',
-      fields: [{ name: new_type_name, type }]
-    })),
     ...abi.structs
   ]
+
+  if (types.length)
+    for (const { type: real_type, new_type_name } of types)
+      structs = structs.map(({ fields, ...struct }) => ({
+        ...struct,
+        fields: fields.map(({ name, type }) =>
+          type.match(new RegExp(`^${new_type_name}[?$]?([])?$`, 'gmu'))
+            ? { name, type: type.replace(new_type_name, real_type) }
+            : { name, type }
+        )
+      }))
 
   const structs_ast = handleStructs(structs)
 

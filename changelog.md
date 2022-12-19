@@ -4,6 +4,7 @@
 
 ## Patch
 
+- Fixed ABI types issues.
 - Added asset type checks (range errors).
 - Added symbol and symbol code type checks.
 
