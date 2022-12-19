@@ -19,16 +19,14 @@ async function query_resolver({ code }, { arg }, { smartql_rpc }, info) {
 
   const uri = rpc_url + '/v1/chain/get_table_rows'
 
-  const req = await fetch(uri, {
+  const data = await fetch(uri, {
     method: 'POST',
     headers: {
       accept: 'application/json',
       'content-type': 'application/json'
     },
     body: JSON.stringify({ json: true, code, table, ...arg })
-  })
-
-  const data = await req.json()
+  }).then(req => req.json())
 
   if (data.error) throw new GraphQLError(data.message, { extensions: data })
 
