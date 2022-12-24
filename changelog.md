@@ -1,59 +1,60 @@
 # SmartQL changelog
 
-# Next
+## Next
 
-## Patch
+### Patch
 
 - Fixed ABI types issues.
 - Added asset type checks (range errors).
 - Added symbol and symbol code type checks.
+- Dependency updates
 
-# 11.0.2
+## 11.0.2
 
-## Patch
+### Patch
 
 - Fixed `get_table` `limit` argument type, `boolean` is now `GraphQLInt`.
 
-# 11.0.1
+## 11.0.1
 
-## Patch
+### Patch
 
 - `smartql` core function now doesn't throw an error when no actions are available on ABI.
 - Fixed to smartql JSDoc example in readme.
 - Fixed variant type bug in for query and data serialisation.
 
-# 11.0.0
+## 11.0.0
 
-## Major
+### Major
 
 - Added support for context free actions [#12](https://github.com/relocke/smartql/issues/12).
 - Changed export folder strucutre.
 - SmartQL core function argument changes.
 - Added `build_graphql_fields_from_abis` function to build customisable GraphQL fields for integrating into your GraphQL service.
 
-## Patch
+### Patch
 
 - typo fixes to `serialize`.
 
-# 10.0.1
+## 10.0.1
 
-## Patch
+### Patch
 
 - Fixes to push transaction mutation resolver.
 
-# 10.0.0
+## 10.0.0
 
-## Major
+### Major
 
 - `push_transaction` mutation inputs are more intuitive (include `transaction_body` & `transaction_header`).
 
-## Minor
+### Minor
 
 - readme.md more descriptive.
 
-# 9.0.0
+## 9.0.0
 
-## Major
+### Major
 
 - Removed internal signature in favour of serialized transaction type.
 - Simplified mutation schema to include two mutations fields, `serialize_transaction` and `push_transaction`.
