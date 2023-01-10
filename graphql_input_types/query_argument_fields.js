@@ -10,15 +10,7 @@ const index_position_enum_type = new GraphQLEnumType({
   name: 'index_position_enum_type',
   values: {
     primary: { value: 'primary' },
-    secondary: { value: 'secondary' },
-    tertiary: { value: 'tertiary' },
-    fourth: { value: 'fourth' },
-    fifth: { value: 'fifth' },
-    sixth: { value: 'sixth' },
-    seventh: { value: 'seventh' },
-    eighth: { value: 'eighth' },
-    ninth: { value: 'ninth' },
-    tenth: { value: 'tenth' }
+    secondary: { value: 'secondary' }
   }
 })
 
