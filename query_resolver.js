@@ -17,6 +17,14 @@ async function query_resolver({ code }, { arg }, { smartql_rpc }, info) {
   const { fieldName: query_name } = info
   const table = query_name.replace(/_/gmu, '.')
 
+  if (
+    arg.key_type == 'i256' ||
+    arg.key_type == 'ripemd160' ||
+    arg.key_type == 'sha256'
+  ) {
+    arg.encode_type = 'hex'
+    arg.lower_bound = arg.lower_bound ?? '00'
+  }
   const uri = rpc_url + '/v1/chain/get_table_rows'
 
   const data = await fetch(uri, {
