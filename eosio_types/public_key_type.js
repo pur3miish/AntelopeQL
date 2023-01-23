@@ -1,29 +1,25 @@
 'use strict'
-const { base58_to_binary } = require('base58-js')
+
+const { legacy_to_public_key, validate_public_key } = require('eos-ecc')
 const { GraphQLScalarType } = require('graphql')
-const ripemd160 = require('ripemd160-js')
 
 const public_key_type = new GraphQLScalarType({
   description: `\`Public key type\`
   ---
 
-  EOS public keys should begin with EOS and include base58 characters only.
+  Public keys should begin with PUB_K1 (or EOS for legacy keys) and include base58 characters only.
   `,
   name: 'public_key',
+  async serialize(legacy_key) {
+    if (!legacy_key.startsWith('EOS')) return legacy_key
+
+    return legacy_to_public_key(legacy_key)
+  },
   async parseValue(public_key) {
     if (public_key == '') return ''
-    if (!public_key.startsWith('EOS'))
-      throw new TypeError('Public key should start with EOS')
 
-    const whole = base58_to_binary(public_key.replace('EOS', ''))
-    const raw_public_key = whole.slice(0, -4)
-    const checksum = whole.slice(-4)
-
-    const hash = await ripemd160(raw_public_key)
-    hash.slice(0, 4).forEach((i, x) => {
-      if (i != checksum[x]) throw new RangeError('Invalid public key checksum.')
-    })
-
+    const { valid, message } = await validate_public_key(public_key)
+    if (!valid) throw new RangeError(message)
     return public_key
   }
 })

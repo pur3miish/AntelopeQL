@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "11.0.2",
+  "version": "11.1.0",
   "description": "A GraphQL implementation for interacting with EOSIO Antelope based blockchains.",
   "scripts": {
     "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
@@ -29,7 +29,7 @@
     "smartql.js"
   ],
   "engines": {
-    "node": ">=15"
+    "node": ">=16"
   },
   "sideEffects": false,
   "exports": {
@@ -94,7 +94,7 @@
   },
   "dependencies": {
     "base58-js": "*",
-    "eos-ecc": "^3.1.0",
+    "eos-ecc": "^4.0.0",
     "eosio-wasm-js": "^2.1.1",
     "ripemd160-js": "*"
   }

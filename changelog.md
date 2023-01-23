@@ -1,13 +1,15 @@
 # SmartQL changelog
 
-## Next
+## 11.1.0
 
 ### Minor
 
+- Support for (PUB_K1) public keys added
 - Query resolver now detects the encode type from the key type.
 
 ### Patch
 
+- Depen updated.
 - Secondary index bug fix.
 - Fixed ABI types issues.
 - Added asset type checks (range errors).
