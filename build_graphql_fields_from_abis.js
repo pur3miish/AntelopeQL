@@ -7,8 +7,8 @@ const {
 } = require('graphql')
 const {
   get_graphql_fields_from_AST,
-  eosio_abi_to_graphql_ast
-} = require('./eos_abi_to_graphql_ast.js')
+  antelope_abi_to_graphql_ast
+} = require('./antelope_abi_to_graphql_ast.js')
 
 /**
  * Builds GraphQL query and mutation fields from a list of ABIs. These GraphQL fields can readily be consumed by a GraphQL Schema, enabling developers the ability to integrate a varienty of Antelope based blockchains into their GraphQL service.
@@ -80,7 +80,7 @@ function build_graphql_fields_from_abis(abi_list) {
 
   for (const { abi, account_name } of abi_list) {
     const name = account_name.replace(/\./gmu, '_')
-    const AST = eosio_abi_to_graphql_ast(abi)
+    const AST = antelope_abi_to_graphql_ast(abi)
     ast_list[name] = AST // For use in serializing data in mutation resolver.
     const { query_fields, mutation_fields } = get_graphql_fields_from_AST(
       AST,
