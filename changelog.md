@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# V 11.1.2
+
+### Patch
+
+- Reverted destructured inports.
+
 # V 11.1.1
 
 ### Patch

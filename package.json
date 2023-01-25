@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "11.1.1",
+  "version": "11.1.2",
   "main": "index.js",
   "description": "A GraphQL implementation for interacting with EOSIO Antelope based blockchains.",
   "scripts": {
@@ -27,8 +27,7 @@
     "push_transaction_rpc.js",
     "push_transaction.js",
     "query_resolver.js",
-    "serialize_transaction.js",
-    "smartql.js"
+    "serialize_transaction.js"
   ],
   "engines": {
     "node": ">=16"
@@ -48,7 +47,6 @@
     "./push_transaction.js": "./push_transaction.js",
     "./serialize_transaction.js": "./serialize_transaction.js",
     "./package.json": "./package.json",
-    "./smartql.js": "./smartql.js",
     ".": "./index.js"
   },
   "repository": {
