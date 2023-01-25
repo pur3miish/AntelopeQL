@@ -1,11 +1,11 @@
 # SmartQL changelog
 
-# Next
+# V 11.1.1
 
 ### Patch
 
-- Added index for destructured inports.
 - Changed function name to from eosio to antelope.
+- Added index for destructured inports.
 
 ## 11.1.0
 

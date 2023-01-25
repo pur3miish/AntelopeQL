@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "11.1.0",
+  "version": "11.1.1",
   "main": "index.js",
   "description": "A GraphQL implementation for interacting with EOSIO Antelope based blockchains.",
   "scripts": {
