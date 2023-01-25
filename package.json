@@ -1,6 +1,7 @@
 {
   "name": "smartql",
   "version": "11.1.0",
+  "main": "index.js",
   "description": "A GraphQL implementation for interacting with EOSIO Antelope based blockchains.",
   "scripts": {
     "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
@@ -14,12 +15,13 @@
     "dev": "nodemon ./test/server.mjs"
   },
   "files": [
+    "index.js",
     "blockchain",
     "eosio_types",
     "graphql_input_types",
     "graphql_object_types",
     "build_graphql_fields_from_abis.js",
-    "eos_abi_to_graphql_ast.js",
+    "antelope_abi_to_graphql_ast.js",
     "mutation_resolver.js",
     "push_serialized_transaction.js",
     "push_transaction_rpc.js",
@@ -38,7 +40,7 @@
     "./eosio_types/*": "./eosio_types/*",
     "./blockchain/*": "./blockchain/*",
     "./build_graphql_fields_from_abis.js": "./build_graphql_fields_from_abis.js",
-    "./eos_abi_to_graphql_ast.js": "./build_graphql_fields_from_abis.js",
+    "./antelope_abi_to_graphql_ast.js": "./antelope_abi_to_graphql_ast.js",
     "./mutation_resolver.js": "./mutation_resolver.js",
     "./query_resolver.js": "./query_resolver.js",
     "./push_serialized_transaction.js": "./push_serialized_transaction.js",
@@ -46,7 +48,8 @@
     "./push_transaction.js": "./push_transaction.js",
     "./serialize_transaction.js": "./serialize_transaction.js",
     "./package.json": "./package.json",
-    ".": "./smartql.js"
+    "./smartql.js": "./smartql.js",
+    ".": "./index.js"
   },
   "repository": {
     "type": "git",
