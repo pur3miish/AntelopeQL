@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+# V 11.1.3
+
+### Patch
+
+- Dependency now install @ latests.
+
 # V 11.1.2
 
 ### Patch
