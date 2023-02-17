@@ -1,57 +1,56 @@
 {
   "name": "smartql",
-  "version": "11.1.3",
-  "main": "index.js",
+  "version": "12.0.0-beta.0",
   "description": "A GraphQL implementation for interacting with EOSIO Antelope based blockchains.",
+  "repository": "github:pur3miish/smartql",
+  "bugs": "https://github.com/pur3miish/smartql/issues",
+  "homepage": "https://github.com/pur3miish/smartql#readme",
+  "author": "pur3miish",
+  "license": "MIT",
   "scripts": {
-    "prepare": "npm run prepare:jsdoc && npm run prepare:prettier",
-    "prepare:jsdoc": "jsdoc-md",
-    "prepare:prettier": "prettier --write readme.md && prettier --write changelog.md && prettier --write test/readme.md",
-    "test": "npm run test:api && npm run test:eslint && npm run test:prettier",
-    "test:api": "ALLOW_MISSING_COVERAGE=1 coverage-node test/index.test.mjs",
-    "test:eslint": "eslint .",
-    "test:prettier": "prettier -c .",
+    "eslint": "eslint .",
+    "prettier": "prettier -c .",
+    "prettier:readme": "prettier --write readme.md",
+    "types": "tsc -p jsconfig.json",
+    "tests": "coverage-node test/index.test.mjs",
+    "test": "npm run eslint && npm run prettier && npm run types && npm run tests",
     "prepublishOnly": "npm test",
     "dev": "nodemon ./test/server.mjs"
   },
-  "files": [
-    "index.js",
-    "blockchain",
-    "eosio_types",
-    "graphql_input_types",
-    "graphql_object_types",
-    "build_graphql_fields_from_abis.js",
-    "antelope_abi_to_graphql_ast.js",
-    "mutation_resolver.js",
-    "push_serialized_transaction.js",
-    "push_transaction_rpc.js",
-    "push_transaction.js",
-    "query_resolver.js",
-    "serialize_transaction.js"
-  ],
   "engines": {
     "node": ">=16"
   },
+  "files": [
+    "index.mjs",
+    "antelope_abi_to_graphql_ast.mjs",
+    "blockchain",
+    "build_graphql_fields_from_abis.mjs",
+    "eosio_types",
+    "graphql_input_types",
+    "graphql_object_types",
+    "mutation_resolver.mjs",
+    "push_transaction_rpc.mjs",
+    "push_transaction.mjs",
+    "query_resolver.mjs",
+    "serialize_transaction.mjs",
+    "types.mjs"
+  ],
   "sideEffects": false,
   "exports": {
-    "./graphql_object_types/*": "./graphql_object_types/*",
-    "./graphql_input_types/*": "./graphql_input_types/*",
-    "./eosio_types/*": "./eosio_types/*",
-    "./blockchain/*": "./blockchain/*",
-    "./build_graphql_fields_from_abis.js": "./build_graphql_fields_from_abis.js",
-    "./antelope_abi_to_graphql_ast.js": "./antelope_abi_to_graphql_ast.js",
-    "./mutation_resolver.js": "./mutation_resolver.js",
-    "./query_resolver.js": "./query_resolver.js",
-    "./push_serialized_transaction.js": "./push_serialized_transaction.js",
-    "./push_transaction_rpc.js": "./push_transaction_rpc.js",
-    "./push_transaction.js": "./push_transaction.js",
-    "./serialize_transaction.js": "./serialize_transaction.js",
+    ".": "./index.mjs",
+    "./antelope_abi_to_graphql_ast.mjs": "./antelope_abi_to_graphql_ast.mjs",
+    "./blockchain/*.mjs": "./blockchain/*.mjs",
+    "./build_graphql_fields_from_abis.mjs": "./build_graphql_fields_from_abis.mjs",
+    "./eosio_types/*.mjs": "./eosio_types/*.mjs",
+    "./graphql_input_types/*.mjs": "./graphql_input_types/*.mjs",
+    "./graphql_object_types/*.mjs": "./graphql_object_types/*.mjs",
+    "./mutation_resolver.mjs": "./mutation_resolver.mjs",
     "./package.json": "./package.json",
-    ".": "./index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pur3miish/smartql.git"
+    "./push_transaction_rpc.mjs": "./push_transaction_rpc.mjs",
+    "./push_transaction.mjs": "./push_transaction.mjs",
+    "./query_resolver.mjs": "./query_resolver.mjs",
+    "./serialize_transaction.mjs": "./serialize_transaction.mjs",
+    "./types.mjs": "./types.mjs"
   },
   "browserslist": [
     "> 0.5%, not OperaMini all, not IE > 0, not dead"
@@ -67,28 +66,17 @@
     "query",
     "language"
   ],
-  "author": "pur3miish",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pur3miish/smartql/issues"
-  },
-  "homepage": "https://github.com/pur3miish/smartql#readme",
   "devDependencies": {
+    "@types/node": "^18.13.0",
     "coverage-node": "^8.0.0",
-    "eslint": "^8.25.0",
-    "eslint-config-env": "^23.0.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-compat": "^4.0.1",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jsdoc": "^37",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^4.2.1",
+    "eslint": "^8.34.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
     "graphql": "^16.6.0",
-    "jsdoc-md": "^11.0.0",
     "node-fetch": "^3.3.0",
     "nodemon": "^2.0.20",
-    "prettier": "2.7",
-    "test-director": "^10.0.0"
+    "prettier": "^2.8.4",
+    "test-director": "^10.0.0",
+    "typescript": "^4.9.5"
   },
   "peerDependencies": {
     "graphql": "^16.6.0"

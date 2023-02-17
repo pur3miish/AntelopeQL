@@ -1,18 +1,36 @@
 # SmartQL changelog
 
-# V 11.1.3
+## 12.0.0
+
+### Major
+
+- Now using [ESM](https://nodejs.org/docs/latest-v16.x/api/esm.html) instead of [CJS](https://nodejs.org/docs/latest-v16.x/api/modules.html).
+- [Library module anti-pattern](https://jaydenseric.com/blog/optimal-javascript-module-design) approach
+
+### Minor
+
+- `get_required_keys` is now integrated into the smartql.
+- Renamed argument variables.
+- Added RPC URL headers argument for SmartQL.
+- Signal argument added to SmartQL network.
+
+### Patch
+
+- Typo fixes in readme
+
+## 11.1.3
 
 ### Patch
 
 - Dependency now install @ latests.
 
-# V 11.1.2
+## 11.1.2
 
 ### Patch
 
 - Reverted destructured inports.
 
-# V 11.1.1
+## 11.1.1
 
 ### Patch
 
@@ -86,89 +104,89 @@
 - Simplified mutation schema to include two mutations fields, `serialize_transaction` and `push_transaction`.
 - Removed broadcast type.
 
-## Minor
+### Minor
 
 - `eosio_types/bytes` no longer serilaizes data on return.
 - `bytes` type is now used for `push_transaction` mutation `packed_trx`.
 
-## Patch
+### Patch
 
 - depen updates.
 
-# 8.1.2
+## 8.1.2
 
-## Patch
+### Patch
 
 - `get_required_keys` now provides a more descriptive error for missing keys.
 
-# 8.1.1
+## 8.1.1
 
-## Patch
+### Patch
 
 - Bug fixe, mutation error @@iterator issue resolved.
 
-# 8.1.0
+## 8.1.0
 
-## Minor
+### Minor
 
 - Added `signatures` and `meta signatures` to the graphql mutation non broadcast `packed_transaction_type`.
 
-## Patch
+### Patch
 
 - Added .js extention to files.
 
-# 8.0.1
+## 8.0.1
 
-## Patch
+### Patch
 
 - Fixes to `get_accounts_by_authorizers`, added default array to keys resolver argument and await the public key scalar type as it returns a promise.
 
-# 8.0.0
+## 8.0.0
 
-## Major
+### Major
 
 - Now supports eosio update authorizations mutation.
 
-# 7.3.0
+## 7.3.0
 
-## Major
+### Major
 
 - SmartQL query blockchain get account will return a more descriptive error.
 
-# 7.2.0
+## 7.2.0
 
-## Major
+### Major
 
 - Changes to reported error object.
 
-# 7.1.0
+## 7.1.0
 
-## Major
+### Major
 
 - RPC Error reporting is more descriptive.
 
-## Patch
+### Patch
 
 - Added ReLocke (EOS and Jungle) rpc url end points to read me.
 - Added list of endpoints BPs need to support.
 
-# 7.0.1
+## 7.0.1
 
-## Patch
+### Patch
 
 - Dependency updated.
 - Fixes [#2](https://github.com/pur3miish/base58-js/issues/2).
 
-# 7.0.0
+## 7.0.0
 
-## Major
+### Major
 
 - Destructured imports.
 - Base query string changed to include contract base.
 - Can now extend GraphQL schema.
 - Can now handle multiple `EOSIO` Smart contracts.
 
-## Minor
+### Minor
 
 - Added chain queries and mutations.
 - Added no query argument option, where the smart contract has no query.
@@ -176,67 +194,67 @@
 - Optional arguments supported.
 - Added support for variant types.
 
-## Patch
+### Patch
 
 - Peer dependency GraphQL ^16.
 - Refactored code base to set up unit test.
 - Removed graphql non null type from top level GraphQL mutations.
 - Updated dependencies.
 
-# V6.0.4
+## 6.0.4
 
-## Patch
+### Patch
 
 - Updated peer dependency `eoc-ecc` to ^2.
 
-# V6.0.3
+## 6.0.3
 
-## Patch
+### Patch
 
 - Updated depen.
 
-# V6.0.2
+## V6.0.2
 
-## Patch
+### Patch
 
 - Added GraphQL Enum type to `key_type` for SmartQL queries.
 - Set default key type to `name`.
 - Key type encoding for smartql query.
 
-# V6.0.1
+## 6.0.1
 
 ## Patch
 
 - SmartQL queries now handles errors returned from EOSIO rpc table requests, Errors are thrown with `GraphQLErrors`.
 
-# V6.0.0
+## 6.0.0
 
-## Major
+### Major
 
 - Better stability for handling name collisions in GraphQL.
 - Favour terse introspection schema.
 
-# V5.1.0
+## 5.1.0
 
-## Minor
+### Minor
 
 - Auth actor is now non nullable field.
 
-# V5.0.0
+### 5.0.0
 
-## Major
+### Major
 
 - Restructured GraphQL API to be contract specific, i.e. GraphQL types are now generated with contract name specific names to prevent any duplicate error types thrown by GraphQL.
 - New `build_fields` function available in public dir, generate GraphQL query and mutation fields for a contract that can be readily consumed by a GraphQL schema.
 - GraphQL type that are specific to EOSIO are moved to public Dir _(available for deep imports)_.
 
-## Minor
+### Minor
 
 - Abstracted the EOSIO type serialisation into its own package [eosio-wasm-js](https://github.com/pur3miish/eosio-wasm-js).
 
-## Patch
+### Patch
 
-## V4.0.0
+## 4.0.0
 
 ### Major
 
@@ -256,7 +274,7 @@
 - New logo design
 - Updated dependencies
 
-## V3.0.0
+## 3.0.0
 
 ### Major
 
@@ -270,7 +288,7 @@
 
 - content type header added to `get_table_rows` & `get_table_by_scope`
 
-## V2.0.1
+## 2.0.1
 
 ### Patch
 

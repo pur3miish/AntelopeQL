@@ -1,74 +1,74 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT ",
-    "version": "eosio::abi/1.2",
-    "types": [],
-    "structs": [
+  "____comment": "This file was generated with eosio-abigen. DO NOT EDIT ",
+  "version": "eosio::abi/1.2",
+  "types": [],
+  "structs": [
+    {
+      "name": "coolinfo",
+      "base": "",
+      "fields": [
         {
-            "name": "coolinfo",
-            "base": "",
-            "fields": [
-                {
-                    "name": "first",
-                    "type": "name"
-                },
-                {
-                    "name": "lasetname",
-                    "type": "string"
-                }
-            ]
+          "name": "first",
+          "type": "name"
         },
         {
-            "name": "exchange",
-            "base": "",
-            "fields": [
-                {
-                    "name": "username",
-                    "type": "name"
-                },
-                {
-                    "name": "cool",
-                    "type": "variant_name_string"
-                }
-            ]
+          "name": "lasetname",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "exchange",
+      "base": "",
+      "fields": [
+        {
+          "name": "username",
+          "type": "name"
         },
         {
-            "name": "variantex",
-            "base": "",
-            "fields": [
-                {
-                    "name": "cool",
-                    "type": "variant_asset_coolinfo"
-                }
-            ]
+          "name": "cool",
+          "type": "variant_name_string"
         }
-    ],
-    "actions": [
+      ]
+    },
+    {
+      "name": "variantex",
+      "base": "",
+      "fields": [
         {
-            "name": "variantex",
-            "type": "variantex",
-            "ricardian_contract": ""
+          "name": "cool",
+          "type": "variant_asset_coolinfo"
         }
-    ],
-    "tables": [
-        {
-            "name": "exchanges",
-            "type": "exchange",
-            "index_type": "i64",
-            "key_names": [],
-            "key_types": []
-        }
-    ],
-    "kv_tables": {},
-    "ricardian_clauses": [],
-    "variants": [
-        {
-            "name": "variant_asset_coolinfo",
-            "types": ["asset","coolinfo"]
-        },
-        {
-            "name": "variant_name_string",
-            "types": ["name","string"]
-        }
-    ],
-    "action_results": []
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "name": "variantex",
+      "type": "variantex",
+      "ricardian_contract": ""
+    }
+  ],
+  "tables": [
+    {
+      "name": "exchanges",
+      "type": "exchange",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    }
+  ],
+  "kv_tables": {},
+  "ricardian_clauses": [],
+  "variants": [
+    {
+      "name": "variant_asset_coolinfo",
+      "types": ["asset", "coolinfo"]
+    },
+    {
+      "name": "variant_name_string",
+      "types": ["name", "string"]
+    }
+  ],
+  "action_results": []
 }
