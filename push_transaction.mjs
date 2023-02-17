@@ -1,4 +1,6 @@
-import { GraphQLNonNull } from "graphql";
+import legacy_to_public_key from "eos-ecc/legacy_to_public_key.mjs";
+import sign_packed_txn from "eos-ecc/sign_packed_txn.mjs";
+import { GraphQLError, GraphQLNonNull } from "graphql";
 
 import configuration_type from "./graphql_input_types/configuration.mjs";
 import transaction_receipt from "./graphql_object_types/transaction_receipt.mjs";
@@ -34,7 +36,10 @@ const push_transaction = (actions, ast_list) => ({
 
     const { fetch, rpc_url, ...fetchOptions } = network;
 
-    const { required_keys } = await fetch(
+    if (!available_keys.length)
+      throw new GraphQLError("No private keys found.");
+
+    const { required_keys, ...errors } = await fetch(
       `${rpc_url}/v1/chain/get_required_keys`,
       {
         method: "POST",
@@ -46,19 +51,22 @@ const push_transaction = (actions, ast_list) => ({
       }
     ).then((res) => res.json());
 
-    const { default: sign_packed_txn } = await import(
-      "eos-ecc/sign_packed_txn.mjs"
-    );
+    if (errors.message)
+      throw new GraphQLError("No transaction sent", {
+        extensions: errors
+      });
 
     const signatures = await Promise.all(
-      required_keys?.map((key) =>
-        sign_packed_txn({
-          chain_id,
-          transaction_body,
-          transaction_header,
-          wif_private_key: key_pairs[key]
+      required_keys
+        ?.map((key) => legacy_to_public_key(key))
+        .map(async (key) => {
+          return sign_packed_txn({
+            chain_id,
+            transaction_body,
+            transaction_header,
+            wif_private_key: key_pairs[await key]
+          });
         })
-      )
     );
 
     return push_transaction_rpc(
