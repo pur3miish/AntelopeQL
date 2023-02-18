@@ -4,7 +4,7 @@
 
 [![NPM Package](https://img.shields.io/npm/v/smartql.svg)](https://www.npmjs.org/package/smartql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/smartql/blob/main/LICENSE)
 
-A [GraphQL](https://graphql.org/) implementation for interacting with **[Antelope](https://antelope.io/)** based blockchains.
+A [GraphQL](https://graphql.org/) implementation for interacting with **[Antelope](https://antelope.io/)** and [EOSIO](https://eos.io/) based blockchains.
 
 ## Live example
 
@@ -24,9 +24,102 @@ npm install smartql graphql
 
 See the examples folder on how to run SmartQL as a [Node.js](https://nodejs.org) endpoint.
 
+### Query a blockchain account
+
 ```js
+import fetch from "node-fetch";
 import SmartQL from "smartql";
+
+const network = {
+  fetch,
+  rpc_url: "https://jungle.relocke.io",
+  headers: {
+    "content-type": "application/json"
+  }
+};
+
+const { data } = await SmartQL(
+  {
+    query: /*GraphQL*/ `{
+    blockchain{
+      get_account(account_name:"relockeblock") {
+        core_liquid_balance
+        ram_quota
+        net_weight
+        cpu_weight
+        ram_usage
+        permissions {
+          linked_actions {
+            account
+            action
+          }
+          required_auth {
+            keys {
+              key
+              weight
+            }
+            threshold
+          }
+        }
+      }
+    }
+  }`
+  },
+  {},
+  network
+);
+
+console.log(data);
 ```
+
+> Logged output included an account infomation.
+
+### Transfer EOS cryptocurrency
+
+```js
+import fetch from "node-fetch";
+import SmartQL from "smartql";
+
+const network = {
+  fetch,
+  rpc_url: "https://eos.relocke.io", // eos blockchain.
+  headers: {
+    "content-type": "application/json"
+  }
+};
+
+const { data } = await SmartQL(
+  {
+    query: /*GraphQL*/ `mutation{
+      push_transaction(actions: [{
+        eosio_token:{
+          transfer: {
+            authorization:{
+              actor:"relockeblock"
+            }
+            to:"relockechain"
+            from:"relockeblock"
+            memo: ""
+            quantity: "0.0002 EOS"
+          }
+        }
+      }]) {
+        transaction_id
+        block_num
+      }
+    }`
+  },
+  {
+    contracts: ["eosio.token"],
+    private_keys: ["PVT_K1_…"] // legacy keys are supported.
+  },
+  network
+);
+
+console.log(data);
+```
+
+> Logged output includes transaction_id and block_num
 
 ## Requirements
 
@@ -34,3 +127,7 @@ Supported runtime environments:
 
 - [Node.js](https://nodejs.org) versions `>=16.0.0`.
 - Browsers matching the [Browserslist](https://browsersl.ist) query [`> 0.5%, not OperaMini all, not dead`](https://browsersl.ist/?q=%3E+0.5%25%2C+not+OperaMini+all%2C+not+dead).
+
+## Setup
+
+- SmartQL as a [Node.js](/examples/as_node.mjs) server.
