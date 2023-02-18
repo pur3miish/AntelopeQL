@@ -121,6 +121,19 @@ console.log(data);
 
 > Logged output includes transaction_id and block_num
 
+### Ways to require in CJS
+
+> **Note**
+>
+> As this package is [ESM](https://nodejs.org/docs/latest-v16.x/api/esm.html) if you need to require it in a [Common JS](https://nodejs.org/docs/latest-v16.x/api/modules.html) package, then you can import like this:
+
+```js
+(async function () {
+  const { default: SmartQL } = await import("smartql");
+  const {data} = await SmartQL({…})
+})();
+```
+
 ## Requirements
 
 Supported runtime environments:
