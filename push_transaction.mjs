@@ -1,4 +1,5 @@
-import legacy_to_public_key from "eos-ecc/legacy_to_public_key.mjs";
+import private_key_to_legacy from "eos-ecc/private_key_to_legacy.mjs";
+import get_public_key from "eos-ecc/public_key_from_private.mjs";
 import sign_packed_txn from "eos-ecc/sign_packed_txn.mjs";
 import { GraphQLError, GraphQLNonNull } from "graphql";
 
@@ -23,16 +24,13 @@ const push_transaction = (actions, ast_list) => ({
     const { chain_id, transaction_header, transaction_body, transaction } =
       await mutation_resolver(args, network, ast_list);
 
-    const { default: get_public_key } = await import(
-      "eos-ecc/public_key_from_private.mjs"
-    );
-
-    const available_keys = await Promise.all(
-      private_keys.map((key) => get_public_key(key))
-    );
-
     const key_pairs = {};
-    available_keys.forEach((key, i) => (key_pairs[key] = private_keys[i]));
+    for await (const key of private_keys) {
+      const PVT = await private_key_to_legacy(key);
+      const PUB = await get_public_key(PVT);
+      key_pairs[PUB] = PVT;
+    }
+    const available_keys = Object.keys(key_pairs);
 
     const { fetch, rpc_url, ...fetchOptions } = network;
 
@@ -57,16 +55,14 @@ const push_transaction = (actions, ast_list) => ({
       });
 
     const signatures = await Promise.all(
-      required_keys
-        ?.map((key) => legacy_to_public_key(key))
-        .map(async (key) => {
-          return sign_packed_txn({
-            chain_id,
-            transaction_body,
-            transaction_header,
-            wif_private_key: key_pairs[await key]
-          });
+      required_keys.map((pub) =>
+        sign_packed_txn({
+          chain_id,
+          transaction_body,
+          transaction_header,
+          wif_private_key: key_pairs[pub]
         })
+      )
     );
 
     return push_transaction_rpc(

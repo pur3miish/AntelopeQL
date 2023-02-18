@@ -19,3 +19,4 @@ Ensure that the APIs you connect to support the http(s) endpoints listed below.
 - [get_table_by_scope](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_table_by_scope)
 - [get_table_rows](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/get_table_rows)
 - [push_transaction](https://developers.eos.io/manuals/eos/v2.2/nodeos/plugins/chain_api_plugin/api-reference/index#operation/push_transaction)
+- [get_required_keys]

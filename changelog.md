@@ -9,6 +9,7 @@
 
 ### Minor
 
+- Fixed mutation signing bug.
 - `get_required_keys` is now integrated into the smartql.
 - Renamed argument variables.
 - Added RPC URL headers argument for SmartQL.

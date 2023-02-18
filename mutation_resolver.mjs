@@ -1,5 +1,6 @@
+"use strict";
 import serialize from "eosio-wasm-js";
-import serialize_transaction_header from "eosio-wasm-js/transaction_header.js";
+import serialize_transaction_header from "eosio-wasm-js/transaction_header.mjs";
 import { GraphQLError } from "graphql";
 
 const defeaul_config = {
@@ -23,7 +24,7 @@ const validate_actions = () => {
  * Serializes GraphQL mutation actions into binary instructions.
  * @param {Array<Object>} actions List of actions to serialize.
  * @param {Array<Object>} ast_list Abstract syntax tree list of data to serialize.
- * @returns {String} Serialized transaction body as hexadecimal string.
+ * @returns {string} Serialized transaction body as hexadecimal string.
  * @ignore
  */
 async function get_transaction_body(actions, ast_list) {
@@ -48,6 +49,7 @@ async function get_transaction_body(actions, ast_list) {
 
   let _actions = [];
   let _context_free_actions = [];
+
   let transaction_extensions =
     "000000000000000000000000000000000000000000000000000000000000000000";
 
@@ -60,7 +62,6 @@ async function get_transaction_body(actions, ast_list) {
 
     const build_serialize_list = async (data, instructions) => {
       let serialize_list = [];
-
       for (const instruction of instructions) {
         const { $info, name, type } = instruction;
         const datum = data[name];
@@ -126,36 +127,48 @@ async function get_transaction_body(actions, ast_list) {
         account: contract.replace(/_/gmu, "."),
         action: action_name.replace(/_/gmu, "."),
         authorization,
-        data: hex_string
+        data,
+        hex_data: hex_string
       });
     else
       _context_free_actions.push({
         account: contract.replace(/_/gmu, "."),
         action: action_name.replace(/_/gmu, "."),
         authorization: [],
-        data: hex_string
+        data,
+        hex_data: hex_string
       });
   }
 
-  return (
-    serialize.actions(_context_free_actions) +
-    serialize.actions(_actions) +
-    transaction_extensions
-  );
+  return {
+    context_free_actions: _context_free_actions.map(
+      ({ action: name, ...action }) => ({ ...action, name })
+    ),
+    actions: _actions.map(({ action: name, ...action }) => ({
+      ...action,
+      name
+    })),
+    transaction_extensions: [],
+    transaction_body:
+      serialize.actions(_context_free_actions) +
+      serialize.actions(_actions) +
+      transaction_extensions
+  };
 }
 
 /**
  * Mutation resolver for serializing EOSIO transactions.
- * @param {Object} args Args.
- * @param {Object} args.actions Actions list to be serialized.
- * @param {Object} [args.configuration] Action configuaration.
- * @param {SmartQLRPC} smartql_rpc SmatQL context contain fetch and url string.
- * @param {Object} ast_list Abstract syntax tree list of the contract actions.
- * @returns {Object} Transaction object.
+ * @param {object} args Args.
+ * @param {object} args.actions Actions list to be serialized.
+ * @param {object} [args.configuration] Action configuaration.
+ * @param {SmartQLRPC} network SmartQL context contain fetch and url string.
+ * @param {object} ast_list Abstract syntax tree list of the contract actions.
+ * @ignore
+ * @returns {object} Transaction object.
  */
 async function mutation_resolver(
   { actions, configuration = defeaul_config },
-  smartql_rpc,
+  network,
   ast_list
 ) {
   if (configuration.max_cpu_usage_ms > 0xff)
@@ -165,17 +178,17 @@ async function mutation_resolver(
       "Invalid max_net_usage_words value (maximum 4,294,967,295)."
     );
 
-  const { fetch, rpc_url } = smartql_rpc;
-  const transaction_body = await get_transaction_body(actions, ast_list);
+  const { fetch, rpc_url, ...fetchOptions } = network;
+  const { transaction_body, ...transaction_list } = await get_transaction_body(
+    actions,
+    ast_list
+  );
 
   const { chain_id, head_block_num } = await fetch(
     `${rpc_url}/v1/chain/get_info`,
     {
       method: "POST",
-      headers: {
-        accept: "application/json",
-        "content-type": "application/json"
-      }
+      ...fetchOptions
     }
   ).then((req) => req.json());
 
@@ -185,10 +198,7 @@ async function mutation_resolver(
     `${rpc_url}/v1/chain/get_block`,
     {
       method: "POST",
-      headers: {
-        accept: "application/json",
-        "content-type": "application/json"
-      },
+      ...fetchOptions,
       body: JSON.stringify({
         block_num_or_id
       })
@@ -200,17 +210,28 @@ async function mutation_resolver(
     Math.round(Date.parse(timestamp + "Z") / 1000) +
     configuration.expireSeconds;
 
-  // Generates a transaction header for a EOS transaction.
-  const transaction_header = serialize_transaction_header({
+  const txn_header = {
     expiration,
     ref_block_num: block_num & 0xffff,
     ref_block_prefix,
     max_net_usage_words: configuration.max_net_usage_words,
     max_cpu_usage_ms: configuration.max_cpu_usage_ms,
     delay_sec: configuration.delay_sec
-  });
+  };
 
-  return { chain_id, transaction_header, transaction_body };
+  // Generates a transaction header for a EOS transaction.
+  const transaction_header = serialize_transaction_header(txn_header);
+  txn_header.expiration = timestamp;
+
+  return {
+    chain_id,
+    transaction_header,
+    transaction_body,
+    transaction: {
+      ...txn_header,
+      ...transaction_list
+    }
+  };
 }
 
 export default mutation_resolver;
