@@ -20,6 +20,22 @@ For [Node.js](https://nodejs.org), to install [`smartql`](https://npm.im/eos-ecc
 npm install smartql graphql
 ```
 
+For [Deno.js](https://deno.land), to install [`smartql`](https://deno.land/x/smartql) add to your `deno.json` configuration file these imports:
+
+```json
+{
+  "imports": {
+    "universal-sha256-js/": "https://deno.land/x/sha256js/",
+    "universal-hmac-sha256-js/": "https://deno.land/x/hmacsha256/",
+    "universal-hmac-sha256-js/hmac-sha256-node.mjs": "https://deno.land/x/hmacsha256/hmac-sha256-deno.mjs",
+    "base58-js/": "https://deno.land/x/base58/",
+    "isomorphic-secp256k1-js/": "https://deno.land/x/secp256k1js/",
+    "ripemd160-js/": "https://deno.land/x/ripemd160js@v2.0.3/",
+    "eosio-wasm-js/": "https://deno.land/x/eosio_wasm_js/"
+  }
+}
+```
+
 ## Examples
 
 See the examples folder on how to run SmartQL as a [Node.js](https://nodejs.org) endpoint.
