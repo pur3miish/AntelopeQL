@@ -44,7 +44,7 @@ See the examples folder on how to run SmartQL as a [Node.js](https://nodejs.org)
 
 ```js
 import fetch from "node-fetch";
-import SmartQL from "smartql";
+import SmartQL from "smartql/smartql.mjs";
 
 const network = {
   fetch,
