@@ -159,4 +159,6 @@ Supported runtime environments:
 
 ## Exports
 
-- SmartQL as a [Node.js](/examples/as_node.mjs) server.
+The [npm](https://npmjs.com) package [`smartql`](https://npm.im/smartql) features [optimal JavaScript module design](https://jaydenseric.com/blog/optimal-javascript-module-design). It doesn’t have a main index module, so use deep imports from the ECMAScript modules that are exported via the [`package.json`](./package.json) field [`exports`](https://nodejs.org/api/packages.html#exports):
+
+- [`smartql.mjs`](./smartql.mjs)
