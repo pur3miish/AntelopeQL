@@ -127,7 +127,7 @@ const { data } = await SmartQL(
   },
   {
     contracts: ["eosio.token"],
-    private_keys: ["PVT_K1_…"] // legacy keys are supported.
+    private_keys: ["PVT_K1_…"] // legacy keys support.
   },
   network
 );
