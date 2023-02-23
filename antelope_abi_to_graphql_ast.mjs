@@ -5,7 +5,7 @@ import {
   GraphQLObjectType
 } from "graphql";
 
-import eosio_types from "./eosio_types/index.mjs";
+import eosio_types from "./eosio_types.mjs";
 import authorization_type from "./graphql_input_types/authorization.mjs";
 import query_argument_fields from "./graphql_input_types/query_argument_fields.mjs";
 import resolve from "./query_resolver.mjs";
