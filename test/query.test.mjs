@@ -10,6 +10,7 @@ export default async (tests) => {
           get_account(account_name: "eosio") {
             account_name
             ram_quota
+            privileged
             net_weight
             cpu_weight
             permissions {
