@@ -12,15 +12,12 @@ import name_type from "../eosio_types/name_type.mjs";
 import authorizing_account_type from "./authorization.mjs";
 
 /**
- * @kind typedef
- * @name transaction_status
- * @type {enum}
- * @prop {string} executed succeed, no error handler executed.
- * @prop {string} soft_fail objectively failed (not executed), error handler executed.
- * @prop {string} hard_fail objectively failed and error handler objectively failed thus no state change.
- * @prop {string} delayed transaction delayed/deferred/scheduled for future execution.
- * @prop {string} expired transaction expired and storage space refunded to user.
- * @ignore
+ * @typedef {Enumerator} Transaction_status
+ * @prop {String} executed succeed, no error handler executed.
+ * @prop {String} soft_fail objectively failed (not executed), error handler executed.
+ * @prop {String} hard_fail objectively failed and error handler objectively failed thus no state change.
+ * @prop {String} delayed transaction delayed/deferred/scheduled for future execution.
+ * @prop {String} expired transaction expired and storage space refunded to user.
  */
 const transaction_status = new GraphQLEnumType({
   name: "transaction_receipt_status",
@@ -52,12 +49,10 @@ const transaction_status = new GraphQLEnumType({
 
 /**
  * Bandwidth reciept for EOSIO transaction.
- * @kind typedef
- * @name Bandwidth_cost
- * @prop {number} net_usage_words Consumption of network bandwidth (bytes).
- * @prop {number} cpu_usage_us Consumption of CPU bandwidth (µs).
+ * @typedef {Object} Bandwidth_cost
+ * @prop {Number} net_usage_words Consumption of network bandwidth (bytes).
+ * @prop {Number} cpu_usage_us Consumption of CPU bandwidth (µs).
  * @prop {Transaction_status} status Transaction receipt status Enum.
- * @ignore
  */
 const bandwidth_cost_type = new GraphQLObjectType({
   name: "bandwidth_cost",
@@ -109,16 +104,14 @@ const action_trace_type = new GraphQLObjectType({
 });
 
 /**
- * @kind typedef
- * @name transaction_receipt
- * @type {object}
- * @prop {string} transaction_id ID of the transaction.
- * @prop {number} block_num Block number where teh transaction can be found.
- * @prop {stiring} block_time The time of the transaction.
- * @prop {string} producer_block_id The block producer ID that processed the transaction.
- * @prop {bandwidth_cost} resource_cost Network cost for the transaction.
- * @prop {bool} scheduled Scheduled transactions are executed at a later time.
- * @ignore
+ * @typedef {Object} transaction_receipt
+ * @type {Object}
+ * @prop {String} transaction_id ID of the transaction.
+ * @prop {Number} block_num Block number where teh transaction can be found.
+ * @prop {Stiring} block_time The time of the transaction.
+ * @prop {String} producer_block_id The block producer ID that processed the transaction.
+ * @prop {Bandwidth_cost} resource_cost Network cost for the transaction.
+ * @prop {Boolean} scheduled Scheduled transactions are executed at a later time.
  */
 const transaction_receipt_type = new GraphQLObjectType({
   name: "transaction_receipt",

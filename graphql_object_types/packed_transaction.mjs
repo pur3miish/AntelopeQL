@@ -4,11 +4,11 @@ import { GraphQLObjectType, GraphQLString } from "graphql";
  * The packed transaction type.
  * @kind typedef
  * @name packed_transaction
- * @type {object}
- * @prop {string} chain_id Hash representing the blockchain.
- * @prop {string} transaction_header Hex string representing the serialized transaction header.
- * @prop {string} transaction_body Hex string representing the serialized transaction body.
- * @ignore
+ * @type {Object}
+ * @prop {String} chain_id Hash representing the blockchain.
+ * @prop {String} transaction_header Hex string representing the serialized transaction header.
+ * @prop {String} transaction_body Hex string representing the serialized transaction body.
+
  */
 const packed_transaction_type = new GraphQLObjectType({
   name: "packed_transaction",

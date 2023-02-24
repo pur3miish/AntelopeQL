@@ -1,3 +1,5 @@
+// @ts-check
+
 import { GraphQLInputObjectType, GraphQLInt } from "graphql";
 
 const configuration_default_value = {
@@ -10,17 +12,13 @@ const configuration_default_value = {
 
 /**
  * Handles various elements relating to the `EOSIO` transaction.
- * @kind typedef
- * @name configuration_type
- * @type {object}
- * @prop {number} blocksBehind Number of blocks behind the current block (TaPoS protection).
- * @prop {number} expireSeconds  Seconds past before transaction is no longer valid (TaPoS protection)
- * @prop {number} max_net_usage_words  Maximum NET bandwidth usage a transaction can consume (0 there is no limit).
- * @prop {number} max_cpu_usage_ms  Maximum NET bandwidth usage a transaction can consume (0 there is no limit).
- * @prop {number} delay_sec  Number of seconds that the transaciton will be delayed by.
- * @ignore
+ * @typedef {Object} configuration_type
+ * @param {Number} blocksBehind Number of blocks behind the current block (TaPoS protection).
+ * @param {Number} expireSeconds Seconds past before transaction is no longer valid (TaPoS protection)
+ * @param {Number} max_net_usage_words Maximum NET bandwidth usage a transaction can consume (0 there is no limit).
+ * @param {Number} max_cpu_usage_ms Maximum NET bandwidth usage a transaction can consume (0 there is no limit).
+ * @param {Number} delay_sec Number of seconds that the transaciton will be delayed by.
  */
-
 const configuration_type = new GraphQLInputObjectType({
   name: "configuration_type",
   description:

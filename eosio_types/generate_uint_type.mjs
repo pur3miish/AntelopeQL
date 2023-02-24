@@ -1,10 +1,8 @@
 import { GraphQLScalarType } from "graphql";
 /**
  * Generates a GraphQL scalar unsigend integer type of size `bits`.
- * @name generate_uint_type
- * @param {number} bits Size of the unint.
+ * @param {Number} bits Size of the unint.
  * @returns {GraphQLScalarType} GraphQL scalar integer type.
- * @ignore
  */
 function generate_uint_type(bits) {
   const size = 2n ** BigInt(bits);

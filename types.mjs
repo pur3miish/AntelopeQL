@@ -2,7 +2,7 @@
 
 /**
  * The Application Binary Interface (ABI) is a JSON-based description on how to convert user actions between their JSON and Binary representations.
- * @typedef ABI
+ * @typedef {Object} ABI
  * @property {Array<Types>} types List of types.
  * @property {Array<Struct>} structs List of contract structs.
  * @property {Array<Action>} actions List of contract actions.
@@ -10,14 +10,14 @@
  */
 
 /**
- * @typedef Types
+ * @typedef {Object} Types
  * @property {String} new_type_name
  * @property {String} type
  */
 
 /**
  * A contract action is a description of what argument a contract function may take, its graphql representation is called a mutation.
- * @typedef Action
+ * @typedef {Object} Action
  * @property {String} name Contract action name as defined in the smart contract.
  * @property {String} type The name of the implicit struct as described in the ABI.
  * @property {String} [ricardian_contract] Describing the actions intended functionality.
@@ -25,17 +25,17 @@
 
 /**
  * Struct can be thought of as a user defined data structures, that a contract will utilise in its actions or table types.
- * @typedef Struct
- * @prop {String} name The name of the struct.
- * @prop {String} base Inheritance, parent struct.
- * @prop {Array<Field>} fields List of fields describing the struct.
+ * @typedef  {Object} Struct
+ * @property {String} name The name of the struct.
+ * @property {String} base Inheritance, parent struct.
+ * @property {Array<Field>} fields List of fields describing the struct.
  */
 
 /**
  * Struct can be thought of as a user defined data structure that that contract will utilise in its actions or table.
  * @typedef Field
- * @prop {String} name The name of the struct.
- * @prop {String} type The type of struct either a native data type or user defeind struct.
+ * @property {String} name The name of the struct.
+ * @property {String} type The type of struct either a native data type or user defeind struct.
  */
 
 /**

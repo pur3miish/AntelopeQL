@@ -2,14 +2,14 @@ import { GraphQLError } from "graphql";
 
 /**
  * SmartQL Query resolver.
- * @param {object} root GraphQL resolver root query.
- * @param {string} root.code Contract code calling, passed from smartql_fields resolver.
- * @param {object} args Query arguments.
- * @param {object} args.arg argument data.
- * @param {object} ctx GraphQL context.
+ * @param {Object} root GraphQL resolver root query.
+ * @param {String} root.code Contract code calling, passed from smartql_fields resolver.
+ * @param {Object} args Query arguments.
+ * @param {Object} args.arg argument data.
+ * @param {Object} ctx GraphQL context.
  * @param {SmartQLRPC} ctx.network Object containing connection url and fetch.
- * @param {object} info GraphQL resovler info argument.
- * @returns {object} Returned data from table.
+ * @param {Object} info GraphQL resovler info argument.
+ * @returns {Object} Returned data from table.
  */
 export default async function query_resolver(
   { code },

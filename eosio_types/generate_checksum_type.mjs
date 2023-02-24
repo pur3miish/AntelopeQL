@@ -5,7 +5,6 @@ import { GraphQLScalarType } from "graphql";
  * @name generate_int_type
  * @param {number} size Size of the checksum.
  * @returns {GraphQLScalarType} GraphQL scalar type.
- * @ignore
  */
 function generate_checksum(size) {
   return new GraphQLScalarType({

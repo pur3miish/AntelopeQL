@@ -32,11 +32,12 @@ const { mutation_fields, query_fields, ast_list } =
 // Consume the query fields like any
 const queries = new GraphQLObjectType({
   name: "Query",
-  description: "Query table data from Antelope blockchain.",
+  description: "Query table data from EOSIO/Antelope blockchain.",
   fields: query_fields
 });
 
 const action_fields = actions(mutation_fields);
+
 const mutations = new GraphQLObjectType({
   name: "Mutation",
   description: "Push transactions to the blockchain.",
@@ -52,13 +53,11 @@ const SmartQL = (query) => {
   const queryErrors = validate(schema, document);
   if (queryErrors.length) throw queryErrors;
 
-  const network = { fetch, rpc_url: "http://127.0.0.1:8888" };
-
   return execute({
     schema,
     document,
     contextValue: {
-      network
+      network: { fetch, rpc_url: "http://127.0.0.1:8888" }
     },
     fieldResolver(rootValue, args, ctx, { fieldName }) {
       return rootValue[fieldName];

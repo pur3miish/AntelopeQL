@@ -5,7 +5,6 @@ import { GraphQLScalarType } from "graphql";
  * @name generate_int_type
  * @param {number} bits Size of the integer.
  * @returns {GraphQLScalarType} GraphQL scalar integer type.
- * @ignore
  */
 function generate_int_type(bits) {
   bits = BigInt(bits);

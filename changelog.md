@@ -4,6 +4,7 @@
 
 ### Major
 
+- [smartql.mjs](./smartql.mjs) now uses one object argument.
 - Removed main index export for [smartql.mjs](./smartql.mjs)
 
 ## 12.0.0
