@@ -4,7 +4,7 @@
 
 [![NPM Package](https://img.shields.io/npm/v/smartql.svg)](https://www.npmjs.org/package/smartql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/smartql/blob/main/LICENSE)
 
-A [GraphQL](https://graphql.org/) implementation for interacting with **[Antelope](https://antelope.io/)** and [EOSIO](https://eos.io/) based blockchains.
+SmartQL is a [GraphQL](https://graphql.org/) tool designed for [Antelope](https://antelope.io/) and [EOSIO](https://eos.io/) blockchains. It allows users to query and update all smart contracts across multiple chains, offering comprehensive documentation and CRUD operations. It's a versatile tool for developers seeking interoperability between various blockchains.
 
 ## Live example
 
