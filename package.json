@@ -22,8 +22,7 @@
   },
   "files": [
     "index.mjs",
-    "antelope_abi_to_graphql_ast.mjs",
-    "blockchain",
+    "eosio_abi_to_graphql_ast.mjs",
     "build_graphql_fields_from_abis.mjs",
     "eosio_types",
     "graphql_input_types",
