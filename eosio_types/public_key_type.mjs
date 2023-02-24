@@ -1,5 +1,3 @@
-"use strict";
-
 import legacy_to_public_key from "eos-ecc/legacy_to_public_key.mjs";
 import validate_public_key from "eos-ecc/validate_public_key.mjs";
 import { GraphQLScalarType } from "graphql";

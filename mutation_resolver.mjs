@@ -1,4 +1,3 @@
-"use strict";
 import serialize from "eosio-wasm-js";
 import serialize_transaction_header from "eosio-wasm-js/transaction_header.mjs";
 import { GraphQLError } from "graphql";

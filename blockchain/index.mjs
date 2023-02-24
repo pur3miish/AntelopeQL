@@ -1,4 +1,3 @@
-"use strict";
 
 import { GraphQLError, GraphQLObjectType } from "graphql";
 
