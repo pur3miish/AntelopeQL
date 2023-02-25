@@ -171,7 +171,7 @@ const block_type = new GraphQLObjectType({
     },
     producer_signature: {
       type: GraphQLString,
-      description: `Base58 encoded ${process.env.BLOCKCHAIN} cryptographic signature.`
+      description: `Base58 encoded EOSIO cryptographic signature.`
     },
     transactions: {
       type: new GraphQLList(transactions_type),
