@@ -10,7 +10,7 @@ SmartQL is a [GraphQL](https://graphql.org/) tool designed for [Antelope](https:
 
 For a SmartQL GUI [smartql.relocke.io](https://smartql.relocke.io).
 
-![smartql screenshot](/static/smartql-screen.png)
+![smartql screenshot](https://raw.githubusercontent.com/pur3miish/smartql/main/static/smartql-screen.png)
 
 ## Installation
 
