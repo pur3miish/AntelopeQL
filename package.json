@@ -15,8 +15,7 @@
     "snapshot": "SAVE_SNAPSHOTS=1 coverage-node test/index.test.mjs",
     "tests": "coverage-node test/index.test.mjs",
     "test": "npm run eslint && npm run prettier && npm run types && npm run tests",
-    "prepublishOnly": "npm test",
-    "dev": "nodemon ./test/server.mjs"
+    "prepublishOnly": "npm test"
   },
   "engines": {
     "node": "^16"
