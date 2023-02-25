@@ -46,14 +46,6 @@ See the examples folder on how to run SmartQL as a [Node.js](https://nodejs.org)
 import fetch from "node-fetch";
 import SmartQL from "smartql/smartql.mjs";
 
-const network = {
-  fetch,
-  rpc_url: "https://jungle.relocke.io",
-  headers: {
-    "content-type": "application/json"
-  }
-};
-
 const { data } = await SmartQL(
   {
     query: /*GraphQL*/ `{
@@ -80,9 +72,12 @@ const { data } = await SmartQL(
       }
     }
   }`
+  fetch,
+  rpc_url: "https://jungle.relocke.io",
+  headers: {
+    "content-type": "application/json"
+  }
   },
-  {},
-  network
 );
 
 console.log(data);
@@ -96,17 +91,8 @@ console.log(data);
 import fetch from "node-fetch";
 import SmartQL from "smartql";
 
-const network = {
-  fetch,
-  rpc_url: "https://eos.relocke.io", // eos blockchain.
-  headers: {
-    "content-type": "application/json"
-  }
-};
-
-const { data } = await SmartQL(
-  {
-    query: /*GraphQL*/ `mutation{
+const { data } = await SmartQL({
+  query: /*GraphQL*/ `mutation{
       push_transaction(actions: [{
         eosio_token:{
           transfer: {
@@ -123,14 +109,15 @@ const { data } = await SmartQL(
         transaction_id
         block_num
       }
-    }`
-  },
-  {
-    contracts: ["eosio.token"],
-    private_keys: ["PVT_K1_…"] // legacy keys support.
-  },
-  network
-);
+    }`,
+  contracts: ["eosio.token"],
+  private_keys: ["PVT_K1_…"], // legacy keys support.
+  fetch,
+  rpc_url: "https://eos.relocke.io", // eos blockchain.
+  headers: {
+    "content-type": "application/json"
+  }
+});
 
 console.log(data);
 ```
@@ -146,7 +133,7 @@ console.log(data);
 ```js
 (async function () {
   const { default: SmartQL } = await import("smartql");
-  const {data} = await SmartQL({…})
+  const { data } = await SmartQL({…})
 })();
 ```
 
