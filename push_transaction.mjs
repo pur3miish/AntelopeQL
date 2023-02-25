@@ -1,7 +1,7 @@
 import private_key_to_legacy from "eosio-ecc/private_key_to_legacy.mjs";
 import get_public_key from "eosio-ecc/public_key_from_private.mjs";
 import sign_packed_txn from "eosio-ecc/sign_packed_txn.mjs";
-import { GraphQLError, GraphQLNonNull } from "graphql";
+import { GraphQLError, GraphQLNonNull } from "graphql/index.mjs";
 
 import configuration_type from "./graphql_input_types/configuration.mjs";
 import transaction_receipt from "./graphql_object_types/transaction_receipt.mjs";

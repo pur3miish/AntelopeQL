@@ -6,7 +6,7 @@ import {
   GraphQLList,
   GraphQLObjectType,
   GraphQLString
-} from "graphql";
+} from "graphql/index.mjs";
 
 import name_type from "../eosio_types/name_type.mjs";
 import authorizing_account_type from "./authorization.mjs";

@@ -3,7 +3,7 @@ import {
   GraphQLList,
   GraphQLNonNull,
   GraphQLString
-} from "graphql";
+} from "graphql/index.mjs";
 
 import name_type from "../eosio_types/name_type.mjs";
 import symbol_code_type from "../eosio_types/symbol_code_type.mjs";

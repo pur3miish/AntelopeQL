@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType } from "graphql/index.mjs";
 
 const bytes_type = new GraphQLScalarType({
   description: "Hexedecimal text string type.",

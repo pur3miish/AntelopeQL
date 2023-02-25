@@ -6,7 +6,7 @@ import {
   parse,
   Source,
   validate
-} from "graphql";
+} from "graphql/index.mjs";
 
 import blockchain_query_field from "./blockchain_query_field.mjs";
 import build_graphql_fields_from_abis from "./build_graphql_fields_from_abis.mjs";

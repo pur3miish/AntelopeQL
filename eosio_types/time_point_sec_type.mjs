@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType } from "graphql/index.mjs";
 
 const time_point_sec_type = new GraphQLScalarType({
   description: `\`time point sec\`

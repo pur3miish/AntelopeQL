@@ -1,4 +1,8 @@
-import { GraphQLInputObjectType, GraphQLList, GraphQLNonNull } from "graphql";
+import {
+  GraphQLInputObjectType,
+  GraphQLList,
+  GraphQLNonNull
+} from "graphql/index.mjs";
 
 const actions_type = (fields) =>
   new GraphQLNonNull(

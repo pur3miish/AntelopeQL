@@ -5,7 +5,7 @@ import {
   parse,
   Source,
   validate
-} from "graphql";
+} from "graphql/index.mjs";
 import { createRequire } from "module";
 import fetch from "node-fetch";
 

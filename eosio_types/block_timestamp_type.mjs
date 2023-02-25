@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType } from "graphql/index.mjs";
 
 const block_timestamp_type = new GraphQLScalarType({
   description: "`Block timestamp type`",

@@ -1,4 +1,8 @@
-import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
+import {
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString
+} from "graphql/index.mjs";
 
 const authorizing_account_type = new GraphQLObjectType({
   name: "authorizing_account_type",

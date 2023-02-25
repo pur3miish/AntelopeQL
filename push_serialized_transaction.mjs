@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLNonNull } from "graphql";
+import { GraphQLList, GraphQLNonNull } from "graphql/index.mjs";
 
 import bytes_type from "./eosio_types/bytes_type.mjs";
 import signature_type from "./eosio_types/signature_type.mjs";

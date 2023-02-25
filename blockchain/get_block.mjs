@@ -5,7 +5,7 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString
-} from "graphql";
+} from "graphql/index.mjs";
 
 import authorization_type from "../graphql_object_types/authorization.mjs";
 

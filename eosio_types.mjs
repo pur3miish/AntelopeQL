@@ -1,4 +1,4 @@
-import { GraphQLString } from "graphql";
+import { GraphQLString } from "graphql/index.mjs";
 
 import asset from "./eosio_types/asset_type.mjs";
 import block_timestamp_type from "./eosio_types/block_timestamp_type.mjs";
