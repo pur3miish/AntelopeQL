@@ -1,4 +1,4 @@
-![smartql logo](/static/smartql.svg)
+![smartql logo](https://raw.githubusercontent.com/pur3miish/smartql/main/static/smartql.svg)
 
 # SmartQL
 
