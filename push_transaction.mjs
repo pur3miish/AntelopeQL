@@ -1,6 +1,6 @@
-import private_key_to_legacy from "eos-ecc/private_key_to_legacy.mjs";
-import get_public_key from "eos-ecc/public_key_from_private.mjs";
-import sign_packed_txn from "eos-ecc/sign_packed_txn.mjs";
+import private_key_to_legacy from "eosio-ecc/private_key_to_legacy.mjs";
+import get_public_key from "eosio-ecc/public_key_from_private.mjs";
+import sign_packed_txn from "eosio-ecc/sign_packed_txn.mjs";
 import { GraphQLError, GraphQLNonNull } from "graphql";
 
 import configuration_type from "./graphql_input_types/configuration.mjs";
