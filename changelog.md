@@ -1,5 +1,12 @@
 # SmartQL changelog
 
+## 13.0.2
+
+### Patch
+
+- Removed `process.env.BLOCKCHAIN` from type.
+- Typo fixes.
+
 ## 13.0.1
 
 ### Patch
