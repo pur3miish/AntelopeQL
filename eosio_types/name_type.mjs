@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType } from "graphql/index.mjs";
 
 const name_type = new GraphQLScalarType({
   description: `\`Name type\`

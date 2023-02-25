@@ -1,4 +1,4 @@
-import { GraphQLError } from "graphql";
+import { GraphQLError } from "graphql/index.mjs";
 
 /**
  * Pushes a serialized transaction to the blockchain.

@@ -3,7 +3,7 @@ import {
   GraphQLInputObjectType,
   GraphQLInt,
   GraphQLString
-} from "graphql";
+} from "graphql/index.mjs";
 
 const index_position_enum_type = new GraphQLEnumType({
   name: "index_position_enum_type",

@@ -1,6 +1,6 @@
 // @ts-check
 
-import { GraphQLInputObjectType, GraphQLInt } from "graphql";
+import { GraphQLInputObjectType, GraphQLInt } from "graphql/index.mjs";
 
 const configuration_default_value = {
   blocksBehind: 3,

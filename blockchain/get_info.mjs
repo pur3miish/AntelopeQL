@@ -1,4 +1,8 @@
-import { GraphQLError, GraphQLObjectType, GraphQLString } from "graphql";
+import {
+  GraphQLError,
+  GraphQLObjectType,
+  GraphQLString
+} from "graphql/index.mjs";
 
 const info_type = new GraphQLObjectType({
   name: "info_type",

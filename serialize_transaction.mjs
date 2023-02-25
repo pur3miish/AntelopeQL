@@ -1,4 +1,4 @@
-import { GraphQLNonNull } from "graphql";
+import { GraphQLNonNull } from "graphql/index.mjs";
 
 import configuration_type from "./graphql_input_types/configuration.mjs";
 import packed_transaction_type from "./graphql_object_types/packed_transaction.mjs";

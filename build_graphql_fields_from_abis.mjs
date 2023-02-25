@@ -2,7 +2,7 @@ import {
   GraphQLError,
   GraphQLInputObjectType,
   GraphQLObjectType
-} from "graphql";
+} from "graphql/index.mjs";
 
 import {
   eosio_abi_to_graphql_ast,

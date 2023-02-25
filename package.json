@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "13.0.0",
+  "version": "13.0.1",
   "description": "A GraphQL implementation for interacting with EOSIO/Antelope based blockchains.",
   "repository": "github:pur3miish/smartql",
   "bugs": "https://github.com/pur3miish/smartql/issues",
@@ -90,8 +90,8 @@
   },
   "dependencies": {
     "base58-js": "*",
-    "eos-ecc": "^5.1.3",
-    "eosio-wasm-js": "^3.0.1",
+    "eosio-ecc": "^1.0.0",
+    "eosio-wasm-js": "^4.0.1",
     "ripemd160-js": "*"
   }
 }

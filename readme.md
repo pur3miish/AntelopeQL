@@ -1,4 +1,4 @@
-![smartql logo](/static/smartql.svg)
+![smartql logo](https://raw.githubusercontent.com/pur3miish/smartql/main/static/smartql.svg)
 
 # SmartQL
 
@@ -14,7 +14,7 @@ For a SmartQL GUI [smartql.relocke.io](https://smartql.relocke.io).
 
 ## Installation
 
-For [Node.js](https://nodejs.org), to install [`smartql`](https://npm.im/eos-ecc) and the peer dependency [`graphql`](https://npm.im/graphql) run:
+For [Node.js](https://nodejs.org), to install [`smartql`](https://npm.im/smartql) and the peer dependency [`graphql`](https://npm.im/graphql) run:
 
 ```sh
 npm install smartql graphql
@@ -31,7 +31,8 @@ For [Deno.js](https://deno.land), to install [`smartql`](https://deno.land/x/sma
     "base58-js/": "https://deno.land/x/base58/",
     "isomorphic-secp256k1-js/": "https://deno.land/x/secp256k1js/",
     "ripemd160-js/": "https://deno.land/x/ripemd160js@v2.0.3/",
-    "eosio-wasm-js/": "https://deno.land/x/eosio_wasm_js/"
+    "eosio-wasm-js/": "https://deno.land/x/eosio_wasm_js/",
+    "graphql/": "https://unpkg.com/browse/graphql@16.6.0/"
   }
 }
 ```
@@ -45,14 +46,6 @@ See the examples folder on how to run SmartQL as a [Node.js](https://nodejs.org)
 ```js
 import fetch from "node-fetch";
 import SmartQL from "smartql/smartql.mjs";
-
-const network = {
-  fetch,
-  rpc_url: "https://jungle.relocke.io",
-  headers: {
-    "content-type": "application/json"
-  }
-};
 
 const { data } = await SmartQL(
   {
@@ -80,9 +73,12 @@ const { data } = await SmartQL(
       }
     }
   }`
+  fetch,
+  rpc_url: "https://jungle.relocke.io",
+  headers: {
+    "content-type": "application/json"
+  }
   },
-  {},
-  network
 );
 
 console.log(data);
@@ -96,17 +92,8 @@ console.log(data);
 import fetch from "node-fetch";
 import SmartQL from "smartql";
 
-const network = {
-  fetch,
-  rpc_url: "https://eos.relocke.io", // eos blockchain.
-  headers: {
-    "content-type": "application/json"
-  }
-};
-
-const { data } = await SmartQL(
-  {
-    query: /*GraphQL*/ `mutation{
+const { data } = await SmartQL({
+  query: /*GraphQL*/ `mutation{
       push_transaction(actions: [{
         eosio_token:{
           transfer: {
@@ -123,14 +110,15 @@ const { data } = await SmartQL(
         transaction_id
         block_num
       }
-    }`
-  },
-  {
-    contracts: ["eosio.token"],
-    private_keys: ["PVT_K1_…"] // legacy keys support.
-  },
-  network
-);
+    }`,
+  contracts: ["eosio.token"],
+  private_keys: ["PVT_K1_…"], // legacy keys support.
+  fetch,
+  rpc_url: "https://eos.relocke.io", // eos blockchain.
+  headers: {
+    "content-type": "application/json"
+  }
+});
 
 console.log(data);
 ```
@@ -146,7 +134,7 @@ console.log(data);
 ```js
 (async function () {
   const { default: SmartQL } = await import("smartql");
-  const {data} = await SmartQL({…})
+  const { data } = await SmartQL({…})
 })();
 ```
 

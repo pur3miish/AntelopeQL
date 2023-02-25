@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType } from "graphql/index.mjs";
 
 const boolean_type = new GraphQLScalarType({
   description: "`Boolean type` true=1 or false=0",
