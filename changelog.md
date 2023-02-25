@@ -1,5 +1,12 @@
 # SmartQL changelog
 
+## 13.0.1
+
+### Patch
+
+- Bug fixes in readme.
+- Fixed GraphQL ESM deep imports.
+
 ## 13.0.0
 
 ### Major
