@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "12.0.0",
+  "version": "13.0.0",
   "description": "A GraphQL implementation for interacting with EOSIO/Antelope based blockchains.",
   "repository": "github:pur3miish/smartql",
   "bugs": "https://github.com/pur3miish/smartql/issues",
@@ -13,7 +13,8 @@
     "prettier:readme": "prettier --write readme.md",
     "types": "tsc -p jsconfig.json",
     "snapshot": "SAVE_SNAPSHOTS=1 coverage-node test/index.test.mjs",
-    "tests": "coverage-node test/index.test.mjs",
+    "coverage": "coverage-node test/index.test.mjs",
+    "tests": "node test/index.test.mjs",
     "test": "npm run eslint && npm run prettier && npm run types && npm run tests",
     "prepublishOnly": "npm test"
   },
