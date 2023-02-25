@@ -1,5 +1,5 @@
-import legacy_to_public_key from "eos-ecc/legacy_to_public_key.mjs";
-import validate_public_key from "eos-ecc/validate_public_key.mjs";
+import legacy_to_public_key from "eosio-ecc/legacy_to_public_key.mjs";
+import validate_public_key from "eosio-ecc/validate_public_key.mjs";
 import { GraphQLScalarType } from "graphql";
 
 const public_key_type = new GraphQLScalarType({
