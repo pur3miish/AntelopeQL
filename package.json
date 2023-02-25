@@ -90,7 +90,7 @@
   },
   "dependencies": {
     "base58-js": "*",
-    "eos-ecc": "^5.1.3",
+    "eosio-ecc": "^1.0.0",
     "eosio-wasm-js": "^3.0.1",
     "ripemd160-js": "*"
   }
