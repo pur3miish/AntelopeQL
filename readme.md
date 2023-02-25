@@ -162,5 +162,16 @@ Supported runtime environments:
 
 The [npm](https://npmjs.com) package [`smartql`](https://npm.im/smartql) features [optimal JavaScript module design](https://jaydenseric.com/blog/optimal-javascript-module-design). It doesn’t have a main index module, so use deep imports from the ECMAScript modules that are exported via the [`package.json`](./package.json) field [`exports`](https://nodejs.org/api/packages.html#exports):
 
-- [`antelope_abi_to_graphql_ast`]
 - [`smartql.mjs`](./smartql.mjs)
+- [`blockchain_query_field.mjs`](blockchain_query_field.mjs)
+- [`build_graphql_fields_from_abis.mjs`](build_graphql_fields_from_abis.mjs)
+- [`eosio_abi_to_graphql_ast.mjs`](eosio_abi_to_graphql_ast.mjs)
+- [`eosio_types.mjs`](eosio_types.mjs)
+- [`mutation_resolver.mjs`](mutation_resolver.mjs)
+- [`push_serialized_transaction.mjs`](push_serialized_transaction.mjs)
+- [`push_transaction_rpc.mjs`](push_transaction_rpc.mjs)
+- [`push_transaction.mjs`](push_transaction.mjs)
+- [`query_resolver.mjs`](query_resolver.mjs)
+- [`serialize_transaction.mjs`](serialize_transaction.mjs)
+- [`smartql.mjs`](smartql.mjs)
+- [`types.mjs`](types.mjs)
