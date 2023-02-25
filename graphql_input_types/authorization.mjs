@@ -1,4 +1,4 @@
-import { GraphQLInputObjectType, GraphQLNonNull } from "graphql/index.mjs";
+import { GraphQLInputObjectType, GraphQLNonNull } from "graphql";
 
 import name_type from "../eosio_types/name_type.mjs";
 

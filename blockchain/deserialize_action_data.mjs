@@ -1,4 +1,4 @@
-import { GraphQLError, GraphQLNonNull, GraphQLString } from "graphql/index.mjs";
+import { GraphQLError, GraphQLNonNull, GraphQLString } from "graphql";
 
 import bytes_type from "../eosio_types/bytes_type.mjs";
 import name_type from "../eosio_types/name_type.mjs";

@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql/index.mjs";
+import { GraphQLScalarType } from "graphql";
 /**
  * Generates a GraphQL scalar unsigend integer type of size `bits`.
  * @param {Number} bits Size of the unint.

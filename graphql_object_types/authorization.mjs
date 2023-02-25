@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString } from "graphql/index.mjs";
+import { GraphQLObjectType, GraphQLString } from "graphql";
 
 const authorization_type = new GraphQLObjectType({
   name: "authorization_type",

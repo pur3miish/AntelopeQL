@@ -4,7 +4,7 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString
-} from "graphql/index.mjs";
+} from "graphql";
 
 import name_type from "../eosio_types/name_type.mjs";
 

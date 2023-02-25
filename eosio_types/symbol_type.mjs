@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql/index.mjs";
+import { GraphQLScalarType } from "graphql";
 
 const symbol_type = new GraphQLScalarType({
   description: `\`Symbol type\`

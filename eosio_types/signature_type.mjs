@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql/index.mjs";
+import { GraphQLScalarType } from "graphql";
 
 const signature_type = new GraphQLScalarType({
   description: `\`Signature type\`

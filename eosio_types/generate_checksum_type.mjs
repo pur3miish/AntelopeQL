@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql/index.mjs";
+import { GraphQLScalarType } from "graphql";
 
 /**
  * Generates a GraphQL scalar type for checksum of `size`.

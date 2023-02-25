@@ -1,4 +1,4 @@
-import { GraphQLError, GraphQLObjectType } from "graphql/index.mjs";
+import { GraphQLError, GraphQLObjectType } from "graphql";
 
 import deserialize_action_data from "./blockchain/deserialize_action_data.mjs";
 import get_abi from "./blockchain/get_abi.mjs";

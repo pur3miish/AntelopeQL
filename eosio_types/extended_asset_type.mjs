@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql/index.mjs";
+import { GraphQLScalarType } from "graphql";
 
 const extended_asset_type = new GraphQLScalarType({
   description: `\`Extended_asset\`

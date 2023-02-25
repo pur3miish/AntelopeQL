@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql/index.mjs";
+import { GraphQLScalarType } from "graphql";
 
 /**
  * Generates a GraphQL scalar signed integer type of size `bytes`.

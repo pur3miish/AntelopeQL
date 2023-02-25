@@ -32,6 +32,7 @@ For [Deno.js](https://deno.land), to install [`smartql`](https://deno.land/x/sma
     "isomorphic-secp256k1-js/": "https://deno.land/x/secp256k1js/",
     "ripemd160-js/": "https://deno.land/x/ripemd160js@v2.0.3/",
     "eosio-wasm-js/": "https://deno.land/x/eosio_wasm_js/",
+    "eosio-ecc/": "https://deno.land/x/eosio_ecc/",
     "graphql/": "https://unpkg.com/browse/graphql@16.6.0/"
   }
 }

@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString } from "graphql/index.mjs";
+import { GraphQLObjectType, GraphQLString } from "graphql";
 
 /**
  * The packed transaction type.

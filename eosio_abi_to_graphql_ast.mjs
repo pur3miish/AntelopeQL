@@ -3,7 +3,7 @@ import {
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType
-} from "graphql/index.mjs";
+} from "graphql";
 
 import eosio_types from "./eosio_types.mjs";
 import authorization_type from "./graphql_input_types/authorization.mjs";

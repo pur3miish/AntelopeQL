@@ -1,4 +1,4 @@
-import { GraphQLError } from "graphql/index.mjs";
+import { GraphQLError } from "graphql";
 
 /**
  * SmartQL Query resolver.
