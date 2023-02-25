@@ -5,9 +5,9 @@ import {
 } from "graphql";
 
 import {
-  antelope_abi_to_graphql_ast,
+  eosio_abi_to_graphql_ast,
   get_graphql_fields_from_AST
-} from "./antelope_abi_to_graphql_ast.mjs";
+} from "./eosio_abi_to_graphql_ast.mjs";
 
 /** @typedef {import("./types.mjs").ABI} ABI */
 
@@ -19,12 +19,9 @@ import {
  */
 
 /**
- * Builds GraphQL query and mutation fields from a list of ABIs. These GraphQL fields can readily be consumed by a GraphQL Schema, enabling developers the ability to integrate a varienty of Antelope based blockchains into their GraphQL service.
- * @kind function
- * @name build_graphql_fields_from_abis
+ * Builds GraphQL query and mutation fields from a list of ABIs. These GraphQL fields can readily be consumed by a GraphQL Schema, enabling developers the ability to integrate a varienty of EOSIO based blockchains into their GraphQL service.
  * @param {Array<AccountABI>} abi_list Argument.
  * @returns {Object} SmartQL fields.
- * @ignore
  * @example <caption>`Usage` in a custom GraphQL API.</caption>
  * ```js
  * import actions_type from 'smartql/graphql_input_types/actions.js'
@@ -79,7 +76,7 @@ export default function build_graphql_fields_from_abis(abi_list) {
 
   for (const { abi, account_name } of abi_list) {
     const name = account_name.replace(/\./gmu, "_");
-    const AST = antelope_abi_to_graphql_ast(abi);
+    const AST = eosio_abi_to_graphql_ast(abi);
 
     ast_list[name] = AST; // For use in serializing data in mutation resolver.
     const { query_fields, mutation_fields } = get_graphql_fields_from_AST(

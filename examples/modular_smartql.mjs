@@ -32,7 +32,7 @@ const { mutation_fields, query_fields, ast_list } =
 // Consume the query fields like any
 const queries = new GraphQLObjectType({
   name: "Query",
-  description: "Query table data from Antelope blockchain.",
+  description: "Query table data from EOSIO blockchain.",
   fields: query_fields
 });
 

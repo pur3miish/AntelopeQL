@@ -6,10 +6,9 @@ import name_type from "../eosio_types/name_type.mjs";
  * The action authorization type for action validation.
  * @kind typedef
  * @name authorization
- * @type {object}
- * @prop {string} actor Name of the account that is trying to authorize.
- * @prop {string} permission Name of the `permission` of the the `actor`
- * @ignore
+ * @type {Object}
+ * @prop {String} actor Name of the account that is trying to authorize.
+ * @prop {String} permission Name of the `permission` of the the `actor`
  */
 
 const authorization_type = new GraphQLInputObjectType({

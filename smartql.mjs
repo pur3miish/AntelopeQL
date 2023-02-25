@@ -8,7 +8,7 @@ import {
   validate
 } from "graphql";
 
-import blockchain from "./blockchain/index.mjs";
+import blockchain_query_field from "./blockchain_query_field.mjs";
 import build_graphql_fields_from_abis from "./build_graphql_fields_from_abis.mjs";
 import actions from "./graphql_input_types/actions.mjs";
 import push_serialized_transaction from "./push_serialized_transaction.mjs";
@@ -16,40 +16,58 @@ import push_transaction from "./push_transaction.mjs";
 import serialize_transaction from "./serialize_transaction.mjs";
 
 /**
- * SmartQL for interacting with Antelope and EOSIO based blockchains.
- * @name smartql
- * @kind function
- * @param {Object} GraphQL [GraphQL.execute](https://graphql.org/graphql-js/execution/#:~:text=execute,-export%20function%20execute&text=Implements%20the%20%22Evaluating%20requests%22%20section,immediately%20explaining%20the%20invalid%20input.).
- * @param {String} GraphQL.query GraphQL query that will instruct SmartQL to perform a CRUD operation.
- * @param {*} [GraphQL.variableValues] GraphQL variables.
- * @param {String} [GraphQL.operationName] GraphQL operation name (query resolution).
- * @param {object} SmartQL SmartQL argument.
- * @param {Array<String>} [SmartQL.contracts] List of EOSIO/Antelope smart contracts.
- * @param {Array<String>} [SmartQL.private_keys] List of private keys.
- * @param {Object} network Network argument.
- * @param {function} network.fetch fetch implimentation.
- * @param {String} network.rpc_url Chain remote proceedure call (RPC) Uniform Resource Locator (URL) .
- * @param {Headers} [network.headers] Headers to pass to the network request.
- * @param {AbortSignal} [network.signal] Abort controller signal.
- * @example <caption>`Usage`</caption>
+ * @typedef {Object} SmartQLArgument
+ * @property {String} query  GraphQL query that will instruct SmartQL to perform a CRUD operation.
+ * @property {*} variableValues GraphQL variables.
+ * @property {String} operationName GraphQL operation name (query resolution).
+ * @property {Function} fetch Custom fetch implementation.
+ * @property {String} rpc_url Chain remote proceedure call (RPC) Uniform Resource Locator (URL).
+ * @property {Array<String>} contracts List of EOSIO/Antelope smart contracts.
+ * @property {Array<String>} private_keys List of private keys used to sign transactions.
+ * @property {Headers} headers Headers to pass to the network request.
+ * @property {AbortSignal} signal Abort controller signal.
+ */
+
+/**
+ * SmartQL for interacting with EOSIO/Antelope based blockchains.
+ * @param {SmartQLArgument} Argument
+ * @example
  * ```js
- * import smartql from 'smartql'
- * import fetch from 'node-fetch' // Your fetch implementation.
+ * import smartql from 'smartql/smartql.mjs'
+ * import fetch from 'node-fetch'
  *
  * const query = `{ eosio_token { accounts(arg: { scope: "relockeblock" }){ balance } } }`
- * const network = { fetch, rpc_url: 'https://eos.relocke.io', headers: { "content-type": "application/json" } } // connection configuration
  *
- * smartql({ query }, { contracts: ['eosio.token'] }, network).then(console.log)
+ * smartql({
+ *  query,
+ *  contracts: ["eosio.token"],
+ *  fetch,
+ *  rpc_url: "https://eos.relocke.io",
+ *  headers: { "content-type": "application/json" }
+ * }).then(console.log);
  * ```
  * > Logged output was "data": {"eosio_token": {"accounts": [{"balance": "100.0211 EOS"}]}}}
  */
-export default async function smartql(
-  { query, variableValues, operationName },
-  { contracts = [], private_keys = [] },
-  network
-) {
+
+export default async function smartql({
+  query,
+  variableValues,
+  operationName,
+  fetch,
+  contracts = [],
+  private_keys = [],
+  rpc_url,
+  headers,
+  signal
+}) {
   try {
-    const { fetch, rpc_url, ...fetchOptions } = network;
+    if (!fetch && !(typeof window == "undefined")) fetch = window.fetch;
+    if (!fetch && typeof window == "undefined")
+      throw new GraphQLError("No fetch implementation provided");
+
+    const fetchOptions = {};
+    if (headers) fetchOptions.headers = headers;
+    if (signal) fetchOptions.signal = signal;
 
     const uri = `${rpc_url}/v1/chain/get_abi`;
 
@@ -61,7 +79,7 @@ export default async function smartql(
           account_name,
           json: true
         })
-      }).then((req) => req.json())
+      }).then((/** @type {{ json: () => any; }} */ req) => req.json())
     );
 
     const ABIs = await Promise.all(abi_req);
@@ -80,7 +98,7 @@ export default async function smartql(
     const queries = new GraphQLObjectType({
       name: "Query",
       description: "Query table data from EOSIO blockchain.",
-      fields: { blockchain, ...query_fields }
+      fields: { blockchain: blockchain_query_field, ...query_fields }
     });
 
     let mutations;
@@ -119,9 +137,8 @@ export default async function smartql(
       document,
       rootValue: "",
       contextValue: {
-        network,
-        private_keys,
-        ...fetchOptions
+        network: { rpc_url, fetch, ...fetchOptions },
+        private_keys
       },
       variableValues,
       operationName,

@@ -4,7 +4,7 @@
 
 [![NPM Package](https://img.shields.io/npm/v/smartql.svg)](https://www.npmjs.org/package/smartql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/smartql/blob/main/LICENSE)
 
-A [GraphQL](https://graphql.org/) implementation for interacting with **[Antelope](https://antelope.io/)** and [EOSIO](https://eos.io/) based blockchains.
+SmartQL is a [GraphQL](https://graphql.org/) tool designed for [Antelope](https://antelope.io/) and [EOSIO](https://eos.io/) blockchains. It allows users to query and update all smart contracts across multiple chains, offering comprehensive documentation and CRUD operations. It's a versatile tool for developers seeking interoperability between various blockchains.
 
 ## Live example
 
@@ -20,6 +20,22 @@ For [Node.js](https://nodejs.org), to install [`smartql`](https://npm.im/eos-ecc
 npm install smartql graphql
 ```
 
+For [Deno.js](https://deno.land), to install [`smartql`](https://deno.land/x/smartql) add to your `deno.json` configuration file these imports:
+
+```json
+{
+  "imports": {
+    "universal-sha256-js/": "https://deno.land/x/sha256js/",
+    "universal-hmac-sha256-js/": "https://deno.land/x/hmacsha256/",
+    "universal-hmac-sha256-js/hmac-sha256-node.mjs": "https://deno.land/x/hmacsha256/hmac-sha256-deno.mjs",
+    "base58-js/": "https://deno.land/x/base58/",
+    "isomorphic-secp256k1-js/": "https://deno.land/x/secp256k1js/",
+    "ripemd160-js/": "https://deno.land/x/ripemd160js@v2.0.3/",
+    "eosio-wasm-js/": "https://deno.land/x/eosio_wasm_js/"
+  }
+}
+```
+
 ## Examples
 
 See the examples folder on how to run SmartQL as a [Node.js](https://nodejs.org) endpoint.
@@ -28,7 +44,7 @@ See the examples folder on how to run SmartQL as a [Node.js](https://nodejs.org)
 
 ```js
 import fetch from "node-fetch";
-import SmartQL from "smartql";
+import SmartQL from "smartql/smartql.mjs";
 
 const network = {
   fetch,
@@ -111,7 +127,7 @@ const { data } = await SmartQL(
   },
   {
     contracts: ["eosio.token"],
-    private_keys: ["PVT_K1_…"] // legacy keys are supported.
+    private_keys: ["PVT_K1_…"] // legacy keys support.
   },
   network
 );
@@ -140,7 +156,22 @@ Supported runtime environments:
 
 - [Node.js](https://nodejs.org) versions `>=16.0.0`.
 - Browsers matching the [Browserslist](https://browsersl.ist) query [`> 0.5%, not OperaMini all, not dead`](https://browsersl.ist/?q=%3E+0.5%25%2C+not+OperaMini+all%2C+not+dead).
+- [Deno](https://deno.land) version `>=1.30.0`.
 
-## Setup
+## Exports
 
-- SmartQL as a [Node.js](/examples/as_node.mjs) server.
+The [npm](https://npmjs.com) package [`smartql`](https://npm.im/smartql) features [optimal JavaScript module design](https://jaydenseric.com/blog/optimal-javascript-module-design). It doesn’t have a main index module, so use deep imports from the ECMAScript modules that are exported via the [`package.json`](./package.json) field [`exports`](https://nodejs.org/api/packages.html#exports):
+
+- [`smartql.mjs`](./smartql.mjs)
+- [`blockchain_query_field.mjs`](blockchain_query_field.mjs)
+- [`build_graphql_fields_from_abis.mjs`](build_graphql_fields_from_abis.mjs)
+- [`eosio_abi_to_graphql_ast.mjs`](eosio_abi_to_graphql_ast.mjs)
+- [`eosio_types.mjs`](eosio_types.mjs)
+- [`mutation_resolver.mjs`](mutation_resolver.mjs)
+- [`push_serialized_transaction.mjs`](push_serialized_transaction.mjs)
+- [`push_transaction_rpc.mjs`](push_transaction_rpc.mjs)
+- [`push_transaction.mjs`](push_transaction.mjs)
+- [`query_resolver.mjs`](query_resolver.mjs)
+- [`serialize_transaction.mjs`](serialize_transaction.mjs)
+- [`smartql.mjs`](smartql.mjs)
+- [`types.mjs`](types.mjs)

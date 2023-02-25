@@ -2,14 +2,14 @@ import { GraphQLError } from "graphql";
 
 /**
  * Pushes a serialized transaction to the blockchain.
- * @param {object} root Argument
- * @param {string} root.transaction_header Serialized transaction header.
- * @param {string} root.transaction_body Serialized transaction body.
- * @param {Array<string>} root.signatures List of signatures to validate transaction.
- * @param {object} network Argument
- * @param {fetch} network.fetch fetch implimentation.
- * @param {string} network.rpc_url Chain rpc url.
- * @param {object} network.headers transaction headers.
+ * @param {Object} root Argument
+ * @param {String} root.transaction_header Serialized transaction header.
+ * @param {String} root.transaction_body Serialized transaction body.
+ * @param {Array<String>} root.signatures List of signatures to validate transaction.
+ * @param {Object} network Argument
+ * @param {fetch} network.fetch Custom fetch.
+ * @param {String} network.rpc_url Chain rpc url.
+ * @param {Object} network.headers transaction headers.
  *
  */
 export default async function push_transaction_rpc(

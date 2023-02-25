@@ -1,4 +1,3 @@
-"use strict";
 import serialize from "eosio-wasm-js";
 import serialize_transaction_header from "eosio-wasm-js/transaction_header.mjs";
 import { GraphQLError } from "graphql";
@@ -24,8 +23,7 @@ const validate_actions = () => {
  * Serializes GraphQL mutation actions into binary instructions.
  * @param {Array<Object>} actions List of actions to serialize.
  * @param {Array<Object>} ast_list Abstract syntax tree list of data to serialize.
- * @returns {string} Serialized transaction body as hexadecimal string.
- * @ignore
+ * @returns {String} Serialized transaction body as hexadecimal string.
  */
 async function get_transaction_body(actions, ast_list) {
   let actions_list_to_serialize = [];
@@ -158,13 +156,12 @@ async function get_transaction_body(actions, ast_list) {
 
 /**
  * Mutation resolver for serializing EOSIO transactions.
- * @param {object} args Args.
- * @param {object} args.actions Actions list to be serialized.
- * @param {object} [args.configuration] Action configuaration.
+ * @param {Object} args Args.
+ * @param {Object} args.actions Actions list to be serialized.
+ * @param {Object} [args.configuration] Action configuaration.
  * @param {SmartQLRPC} network SmartQL context contain fetch and url string.
- * @param {object} ast_list Abstract syntax tree list of the contract actions.
- * @ignore
- * @returns {object} Transaction object.
+ * @param {Object} ast_list Abstract syntax tree list of the contract actions.
+ * @returns {Object} Transaction object.
  */
 async function mutation_resolver(
   { actions, configuration = defeaul_config },
