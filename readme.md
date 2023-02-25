@@ -14,7 +14,7 @@ For a SmartQL GUI [smartql.relocke.io](https://smartql.relocke.io).
 
 ## Installation
 
-For [Node.js](https://nodejs.org), to install [`smartql`](https://npm.im/eos-ecc) and the peer dependency [`graphql`](https://npm.im/graphql) run:
+For [Node.js](https://nodejs.org), to install [`smartql`](https://npm.im/smartql) and the peer dependency [`graphql`](https://npm.im/graphql) run:
 
 ```sh
 npm install smartql graphql
