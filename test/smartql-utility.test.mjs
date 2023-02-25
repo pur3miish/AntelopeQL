@@ -57,7 +57,11 @@ const SmartQL = (query) => {
     schema,
     document,
     contextValue: {
-      network: { fetch, rpc_url: "http://127.0.0.1:8888" }
+      network: {
+        fetch,
+        rpc_url: "https://jungle.relocke.io",
+        headers: { "content-type": "application/json" }
+      }
     },
     fieldResolver(rootValue, args, ctx, { fieldName }) {
       return rootValue[fieldName];
