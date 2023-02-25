@@ -1,12 +1,21 @@
 import fetch from "node-fetch";
+import assertSnapshot from "snapshot-assertion";
 
 import smartql from "../smartql.mjs";
 
 export default async (tests) => {
-  tests.add("test eosio queries on jungle blockchain", async () => {
+  tests.add("Test eosio queries", async () => {
     const query = /* GraphQL */ `
-      {
+      query test1 {
         blockchain {
+          get_info {
+            server_version
+            chain_id
+            server_version_string
+            fork_db_head_block_num
+            fork_db_head_block_id
+          }
+
           get_account(account_name: "eosio") {
             account_name
             ram_quota
@@ -40,11 +49,8 @@ export default async (tests) => {
       query,
       fetch,
       rpc_url: "https://jungle.relocke.io",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: { "Content-Type": "application/json" }
     });
-
-    console.log(data?.blockchain);
+    assertSnapshot(JSON.stringify(data), "test/snapshots/test1.json");
   });
 };
