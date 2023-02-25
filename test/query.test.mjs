@@ -8,14 +8,6 @@ export default async (tests) => {
     const query = /* GraphQL */ `
       query test1 {
         blockchain {
-          get_info {
-            server_version
-            chain_id
-            server_version_string
-            fork_db_head_block_num
-            fork_db_head_block_id
-          }
-
           get_account(account_name: "eosio") {
             account_name
             ram_quota
