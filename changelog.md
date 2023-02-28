@@ -1,5 +1,12 @@
 # SmartQL changelog
 
+## 13.1.1
+
+### Patch
+
+- Updated engines field of `package.json` .
+- Added `base58-js` version set to ^2.
+
 ## 13.1.0
 
 ### Minor
