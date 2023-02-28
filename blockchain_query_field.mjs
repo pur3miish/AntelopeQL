@@ -8,6 +8,8 @@ import get_block from "./blockchain/get_block.mjs";
 import get_currency_balance from "./blockchain/get_currency_balance.mjs";
 import get_currency_stats from "./blockchain/get_currency_stats.mjs";
 import get_info from "./blockchain/get_info.mjs";
+import get_producers from "./blockchain/get_producers.mjs";
+import get_ram_price from "./blockchain/get_ram_price.mjs";
 import get_table from "./blockchain/get_table_by_scope.mjs";
 
 const blockchain_query_field = {
