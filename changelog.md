@@ -1,5 +1,9 @@
 # SmartQL changelog
 
+## 13.0.3
+
+- Dependency updates.
+
 ## 13.0.2
 
 ### Patch
