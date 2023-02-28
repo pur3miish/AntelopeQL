@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+## 13.1.0
+
+### Minor
+
+- Added blockchain query `get_producers` and `get_ram_price`.
+
 ## 13.0.3
 
 - Dependency updates.
