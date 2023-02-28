@@ -9,8 +9,8 @@ import {
 } from "graphql";
 
 import asset_type from "../eosio_types/asset_type.mjs";
+import EOSIO_key_type from "../eosio_types/eosio_key_type.mjs";
 import name_type from "../eosio_types/name_type.mjs";
-import public_key_type from "../eosio_types/public_key_type.mjs";
 
 const resource_type = new GraphQLObjectType({
   name: "resource_type",
@@ -31,19 +31,11 @@ const bandwidth_type = new GraphQLObjectType({
   })
 });
 
-const EOS_key_type = new GraphQLObjectType({
-  name: "key_type",
-  fields: () => ({
-    key: { type: public_key_type },
-    weight: { type: GraphQLInt }
-  })
-});
-
 const require_auth_type = new GraphQLObjectType({
   name: "require_auth_type",
   fields: () => ({
     threshold: { type: GraphQLInt },
-    keys: { type: new GraphQLList(EOS_key_type) },
+    keys: { type: new GraphQLList(EOSIO_key_type) },
     accounts: {
       type: new GraphQLList(
         new GraphQLObjectType({
