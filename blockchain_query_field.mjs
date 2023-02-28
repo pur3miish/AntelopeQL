@@ -22,8 +22,10 @@ const blockchain_query_field = {
       get_currency_balance,
       get_currency_stats,
       get_info,
+      get_producers,
       deserialize_action_data,
-      get_table
+      get_table,
+      get_ram_price
     }
   }),
   resolve(_, __, { network: { fetch, rpc_url } }) {
