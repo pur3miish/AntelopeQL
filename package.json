@@ -1,6 +1,6 @@
 {
   "name": "smartql",
-  "version": "13.1.2",
+  "version": "13.1.3",
   "description": "A GraphQL implementation for interacting with EOSIO/Antelope based blockchains.",
   "repository": "github:pur3miish/smartql",
   "bugs": "https://github.com/pur3miish/smartql/issues",

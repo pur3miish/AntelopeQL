@@ -29,8 +29,15 @@ import serialize_transaction from "./serialize_transaction.mjs";
  */
 
 /**
+ * @typedef {Object} SmartQLResult
+ * @property {*} [data] returned data
+ * @property {Array<*>} [errors] returned errors
+ */
+
+/**
  * SmartQL for interacting with EOSIO/Antelope based blockchains.
  * @param {SmartQLArgument} Argument
+ * @returns {SmartQLResult}
  * @example
  * ```js
  * import smartql from 'smartql/smartql.mjs'

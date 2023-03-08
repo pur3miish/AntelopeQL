@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+## 13.1.3
+
+### Patch
+
+- Included TS/JSDoc returns value for `smartql`.
+
 ## 13.1.2
 
 ### Patch
