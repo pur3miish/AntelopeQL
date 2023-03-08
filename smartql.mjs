@@ -18,14 +18,14 @@ import serialize_transaction from "./serialize_transaction.mjs";
 /**
  * @typedef {Object} SmartQLArgument
  * @property {String} query  GraphQL query that will instruct SmartQL to perform a CRUD operation.
- * @property {*} variableValues GraphQL variables.
- * @property {String} operationName GraphQL operation name (query resolution).
- * @property {Function} fetch Custom fetch implementation.
  * @property {String} rpc_url Chain remote proceedure call (RPC) Uniform Resource Locator (URL).
- * @property {Array<String>} contracts List of EOSIO/Antelope smart contracts.
- * @property {Array<String>} private_keys List of private keys used to sign transactions.
- * @property {Headers} headers Headers to pass to the network request.
- * @property {AbortSignal} signal Abort controller signal.
+ * @property {*} [variableValues] GraphQL variables.
+ * @property {String} [operationName] GraphQL operation name (query resolution).
+ * @property {Function} [fetch] Custom fetch implementation.
+ * @property {Array<String>} [contracts] List of EOSIO/Antelope smart contracts.
+ * @property {Array<String>} [private_keys] List of private keys used to sign transactions.
+ * @property {Headers} [headers] Headers to pass to the network request.
+ * @property {AbortSignal} [signal] Abort controller signal.
  */
 
 /**

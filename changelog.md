@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+## 13.1.2
+
+### Patch
+
+- Updated TS/JSDoc smartql to include optional arguments.
+
 ## 13.1.1
 
 ### Patch
