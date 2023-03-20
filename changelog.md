@@ -1,5 +1,11 @@
 # SmartQL changelog
 
+## 13.1.4
+
+### Patch
+
+- fix added to [`get_block`]("blockchain/get_block.mjs") data is now stringified.
+
 ## 13.1.3
 
 ### Patch

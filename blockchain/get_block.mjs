@@ -7,6 +7,7 @@ import {
   GraphQLString
 } from "graphql";
 
+import bytes_type from "../eosio_types/bytes_type.mjs";
 import authorization_type from "../graphql_object_types/authorization.mjs";
 
 const action_type = new GraphQLObjectType({
@@ -22,7 +23,14 @@ const action_type = new GraphQLObjectType({
       type: new GraphQLList(authorization_type)
     },
     data: {
-      type: GraphQLString
+      type: GraphQLString,
+      description: "JSON representation of the transaction data.",
+      resolve({ data }) {
+        return JSON.stringify(data);
+      }
+    },
+    hex_data: {
+      type: bytes_type
     }
   })
 });
