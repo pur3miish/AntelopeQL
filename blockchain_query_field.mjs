@@ -33,10 +33,10 @@ const blockchain_query_field = {
   resolve(_, __, { network: { fetch, rpc_url } }) {
     if (!fetch)
       throw new GraphQLError(
-        "Fetch was not supplied to the `smartql_context`."
+        "Fetch was not supplied to the `antelopeql_context`."
       );
     if (!rpc_url)
-      throw new GraphQLError("No RPC url supplied to `smartql_context`");
+      throw new GraphQLError("No RPC url supplied to `antelopeql_context`");
     return {};
   }
 };

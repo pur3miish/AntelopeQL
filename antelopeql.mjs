@@ -16,36 +16,36 @@ import push_transaction from "./push_transaction.mjs";
 import serialize_transaction from "./serialize_transaction.mjs";
 
 /**
- * @typedef {Object} SmartQLArgument
- * @property {String} query  GraphQL query that will instruct SmartQL to perform a CRUD operation.
+ * @typedef {Object} AntelopeQLArgument
+ * @property {String} query  GraphQL query that will instruct AntelopeQL to perform a CRUD operation.
  * @property {String} rpc_url Chain remote proceedure call (RPC) Uniform Resource Locator (URL).
  * @property {*} [variableValues] GraphQL variables.
  * @property {String} [operationName] GraphQL operation name (query resolution).
  * @property {Function} [fetch] Custom fetch implementation.
- * @property {Array<String>} [contracts] List of EOSIO/Antelope smart contracts.
+ * @property {Array<String>} [contracts] List of Antelope smart contracts.
  * @property {Array<String>} [private_keys] List of private keys used to sign transactions.
  * @property {Headers} [headers] Headers to pass to the network request.
  * @property {AbortSignal} [signal] Abort controller signal.
  */
 
 /**
- * @typedef {Object} SmartQLResult
+ * @typedef {Object} AntelopeQLResult
  * @property {*} [data] returned data
  * @property {Array<*>} [errors] returned errors
  */
 
 /**
- * SmartQL for interacting with EOSIO/Antelope based blockchains.
- * @param {SmartQLArgument} Argument
- * @returns {SmartQLResult}
+ * AntelopeQL for interacting with Antelope based blockchains.
+ * @param {AntelopeQLArgument} Argument
+ * @returns {AntelopeQLResult}
  * @example
  * ```js
- * import smartql from 'smartql/smartql.mjs'
+ * import AntelopeQL from 'antelopeql/antelopeql.mjs'
  * import fetch from 'node-fetch'
  *
  * const query = `{ eosio_token { accounts(arg: { scope: "relockeblock" }){ balance } } }`
  *
- * smartql({
+ * AntelopeQL({
  *  query,
  *  contracts: ["eosio.token"],
  *  fetch,
@@ -56,7 +56,7 @@ import serialize_transaction from "./serialize_transaction.mjs";
  * > Logged output was "data": {"eosio_token": {"accounts": [{"balance": "100.0211 EOS"}]}}}
  */
 
-export default async function smartql({
+export default async function AntelopeQL({
   query,
   variableValues,
   operationName,

@@ -1,6 +1,6 @@
 # Testing and Troubleshooting
 
-**SmartQL tests are done with a local [nodeos](https://developers.eos.io/manuals/eos/v2.1/nodeos/index) blockchain.**
+**AntelopeQL tests are done with a local [nodeos](https://developers.eos.io/manuals/eos/v2.1/nodeos/index) blockchain.**
 
 ## RPC_URLs
 

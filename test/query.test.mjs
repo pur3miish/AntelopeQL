@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import assertSnapshot from "snapshot-assertion";
 
-import smartql from "../smartql.mjs";
+import AntelopeQL from "../antelopeql.mjs";
 
 export default async (tests) => {
   tests.add("Test eosio queries", async () => {
@@ -37,7 +37,7 @@ export default async (tests) => {
       }
     `;
 
-    const { data } = await smartql({
+    const { data } = await AntelopeQL({
       query,
       fetch,
       rpc_url: "https://jungle.relocke.io",

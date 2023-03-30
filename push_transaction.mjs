@@ -10,7 +10,7 @@ import push_transaction_rpc from "./push_transaction_rpc.mjs";
 
 const push_transaction = (actions, ast_list) => ({
   description:
-    "Serialize a list of actions and push them to the blockchain in one step, requires private keys to be supplied to smartql.",
+    "Serialize a list of actions and push them to the blockchain in one step, requires private keys to be supplied to AntelopeQL.",
   type: new GraphQLNonNull(transaction_receipt),
   args: {
     actions: {

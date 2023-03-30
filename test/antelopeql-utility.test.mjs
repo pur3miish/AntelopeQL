@@ -32,7 +32,7 @@ const { mutation_fields, query_fields, ast_list } =
 // Consume the query fields like any
 const queries = new GraphQLObjectType({
   name: "Query",
-  description: "Query table data from EOSIO/Antelope blockchain.",
+  description: "Query table data from Antelope blockchain.",
   fields: query_fields
 });
 
@@ -48,7 +48,7 @@ const mutations = new GraphQLObjectType({
 
 const schema = new GraphQLSchema({ query: queries, mutation: mutations });
 
-const SmartQL = (query) => {
+const AntelopeQL = (query) => {
   const document = parse(new Source(query));
   const queryErrors = validate(schema, document);
   if (queryErrors.length) throw queryErrors;
@@ -69,4 +69,4 @@ const SmartQL = (query) => {
   });
 };
 
-export default SmartQL;
+export default AntelopeQL;

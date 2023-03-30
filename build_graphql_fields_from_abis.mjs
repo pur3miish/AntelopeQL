@@ -21,12 +21,12 @@ import {
 /**
  * Builds GraphQL query and mutation fields from a list of ABIs. These GraphQL fields can readily be consumed by a GraphQL Schema, enabling developers the ability to integrate a varienty of EOSIO based blockchains into their GraphQL service.
  * @param {Array<AccountABI>} abi_list Argument.
- * @returns {Object} SmartQL fields.
+ * @returns {Object} AntelopeQL fields.
  * @example <caption>`Usage` in a custom GraphQL API.</caption>
  * ```js
- * import actions_type from 'smartql/graphql_input_types/actions.js'
- * import serialize_transaction from 'smartql/graphql_input_types/actions.js'
- * import push_transaction from 'smartql/push_transaction.js'
+ * import actions_type from 'antelopeql/graphql_input_types/actions.js'
+ * import serialize_transaction from 'antelopeql/graphql_input_types/actions.js'
+ * import push_transaction from 'antelopeql/push_transaction.js'
  *
  * const network = { fetch, rpc_url: 'https://eos.relocke.io', headers: {}, signal }
  * const ABI_list = [{ account_name: 'eosio.token', abi: … }]

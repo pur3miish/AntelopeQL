@@ -1,13 +1,13 @@
 import { GraphQLError } from "graphql";
 
 /**
- * SmartQL Query resolver.
+ * AntelopeQL Query resolver.
  * @param {Object} root GraphQL resolver root query.
- * @param {String} root.code Contract code calling, passed from smartql_fields resolver.
+ * @param {String} root.code Contract code calling, passed from antelopeql_fields resolver.
  * @param {Object} args Query arguments.
  * @param {Object} args.arg argument data.
  * @param {Object} ctx GraphQL context.
- * @param {SmartQLRPC} ctx.network Object containing connection url and fetch.
+ * @param {AntelopeQLRPC} ctx.network Object containing connection url and fetch.
  * @param {Object} info GraphQL resovler info argument.
  * @returns {Object} Returned data from table.
  */

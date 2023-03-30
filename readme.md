@@ -1,26 +1,24 @@
-![smartql logo](https://raw.githubusercontent.com/pur3miish/smartql/main/static/smartql.svg)
+![antelopeql logo](https://raw.githubusercontent.com/pur3miish/antelope/main/static/antelopeql.svg)
 
-# SmartQL
+# AntelopeQL
 
-[![NPM Package](https://img.shields.io/npm/v/smartql.svg)](https://www.npmjs.org/package/smartql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/smartql/blob/main/LICENSE)
+[![NPM Package](https://img.shields.io/npm/v/antelopeql.svg)](https://www.npmjs.org/package/antelopeql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/antelopeql/blob/main/LICENSE)
 
-SmartQL is a [GraphQL](https://graphql.org/) tool designed for [Antelope](https://antelope.io/) and [EOSIO](https://eos.io/) blockchains. It allows users to query and update all smart contracts across multiple chains, offering comprehensive documentation and CRUD operations. It's a versatile tool for developers seeking interoperability between various blockchains.
+AntelopeQL is a [GraphQL](https://graphql.org/) implementation for interacting with [Antelope](https://antelope.io/) blockchains. Query and mutate your smart contracts with a GraphQL tool that provides comprehensive documentation about the entire blockchain.
 
-## Live example
+**For a live example of AntelopeQL GUI see: [antelope.relocke.io](https://antelope.relocke.io).**
 
-For a SmartQL GUI [smartql.relocke.io](https://smartql.relocke.io).
-
-![smartql screenshot](https://raw.githubusercontent.com/pur3miish/smartql/main/static/smartql-screen.png)
+![antelopeql screenshot](https://raw.githubusercontent.com/pur3miish/antelopeql/main/static/antelopeql-screen.png)
 
 ## Installation
 
-For [Node.js](https://nodejs.org), to install [`smartql`](https://npm.im/smartql) and the peer dependency [`graphql`](https://npm.im/graphql) run:
+For [Node.js](https://nodejs.org), to install [`AntelopeQL`](https://npm.im/antelopeql) and the peer dependency [`graphql`](https://npm.im/graphql) run:
 
 ```sh
-npm install smartql graphql
+npm install antelopeql graphql
 ```
 
-For [Deno.js](https://deno.land), to install [`smartql`](https://deno.land/x/smartql) add to your `deno.json` configuration file these imports:
+For [Deno.js](https://deno.land), to install [`AntelopeQL`](https://deno.land/x/antelopeql) add to your `deno.json` configuration file these imports:
 
 ```json
 {
@@ -40,15 +38,15 @@ For [Deno.js](https://deno.land), to install [`smartql`](https://deno.land/x/sma
 
 ## Examples
 
-See the examples folder on how to run SmartQL as a [Node.js](https://nodejs.org) endpoint.
+See the examples folder on how to run AntelopeQL as a [Node.js](https://nodejs.org) endpoint.
 
 ### Query a blockchain account
 
 ```js
 import fetch from "node-fetch";
-import SmartQL from "smartql/smartql.mjs";
+import AntelopeQL from "antelopeql/antelopeql.mjs";
 
-const { data } = await SmartQL(
+const { data } = await AntelopeQL(
   {
     query: /*GraphQL*/ `{
     blockchain{
@@ -91,9 +89,9 @@ console.log(data);
 
 ```js
 import fetch from "node-fetch";
-import SmartQL from "smartql";
+import AntelopeQL from "antelopeql/antelopeql.mjs";
 
-const { data } = await SmartQL({
+const { data } = await AntelopeQL({
   query: /*GraphQL*/ `mutation{
       push_transaction(actions: [{
         eosio_token:{
@@ -134,8 +132,8 @@ console.log(data);
 
 ```js
 (async function () {
-  const { default: SmartQL } = await import("smartql");
-  const { data } = await SmartQL({…})
+  const { default: AntelopeQL } = await import("antelopeql/antelopeql.mjs");
+  const { data } = await AntelopeQL({…})
 })();
 ```
 
@@ -149,9 +147,9 @@ Supported runtime environments:
 
 ## Exports
 
-The [npm](https://npmjs.com) package [`smartql`](https://npm.im/smartql) features [optimal JavaScript module design](https://jaydenseric.com/blog/optimal-javascript-module-design). It doesn’t have a main index module, so use deep imports from the ECMAScript modules that are exported via the [`package.json`](./package.json) field [`exports`](https://nodejs.org/api/packages.html#exports):
+The [npm](https://npmjs.com) package [`AntelopeQL`](https://npm.im/antelopeql) features [optimal JavaScript module design](https://jaydenseric.com/blog/optimal-javascript-module-design). It doesn’t have a main index module, so use deep imports from the ECMAScript modules that are exported via the [`package.json`](./package.json) field [`exports`](https://nodejs.org/api/packages.html#exports):
 
-- [`smartql.mjs`](./smartql.mjs)
+- [`antelopeql.mjs`](./antelopeql.mjs)
 - [`blockchain_query_field.mjs`](blockchain_query_field.mjs)
 - [`build_graphql_fields_from_abis.mjs`](build_graphql_fields_from_abis.mjs)
 - [`eosio_abi_to_graphql_ast.mjs`](eosio_abi_to_graphql_ast.mjs)
@@ -162,5 +160,5 @@ The [npm](https://npmjs.com) package [`smartql`](https://npm.im/smartql) feature
 - [`push_transaction.mjs`](push_transaction.mjs)
 - [`query_resolver.mjs`](query_resolver.mjs)
 - [`serialize_transaction.mjs`](serialize_transaction.mjs)
-- [`smartql.mjs`](smartql.mjs)
+- [`antelopeql.mjs`](antelopeql.mjs)
 - [`types.mjs`](types.mjs)

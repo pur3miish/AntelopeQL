@@ -1,10 +1,10 @@
 {
-  "name": "smartql",
-  "version": "13.1.4",
-  "description": "A GraphQL implementation for interacting with EOSIO/Antelope based blockchains.",
-  "repository": "github:pur3miish/smartql",
-  "bugs": "https://github.com/pur3miish/smartql/issues",
-  "homepage": "https://github.com/pur3miish/smartql#readme",
+  "name": "antelopeql",
+  "version": "1.0.0",
+  "description": "A GraphQL implementation for interacting with Antelope based blockchains.",
+  "repository": "github:pur3miish/antelopeql",
+  "bugs": "https://github.com/pur3miish/antelopeql/issues",
+  "homepage": "https://github.com/pur3miish/antelopeql#readme",
   "author": "pur3miish",
   "license": "MIT",
   "scripts": {
@@ -36,7 +36,7 @@
     "push_transaction.mjs",
     "query_resolver.mjs",
     "serialize_transaction.mjs",
-    "smartql.mjs",
+    "antelopeql.mjs",
     "types.mjs"
   ],
   "sideEffects": false,
@@ -55,7 +55,7 @@
     "./push_transaction.mjs": "./push_transaction.mjs",
     "./query_resolver.mjs": "./query_resolver.mjs",
     "./serialize_transaction.mjs": "./serialize_transaction.mjs",
-    "./smartql.mjs": "./smartql.mjs",
+    "./antelopeql.mjs": "./antelopeql.mjs",
     "./types.mjs": "./types.mjs"
   },
   "browserslist": [

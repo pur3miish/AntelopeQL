@@ -11,9 +11,9 @@ const defeaul_config = {
 };
 
 const validate_actions = () => {
-  throw new GraphQLError(`Invalid SmartQL query.`, {
+  throw new GraphQLError(`Invalid AntelopeQL query.`, {
     extensions: {
-      why: "SmartQL enforces one action per object in the list to preserve the top to bottom execution order.",
+      why: "AntelopeQL enforces one action per object in the list to preserve the top to bottom execution order.",
       example: "actions: [{ action1: … }, { action2: … }]"
     }
   });
@@ -159,7 +159,7 @@ async function get_transaction_body(actions, ast_list) {
  * @param {Object} args Args.
  * @param {Object} args.actions Actions list to be serialized.
  * @param {Object} [args.configuration] Action configuaration.
- * @param {SmartQLRPC} network SmartQL context contain fetch and url string.
+ * @param {AntelopeQLRPC} network AntelopeQL context contain fetch and url string.
  * @param {Object} ast_list Abstract syntax tree list of the contract actions.
  * @returns {Object} Transaction object.
  */
