@@ -1,4 +1,4 @@
-![antelopeql logo](https://raw.githubusercontent.com/pur3miish/antelope/main/static/antelopeql.svg)
+![antelopeql logo](https://raw.githubusercontent.com/pur3miish/antelopeql/main/static/antelopeql.svg)
 
 # AntelopeQL
 
