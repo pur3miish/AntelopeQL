@@ -12,7 +12,7 @@ As a GraphQL client library, AntelopeQL simplifies the process of building and e
 
 With AntelopeQL, developers can focus on building the frontend and business logic of their DApps, while relying on the library to handle the complexities of interacting with multiple blockchains in the Antelope ecosystem.
 
-**For a live example of AntelopeQL GUI see: [antelope.relocke.io](https://antelope.relocke.io).**
+**For a live example of AntelopeQL GUI see: [antelopeql.relocke.io](https://antelopeql.relocke.io).**
 
 ![antelopeql screenshot](https://raw.githubusercontent.com/pur3miish/antelopeql/main/static/antelopeql-screen.png)
 
