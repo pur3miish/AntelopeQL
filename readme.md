@@ -4,7 +4,9 @@
 
 [![NPM Package](https://img.shields.io/npm/v/antelopeql.svg)](https://www.npmjs.org/package/antelopeql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/antelopeql/blob/main/LICENSE)
 
-AntelopeQL (_Antelope Query Language_) is a [GraphQL](https://graphql.org/) implementation for interacting with [Antelope](https://antelope.io/) blockchains. Query and mutate your smart contracts with a GraphQL tool that provides comprehensive documentation about the entire blockchain.
+AntelopeQL (_Antelope Query Language_)
+
+AntelopeQL is a GraphQL client and server library that allows developers to interact with the Antelope blockchain using GraphQL. It provides a unified interface to communicate with different blockchains within the Antelope ecosystem, enabling developers to build DApps that leverage the unique features and capabilities of each blockchain while still benefiting from a consistent development experience.
 
 **For a live example of AntelopeQL GUI see: [antelope.relocke.io](https://antelope.relocke.io).**
 
