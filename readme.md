@@ -6,7 +6,11 @@
 
 AntelopeQL (_Antelope Query Language_)
 
-AntelopeQL is a GraphQL client and server library that allows developers to interact with the Antelope blockchain using GraphQL. It provides a unified interface to communicate with different blockchains within the Antelope ecosystem, enabling developers to build DApps that leverage the unique features and capabilities of each blockchain while still benefiting from a consistent development experience.
+AntelopeQL is a GraphQL client and server library that allows developers to interact with the Antelope blockchain using GraphQL. It provides a unified interface to communicate with different blockchains within the Antelope ecosystem, enabling developers to leverage the unique features and capabilities of each blockchain while still benefiting from a consistent development experience.
+
+As a GraphQL client library, AntelopeQL simplifies the process of building and executing GraphQL queries and mutations, handling errors, and signing transactions. As a server library, it provides a framework for building GraphQL APIs that can interact with the Antelope blockchain and other data sources.
+
+With AntelopeQL, developers can focus on building the frontend and business logic of their DApps, while relying on the library to handle the complexities of interacting with multiple blockchains in the Antelope ecosystem.
 
 **For a live example of AntelopeQL GUI see: [antelope.relocke.io](https://antelope.relocke.io).**
 
