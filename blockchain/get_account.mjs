@@ -94,6 +94,7 @@ const permission_type = new GraphQLObjectType({
 
 const account_type = new GraphQLObjectType({
   name: "account_type",
+  description: `Retreive details about a specific account on the blockchain.`,
   fields: () => ({
     account_name: {
       type: name_type
@@ -200,7 +201,6 @@ const account_type = new GraphQLObjectType({
 });
 
 const get_account = {
-  description: `Retreive details about a specific account on the blockchain.`,
   type: account_type,
   args: {
     account_name: {

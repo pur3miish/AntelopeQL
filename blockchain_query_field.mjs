@@ -13,9 +13,9 @@ import get_ram_price from "./blockchain/get_ram_price.mjs";
 import get_table from "./blockchain/get_table_by_scope.mjs";
 
 const blockchain_query_field = {
-  description: `Retrieve infomation about the blockchain, cryptocurrency and accounts.`,
   type: new GraphQLObjectType({
-    name: "blockchain",
+    name: "blockchain_type",
+    description: `Retrieve infomation about the blockchain, cryptocurrency and accounts.`,
     fields: {
       get_account,
       get_abi,

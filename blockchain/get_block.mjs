@@ -138,7 +138,7 @@ const transactions_type = new GraphQLObjectType({
 
 const block_type = new GraphQLObjectType({
   name: "block_type",
-  description: "",
+  description: "Return info relating to a specific block.",
   fields: () => ({
     timestamp: {
       description: "Date/time string in the format `YYYY-MM-DDTHH:MM:SS.sss`",
@@ -205,7 +205,6 @@ const block_type = new GraphQLObjectType({
 });
 
 const get_block = {
-  description: "Return info relating to a specific block.",
   type: block_type,
   args: {
     block_num_or_id: {

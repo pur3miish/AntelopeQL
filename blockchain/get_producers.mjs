@@ -56,7 +56,7 @@ const producers = new GraphQLObjectType({
 });
 
 const get_producers = {
-  description: "Return info about block producers.",
+  description: "Return info about Antelope block producers.",
   type: new GraphQLObjectType({
     name: "antelope_producers",
     fields: {

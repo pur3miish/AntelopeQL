@@ -36,6 +36,8 @@ const authorized_accounts_type = new GraphQLObjectType({
 
 const accounts_by_authorizers_type = new GraphQLObjectType({
   name: "accounts_by_authorizers",
+  description:
+    "Fetch permissions authorities that are, in part or whole, satisfiable.",
   fields: () => ({
     accounts: {
       type: new GraphQLList(authorized_accounts_type)
@@ -44,8 +46,6 @@ const accounts_by_authorizers_type = new GraphQLObjectType({
 });
 
 const accounts_by_authorizers = {
-  description:
-    "Fetch permissions authorities that are, in part or whole, satisfiable.",
   type: accounts_by_authorizers_type,
   args: {
     accounts: {
