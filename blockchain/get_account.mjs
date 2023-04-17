@@ -81,7 +81,7 @@ const linked_actions_type = new GraphQLObjectType({
 
 const permission_type = new GraphQLObjectType({
   name: "permission_type",
-  description: "EOS account permissions",
+  description: "Antelope account permissions",
   fields: {
     perm_name: { type: name_type },
     parent: { type: name_type },
@@ -111,7 +111,7 @@ const account_type = new GraphQLObjectType({
     cpu_limit: { type: bandwidth_type },
     ram_usage: { type: GraphQLString },
     permissions: {
-      description: "List of the EOS `account_name` permissions",
+      description: "List of the Antelope `account_name` permissions",
       type: new GraphQLList(permission_type)
     },
     total_resources: {

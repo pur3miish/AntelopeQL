@@ -58,7 +58,7 @@ const producers = new GraphQLObjectType({
 const get_producers = {
   description: "Return info about block producers.",
   type: new GraphQLObjectType({
-    name: "blockchain_producers",
+    name: "antelope_producers",
     fields: {
       total_producer_vote_weight: {
         type: GraphQLString

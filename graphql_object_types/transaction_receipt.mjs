@@ -48,7 +48,7 @@ const transaction_status = new GraphQLEnumType({
 });
 
 /**
- * Bandwidth reciept for EOSIO transaction.
+ * Bandwidth reciept for Antelope transaction.
  * @typedef {Object} Bandwidth_cost
  * @prop {Number} net_usage_words Consumption of network bandwidth (bytes).
  * @prop {Number} cpu_usage_us Consumption of CPU bandwidth (µs).
@@ -119,7 +119,7 @@ const transaction_receipt_type = new GraphQLObjectType({
   fields: () => ({
     transaction_id: {
       type: GraphQLID,
-      description: "`eosio` blockchain transaction id “reciept”"
+      description: "`Antelope` blockchain transaction id “reciept”"
     },
     block_num: {
       type: GraphQLInt,

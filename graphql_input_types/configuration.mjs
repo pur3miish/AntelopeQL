@@ -11,7 +11,7 @@ const configuration_default_value = {
 };
 
 /**
- * Handles various elements relating to the `EOSIO` transaction.
+ * Handles various elements relating to the `Antelope` transaction.
  * @typedef {Object} configuration_type
  * @param {Number} blocksBehind Number of blocks behind the current block (TaPoS protection).
  * @param {Number} expireSeconds Seconds past before transaction is no longer valid (TaPoS protection)

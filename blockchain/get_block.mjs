@@ -43,7 +43,7 @@ const producer_type = new GraphQLObjectType({
     },
     block_signing_key: {
       type: GraphQLString,
-      description: `Base58 encoded EOSIO public key.`
+      description: `Base58 encoded Antelope public key.`
     }
   })
 });
@@ -179,7 +179,7 @@ const block_type = new GraphQLObjectType({
     },
     producer_signature: {
       type: GraphQLString,
-      description: `Base58 encoded EOSIO cryptographic signature.`
+      description: `Base58 encoded Antelope cryptographic signature.`
     },
     transactions: {
       type: new GraphQLList(transactions_type),

@@ -8,11 +8,11 @@ const deserialize_action_data = {
   type: GraphQLString,
   args: {
     code: {
-      description: "Account name that holds the EOSIO smart contract.",
+      description: "Account name that holds the Antelope smart contract.",
       type: new GraphQLNonNull(name_type)
     },
     action: {
-      description: "Action name on the EOSIO smart contract.",
+      description: "Action name on the Antelope smart contract.",
       type: new GraphQLNonNull(name_type)
     },
     binargs: {

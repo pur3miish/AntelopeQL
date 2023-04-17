@@ -2,7 +2,7 @@ import { GraphQLError, GraphQLObjectType, GraphQLString } from "graphql";
 
 const info_type = new GraphQLObjectType({
   name: "info_type",
-  description: "Returns various details about the EOS blockchain",
+  description: "Returns various details about the Antelope blockchain",
   fields: () => ({
     server_version: {
       type: GraphQLString,

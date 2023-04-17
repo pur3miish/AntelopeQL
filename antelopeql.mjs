@@ -104,7 +104,7 @@ export default async function AntelopeQL({
 
     const queries = new GraphQLObjectType({
       name: "Query",
-      description: "Query table data from EOSIO blockchain.",
+      description: "Query table data from Antelope blockchains.",
       fields: { blockchain: blockchain_query_field, ...query_fields }
     });
 
