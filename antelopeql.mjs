@@ -10,6 +10,7 @@ import {
 
 import blockchain_query_field from "./blockchain_query_field.mjs";
 import build_graphql_fields_from_abis from "./build_graphql_fields_from_abis.mjs";
+import get_abis from "./get_abis.mjs";
 import actions from "./graphql_input_types/actions.mjs";
 import push_serialized_transaction from "./push_serialized_transaction.mjs";
 import push_transaction from "./push_transaction.mjs";
@@ -63,6 +64,7 @@ export default async function AntelopeQL({
   fetch,
   contracts = [],
   private_keys = [],
+  ABIs = [],
   rpc_url,
   headers,
   signal
@@ -76,31 +78,11 @@ export default async function AntelopeQL({
     if (headers) fetchOptions.headers = headers;
     if (signal) fetchOptions.signal = signal;
 
-    const uri = `${rpc_url}/v1/chain/get_abi`;
-
-    const abi_req = contracts.map((account_name) =>
-      fetch(uri, {
-        method: "POST",
-        ...fetchOptions,
-        body: JSON.stringify({
-          account_name,
-          json: true
-        })
-      }).then((/** @type {{ json: () => any; }} */ req) => req.json())
-    );
-
-    const ABIs = await Promise.all(abi_req);
-    for (let i = 0; i < contracts.length; i++) {
-      if (ABIs[i].error)
-        throw new GraphQLError(ABIs[i].message, { extensions: ABIs[i] });
-      if (!ABIs[i].abi)
-        throw new GraphQLError(
-          `No smart contract found for “${contracts[i]}”.`
-        );
-    }
-
     const { mutation_fields, query_fields, ast_list } =
-      build_graphql_fields_from_abis(ABIs);
+      build_graphql_fields_from_abis([
+        ...ABIs,
+        ...(await get_abis(contracts, { fetch, rpc_url, fetchOptions }))
+      ]);
 
     const queries = new GraphQLObjectType({
       name: "Query",

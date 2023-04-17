@@ -37,7 +37,8 @@
     "query_resolver.mjs",
     "serialize_transaction.mjs",
     "antelopeql.mjs",
-    "types.mjs"
+    "types.mjs",
+    "get_abis.mjs"
   ],
   "sideEffects": false,
   "exports": {
@@ -56,7 +57,8 @@
     "./query_resolver.mjs": "./query_resolver.mjs",
     "./serialize_transaction.mjs": "./serialize_transaction.mjs",
     "./antelopeql.mjs": "./antelopeql.mjs",
-    "./types.mjs": "./types.mjs"
+    "./types.mjs": "./types.mjs",
+    "./get_abis.mjs": "./get_abis.mjs"
   },
   "browserslist": [
     "> 0.5%, not OperaMini all, not IE > 0, not dead"

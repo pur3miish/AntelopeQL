@@ -182,13 +182,18 @@ export function get_graphql_fields_from_AST(AST, ABI, account_name = "") {
   let mutation_fields = {};
   const mutationTypes = {};
   for (const action of actions) {
-    let { name: action_name, type: action_type } = action;
+    let {
+      name: action_name,
+      type: action_type,
+      ricardian_contract = ""
+    } = action;
     action_name = action_name.replace(/\./gmu, "_");
     const action_fields = AST[action_type];
 
     const buildQGL = (fields, acc = {}) => {
       for (const field of fields) {
         const { name, type, $info } = field;
+
         if ($info.object) {
           if (!GQL_MTYPES[type])
             GQL_MTYPES[type] = new GraphQLInputObjectType({
@@ -202,18 +207,24 @@ export function get_graphql_fields_from_AST(AST, ABI, account_name = "") {
       return acc;
     };
 
-    if (!mutationTypes[action_type])
+    if (!mutationTypes[action_type]) {
       mutationTypes[action_type] = {
         type: new GraphQLInputObjectType({
           name: gql_account_name + action_type,
+          description: ricardian_contract
+            .replace(/(https?|http|ftp):\/\/[^\s$.?#].[^\s]*$/gmu, "")
+            .replace(/icon:/gmu, "")
+            .replace(/(\s)?nowrap(\s)?/gmu, ""),
           fields: {
             ...buildQGL(action_fields),
             authorization: {
+              description: "Authorization to sign the transaction",
               type: new GraphQLList(new GraphQLNonNull(authorization_type))
             }
           }
         })
       };
+    }
 
     mutation_fields[action_name] = mutationTypes[action_type];
   }

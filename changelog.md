@@ -1,5 +1,11 @@
 # AntelopeQL changelog
 
+## 1.1.0
+
+- Added the ability to pass an ABI's directly to AntelopeQL.
+- [`get_abis`](./get_abis.mjs) export added for fetching a list of contracts ABIs.
+- Added ricardian contract to description.
+
 ### Patch
 
 - Renamed some of the old EOSIO descriptions to Antelope.
