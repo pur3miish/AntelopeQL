@@ -1,6 +1,6 @@
 {
   "name": "antelopeql",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A GraphQL implementation for interacting with Antelope based blockchains.",
   "repository": "github:pur3miish/antelopeql",
   "bugs": "https://github.com/pur3miish/antelopeql/issues",
