@@ -1,5 +1,5 @@
-import legacy_to_public_key from "eosio-ecc/legacy_to_public_key.mjs";
-import validate_public_key from "eosio-ecc/validate_public_key.mjs";
+import legacy_to_public_key from "antelope-ecc/legacy_to_public_key.mjs";
+import validate_public_key from "antelope-ecc/validate_public_key.mjs";
 import { GraphQLScalarType } from "graphql";
 
 const public_key_type = new GraphQLScalarType({
@@ -17,8 +17,12 @@ const public_key_type = new GraphQLScalarType({
   async parseValue(public_key) {
     if (public_key == "") return "";
 
-    const { valid, message } = await validate_public_key(public_key);
-    if (!valid) throw new RangeError(message);
+    try {
+      await validate_public_key(public_key);
+    } catch (err) {
+      throw new RangeError(err.message);
+    }
+
     return public_key;
   }
 });

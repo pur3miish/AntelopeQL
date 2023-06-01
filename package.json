@@ -1,6 +1,6 @@
 {
   "name": "antelopeql",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A GraphQL implementation for interacting with Antelope based blockchains.",
   "repository": "github:pur3miish/antelopeql",
   "bugs": "https://github.com/pur3miish/antelopeql/issues",
@@ -91,8 +91,8 @@
     "graphql": "^16.6.0"
   },
   "dependencies": {
+    "antelope-ecc": "^1.0.0",
     "base58-js": "^2.0.0",
-    "eosio-ecc": "^1.0.1",
     "eosio-wasm-js": "^4.0.1",
     "ripemd160-js": "*"
   }

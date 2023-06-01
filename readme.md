@@ -36,7 +36,7 @@ For [Deno.js](https://deno.land), to install [`AntelopeQL`](https://deno.land/x/
     "isomorphic-secp256k1-js/": "https://deno.land/x/secp256k1js/",
     "ripemd160-js/": "https://deno.land/x/ripemd160js@v2.0.3/",
     "eosio-wasm-js/": "https://deno.land/x/eosio_wasm_js/",
-    "eosio-ecc/": "https://deno.land/x/eosio_ecc/",
+    "antelope-ecc/": "https://deno.land/x/eosio_ecc/",
     "graphql": "https://cdn.skypack.dev/graphql"
   }
 }

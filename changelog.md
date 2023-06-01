@@ -1,5 +1,9 @@
 # AntelopeQL changelog
 
+## 1.1.2
+
+- Replaced eosio-ecc package with with antelope-ecc.
+
 ## 1.1.1
 
 - Big fix, AntelopeQL was throwing an error wen a smart contract had no tables or actions on the smart contract.
