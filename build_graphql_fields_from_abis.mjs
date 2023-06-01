@@ -85,33 +85,35 @@ export default function build_graphql_fields_from_abis(abi_list) {
       name
     );
 
-    contract_query_fields[name] = {
-      name,
-      type: new GraphQLObjectType({
-        name: name + "_query",
-        fields: query_fields
-      }),
-      resolve(__, _, { network: { rpc_url, fetch } = {} }, { fieldName }) {
-        if (!fetch)
-          throw new GraphQLError(
-            "No fetch argument found on the context of the GraphQL.execute."
-          );
-
-        if (!rpc_url)
-          throw new GraphQLError(
-            "No rpc_url argument found on the context of the GraphQL.execute."
-          );
-
-        return { code: fieldName.replace(/_/gmu, ".") };
-      }
-    };
-
-    contract_mutation_fields[name] = {
-      type: new GraphQLInputObjectType({
+    if (Object.keys(query_fields).length)
+      contract_query_fields[name] = {
         name,
-        fields: mutation_fields
-      })
-    };
+        type: new GraphQLObjectType({
+          name: name + "_query",
+          fields: query_fields
+        }),
+        resolve(__, _, { network: { rpc_url, fetch } = {} }, { fieldName }) {
+          if (!fetch)
+            throw new GraphQLError(
+              "No fetch argument found on the context of the GraphQL.execute."
+            );
+
+          if (!rpc_url)
+            throw new GraphQLError(
+              "No rpc_url argument found on the context of the GraphQL.execute."
+            );
+
+          return { code: fieldName.replace(/_/gmu, ".") };
+        }
+      };
+
+    if (Object.keys(mutation_fields).length)
+      contract_mutation_fields[name] = {
+        type: new GraphQLInputObjectType({
+          name,
+          fields: mutation_fields
+        })
+      };
   }
 
   return {
