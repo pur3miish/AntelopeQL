@@ -7,7 +7,6 @@ import {
   validate
 } from "graphql";
 import { createRequire } from "module";
-import fetch from "node-fetch";
 
 import build_graphql_fields_from_abis from "../build_graphql_fields_from_abis.mjs";
 import actions from "../graphql_input_types/actions.mjs";

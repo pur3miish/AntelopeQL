@@ -17,7 +17,6 @@ const configuration_default_value = {
  * @param {Number} expireSeconds Seconds past before transaction is no longer valid (TaPoS protection)
  * @param {Number} max_net_usage_words Maximum NET bandwidth usage a transaction can consume (0 there is no limit).
  * @param {Number} max_cpu_usage_ms Maximum NET bandwidth usage a transaction can consume (0 there is no limit).
- * @param {Number} delay_sec Number of seconds that the transaciton will be delayed by.
  */
 const configuration_type = new GraphQLInputObjectType({
   name: "configuration_type",
@@ -43,11 +42,6 @@ const configuration_type = new GraphQLInputObjectType({
       description: `Maximum CPU bandwidth usage a transaction can consume, \nwhen set to 0 there is no limit`,
       type: GraphQLInt,
       defaultValue: configuration_default_value.max_cpu_usage_ms
-    },
-    delay_sec: {
-      type: GraphQLInt,
-      description: "Number of seconds that the transaciton will be delayed by",
-      defaultValue: configuration_default_value.delay_sec
     }
   })
 });

@@ -36,11 +36,6 @@ export default (tests) => {
     );
     ok(signature.parseValue("") == "");
 
-    throws(() =>
-      signature.parseValue(
-        "NOT_SIG_K4jhCs4S3hVfXNhX4t6QSSGgdYTYNk6LhKTphcYoLH6EYatq3zvU38CNEj7VDtMmHWq24KhmR6CLBqyT5tFiFmXndthr4x"
-      )
-    );
     throws(() => signature.parseValue(1848));
 
     ok(asset_type.parseValue("") == "");
@@ -87,14 +82,6 @@ export default (tests) => {
       )
     );
     deepStrictEqual("", await public_key.parseValue(""));
-
-    rejects(
-      () =>
-        public_key.parseValue(
-          "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW533"
-        ),
-      "expected invalid checksum"
-    );
 
     rejects(
       () =>

@@ -5,7 +5,7 @@ const RAM_quote_type = new GraphQLObjectType({
   fields: () => ({
     quote: {
       type: GraphQLString,
-      resolve: (EOS) => EOS
+      resolve: (SYS) => SYS
     }
   })
 });

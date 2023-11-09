@@ -26,7 +26,7 @@ import {
  * ```js
  * import actions_type from 'antelopeql/graphql_input_types/actions.js'
  * import serialize_transaction from 'antelopeql/graphql_input_types/actions.js'
- * import push_transaction from 'antelopeql/push_transaction.js'
+ * import send_transaction from 'antelopeql/send_transaction.js'
  *
  * const network = { fetch, rpc_url: 'https://eos.relocke.io', headers: {}, signal }
  * const ABI_list = [{ account_name: 'eosio.token', abi: … }]
@@ -45,9 +45,9 @@ import {
  * const mutations = new GraphQLObjectType({
  *   name: 'Mutation',
  *   fields: {
- *     push_transaction: push_transaction(action_fields, ast_list),
+ *     send_transaction: send_transaction(action_fields, ast_list),
  *     serialize_transaction: serialize_transaction(action_fields, ast_list),
- *     push_serialized_transaction
+ *     send_serialized_transaction
  *   }
  * })
  *
@@ -79,6 +79,7 @@ export default function build_graphql_fields_from_abis(abi_list) {
     const AST = eosio_abi_to_graphql_ast(abi);
 
     ast_list[name] = AST; // For use in serializing data in mutation resolver.
+
     const { query_fields, mutation_fields } = get_graphql_fields_from_AST(
       AST,
       abi,

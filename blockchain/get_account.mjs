@@ -54,19 +54,6 @@ const require_auth_type = new GraphQLObjectType({
           })
         })
       )
-    },
-    waits: {
-      type: new GraphQLList(
-        new GraphQLObjectType({
-          name: "account_auth_waits_type",
-          description:
-            "specifies that a transaction will not be executed without a required delay",
-          fields: () => ({
-            wait_sec: { type: GraphQLInt },
-            weight: { type: GraphQLInt }
-          })
-        })
-      )
     }
   })
 });

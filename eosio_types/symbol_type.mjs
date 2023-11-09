@@ -21,6 +21,7 @@ An eosio symbol is an all uppercase string of 7 or less characters from [A-Z].
       throw new Error(
         "Invalid symbol format, correct format is <precision,code>"
       );
+
     const [precision] = symbol.split(",");
 
     if (!(precision > -1 && precision < 18))

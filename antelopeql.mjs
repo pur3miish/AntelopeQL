@@ -12,8 +12,8 @@ import blockchain_query_field from "./blockchain_query_field.mjs";
 import build_graphql_fields_from_abis from "./build_graphql_fields_from_abis.mjs";
 import get_abis from "./get_abis.mjs";
 import actions from "./graphql_input_types/actions.mjs";
-import push_serialized_transaction from "./push_serialized_transaction.mjs";
-import push_transaction from "./push_transaction.mjs";
+import send_serialized_transaction from "./send_serialized_transaction.mjs";
+import send_transaction from "./send_transaction.mjs";
 import serialize_transaction from "./serialize_transaction.mjs";
 
 /**
@@ -22,9 +22,8 @@ import serialize_transaction from "./serialize_transaction.mjs";
  * @property {String} rpc_url Chain remote proceedure call (RPC) Uniform Resource Locator (URL).
  * @property {*} [variableValues] GraphQL variables.
  * @property {String} [operationName] GraphQL operation name (query resolution).
- * @property {Function} [fetch] Custom fetch implementation.
  * @property {Array<String>} [contracts] List of Antelope smart contracts.
- * @property {Array<String>} [private_keys] List of private keys used to sign transactions.
+ * @property {async Function} [signTransaction] A function to sign the Antelope transaction.
  * @property {Headers} [headers] Headers to pass to the network request.
  * @property {AbortSignal} [signal] Abort controller signal.
  */
@@ -39,40 +38,20 @@ import serialize_transaction from "./serialize_transaction.mjs";
  * AntelopeQL for interacting with Antelope based blockchains.
  * @param {AntelopeQLArgument} Argument
  * @returns {AntelopeQLResult}
- * @example
- * ```js
- * import AntelopeQL from 'antelopeql/antelopeql.mjs'
- * import fetch from 'node-fetch'
- *
- * const query = `{ eosio_token { accounts(arg: { scope: "relockeblock" }){ balance } } }`
- *
- * AntelopeQL({
- *  query,
- *  contracts: ["eosio.token"],
- *  fetch,
- *  rpc_url: "https://eos.relocke.io",
- *  headers: { "content-type": "application/json" }
- * }).then(console.log);
- * ```
- * > Logged output was "data": {"eosio_token": {"accounts": [{"balance": "100.0211 EOS"}]}}}
  */
-
 export default async function AntelopeQL({
   query,
   variableValues,
   operationName,
-  fetch,
+  signTransaction,
   contracts = [],
-  private_keys = [],
   ABIs = [],
   rpc_url,
   headers,
   signal
 }) {
   try {
-    if (!fetch && !(typeof window == "undefined")) fetch = window.fetch;
-    if (!fetch && typeof window == "undefined")
-      throw new GraphQLError("No fetch implementation provided");
+    if (!fetch) throw new GraphQLError("No fetch implementation provided");
 
     const fetchOptions = {};
     if (headers) fetchOptions.headers = headers;
@@ -96,19 +75,17 @@ export default async function AntelopeQL({
       const action_fields = actions(mutation_fields);
       mutations = new GraphQLObjectType({
         name: "Mutation",
-        description: "Push transactions to the blockchain.",
         fields: {
-          push_transaction: push_transaction(action_fields, ast_list),
+          send_transaction: send_transaction(action_fields, ast_list),
           serialize_transaction: serialize_transaction(action_fields, ast_list),
-          push_serialized_transaction
+          send_serialized_transaction
         }
       });
     } else
       mutations = new GraphQLObjectType({
         name: "Mutation",
-        description: "Push transactions to the blockchain.",
         fields: {
-          push_serialized_transaction
+          send_serialized_transaction
         }
       });
 
@@ -127,7 +104,7 @@ export default async function AntelopeQL({
       rootValue: "",
       contextValue: {
         network: { rpc_url, fetch, ...fetchOptions },
-        private_keys
+        signTransaction
       },
       variableValues,
       operationName,

@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import assertSnapshot from "snapshot-assertion";
 
 import AntelopeQL from "../antelopeql.mjs";

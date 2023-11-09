@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
 
 /**
- * Pushes a serialized transaction to the blockchain.
+ * Send a serialized transaction to the blockchain.
  * @param {Object} root Argument
  * @param {String} root.transaction_header Serialized transaction header.
  * @param {String} root.transaction_body Serialized transaction body.
@@ -12,12 +12,13 @@ import { GraphQLError } from "graphql";
  * @param {Object} network.headers transaction headers.
  *
  */
-export default async function push_transaction_rpc(
+export default async function send_transaction_rpc(
   { transaction_header, transaction_body, signatures },
   network
 ) {
   const { fetch, rpc_url, ...fetchOptions } = network;
-  const pushed_txn_req = await fetch(`${rpc_url}/v1/chain/push_transaction`, {
+
+  const pushed_txn_req = await fetch(`${rpc_url}/v1/chain/send_transaction`, {
     method: "POST",
     ...fetchOptions,
     body: JSON.stringify({
@@ -27,6 +28,7 @@ export default async function push_transaction_rpc(
       packed_trx: transaction_header + transaction_body
     })
   });
+
   const pushed_transaction = await pushed_txn_req.json();
   if (pushed_transaction.error)
     throw new GraphQLError(pushed_transaction.message, {

@@ -23,8 +23,7 @@ const currency_balance = {
     },
     symbol: {
       description: "The crytpo currency token symbol.",
-      type: new GraphQLNonNull(symbol_code_type),
-      defaultValue: "EOS"
+      type: new GraphQLNonNull(symbol_code_type)
     }
   },
   async resolve(_, args, { network: { fetch, rpc_url, ...fetchOptions } }) {

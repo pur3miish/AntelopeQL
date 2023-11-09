@@ -1,5 +1,24 @@
 # AntelopeQL changelog
 
+## 2.0.0
+
+### Major
+
+- name change for pushed_transaction and push_serialized_transaction to send_transaction and send_serialized_transaction.
+- Removed antelope-ecc signature to allow users to handle their own transactions signing.
+- Removed delay second transaction configuration object.
+
+### Minor
+
+- Added serialize ABI function that enables the use of eosio::setcode
+- Added get required Keys function to the blockchain api
+- Added required keys parameter to the serialised transaction mutation
+- Fixed to `get_accounts_by_authorizers` keys query.
+
+## Patch
+
+- Bug fix for EOSIO ABI types.
+
 ## 1.1.2
 
 - Replaced eosio-ecc package with with antelope-ecc.

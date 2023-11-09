@@ -19,7 +19,7 @@ Names are unique identifiers on the blockchain.
   parseValue(_name) {
     if (_name == "") return _name;
 
-    if (!_name.match(/^[1-5a-z]{1}[1-5a-z.]{0,10}[1-5a-z]{1}$/gmu))
+    if (!_name.match(/^[1-5a-z.]{0,11}[1-5a-z]{1}$/gmu))
       throw new TypeError(`Invalid name “${_name}”.`);
 
     return _name;

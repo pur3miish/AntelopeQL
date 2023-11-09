@@ -66,29 +66,26 @@ function handleStructs(structs) {
  * @returns {Object} a GraphQL AST for a given smart contract.
  */
 export function eosio_abi_to_graphql_ast(abi) {
-  const { types, variants } = abi;
+  const { types, variants, structs } = abi;
+  const new_structs = structs;
 
-  let structs = [
-    ...variants.map(({ name, types }) => ({
-      name,
-      base: "",
-      fields: types.map((item) => ({ name: item, type: item + "$@" })) // @ indiacted a variant type and binary extention.
-    })),
-    ...abi.structs
-  ];
+  if (variants?.length)
+    for (const { name, types: variant_types } of variants)
+      new_structs.push({
+        name,
+        base: "",
+        fields: variant_types.map((item) => ({ name: item, type: item + "$@" })) // @ indiacted a variant type and binary extention.
+      });
 
-  if (types.length)
+  if (types?.length) {
     for (const { type: real_type, new_type_name } of types)
-      structs = structs.map(({ fields, ...struct }) => ({
-        ...struct,
-        fields: fields.map(({ name, type }) =>
-          type.match(new RegExp(`^${new_type_name}[?$]?([])?$`, "gmu"))
-            ? { name, type: type.replace(new_type_name, real_type) }
-            : { name, type }
-        )
-      }));
+      new_structs.push({
+        ...new_structs.find((x) => x.name == real_type),
+        name: new_type_name
+      });
+  }
 
-  const structs_ast = handleStructs(structs);
+  const structs_ast = handleStructs(new_structs);
 
   return Object.freeze(structs_ast);
 }
@@ -125,6 +122,7 @@ export function get_graphql_fields_from_AST(AST, ABI, account_name = "") {
 
   for (const table of tables) {
     let { name: table_name, type: table_type } = table;
+
     table_name = table_name.replace(/\./gmu, "_");
     const table_fields = AST[table_type];
 
@@ -158,7 +156,7 @@ export function get_graphql_fields_from_AST(AST, ABI, account_name = "") {
       return acc;
     };
 
-    if (!queryTypes[table_type])
+    if (!queryTypes[table_type]) {
       queryTypes[table_type] = {
         type: new GraphQLList(
           new GraphQLObjectType({
@@ -174,6 +172,7 @@ export function get_graphql_fields_from_AST(AST, ABI, account_name = "") {
         },
         resolve
       };
+    }
 
     query_fields[table_name] = queryTypes[table_type];
   }

@@ -10,6 +10,8 @@ import get_currency_stats from "./blockchain/get_currency_stats.mjs";
 import get_info from "./blockchain/get_info.mjs";
 import get_producers from "./blockchain/get_producers.mjs";
 import get_ram_price from "./blockchain/get_ram_price.mjs";
+import get_required_keys from "./blockchain/get_required_keys.mjs";
+import get_smart_contract from "./blockchain/get_smart_contract.mjs";
 import get_table from "./blockchain/get_table_by_scope.mjs";
 
 const blockchain_query_field = {
@@ -23,20 +25,19 @@ const blockchain_query_field = {
       get_block,
       get_currency_balance,
       get_currency_stats,
+      get_required_keys,
+      get_smart_contract,
       get_info,
       get_producers,
-      deserialize_action_data,
       get_table,
-      get_ram_price
+      get_ram_price,
+      deserialize_action_data
     }
   }),
-  resolve(_, __, { network: { fetch, rpc_url } }) {
-    if (!fetch)
-      throw new GraphQLError(
-        "Fetch was not supplied to the `antelopeql_context`."
-      );
+  resolve(_, __, { network: { rpc_url } }) {
     if (!rpc_url)
       throw new GraphQLError("No RPC url supplied to `antelopeql_context`");
+
     return {};
   }
 };

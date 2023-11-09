@@ -2,12 +2,11 @@ import serialize from "eosio-wasm-js/serialize.mjs";
 import serialize_transaction_header from "eosio-wasm-js/transaction_header.mjs";
 import { GraphQLError } from "graphql";
 
-const defeaul_config = {
+const default_config = {
   blocksBehind: 3,
   expireSeconds: 30,
   max_net_usage_words: 0,
-  max_cpu_usage_ms: 0,
-  delay_sec: 0
+  max_cpu_usage_ms: 0
 };
 
 const validate_actions = () => {
@@ -48,8 +47,7 @@ async function get_transaction_body(actions, ast_list) {
   let _actions = [];
   let _context_free_actions = [];
 
-  let transaction_extensions =
-    "000000000000000000000000000000000000000000000000000000000000000000";
+  let transaction_extensions = "00";
 
   for (const action of actions_list_to_serialize) {
     const {
@@ -164,7 +162,7 @@ async function get_transaction_body(actions, ast_list) {
  * @returns {Object} Transaction object.
  */
 async function mutation_resolver(
-  { actions, configuration = defeaul_config },
+  { actions, configuration = default_config },
   network,
   ast_list
 ) {
@@ -213,10 +211,10 @@ async function mutation_resolver(
     ref_block_prefix,
     max_net_usage_words: configuration.max_net_usage_words,
     max_cpu_usage_ms: configuration.max_cpu_usage_ms,
-    delay_sec: configuration.delay_sec
+    delay_sec: 0
   };
 
-  // Generates a transaction header for a EOS transaction.
+  // Generates a transaction header for a Antelope transaction.
   const transaction_header = serialize_transaction_header(txn_header);
   txn_header.expiration = timestamp;
 

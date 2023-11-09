@@ -1,3 +1,5 @@
+import legacy_from_public_key from "antelope-ecc/keys/legacy_from_public_key.mjs";
+import public_key_from_wif from "antelope-ecc/keys/public_key_from_wif.mjs";
 import {
   GraphQLError,
   GraphQLList,
@@ -58,14 +60,23 @@ const accounts_by_authorizers = {
   async resolve(
     _,
     { accounts = [], keys = [] },
-    { network: { fetch, rpc_url, ...fetchOptions } }
+    { network: { fetch, rpc_url, symbol = "EOS", ...fetchOptions } }
   ) {
     const uri = `${rpc_url}/v1/chain/get_accounts_by_authorizers`;
+
+    const awaited_keys = await Promise.all(keys);
+
     const data = await fetch(uri, {
       method: "POST",
       ...fetchOptions,
       body: JSON.stringify({
-        keys: await Promise.all(keys),
+        keys: await Promise.all(
+          awaited_keys.map((x) =>
+            x.startsWith("PUB_K1")
+              ? legacy_from_public_key(public_key_from_wif(x), symbol)
+              : x
+          )
+        ),
         accounts,
         json: true
       })
