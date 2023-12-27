@@ -2,7 +2,7 @@
 
 import { GraphQLInputObjectType, GraphQLInt } from "graphql";
 
-const configuration_default_value = {
+export const configuration_default_value = {
   blocksBehind: 3,
   expireSeconds: 30,
   max_net_usage_words: 0,

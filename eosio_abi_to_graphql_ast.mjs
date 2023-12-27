@@ -112,7 +112,12 @@ function Wrap(type, { optional, list }) {
  * @param {String} [account_name] Blockchain account name.
  * @returns {Object} GraphQL query and mutation fields.
  */
-export function get_graphql_fields_from_AST(AST, ABI, account_name = "") {
+export function get_graphql_fields_from_AST(
+  AST,
+  ABI,
+  account_name = "",
+  chainName = ""
+) {
   const { tables, actions } = ABI;
   const gql_account_name = account_name.replace(/\./gmu, "_") + "_";
 
@@ -139,7 +144,7 @@ export function get_graphql_fields_from_AST(AST, ABI, account_name = "") {
         if ($info.object) {
           if (!GQL_TYPES[type])
             GQL_TYPES[type] = new GraphQLObjectType({
-              name: gql_account_name + type,
+              name: gql_account_name + type + chainName,
               fields: buildQGL(AST[type])
             });
 
@@ -160,7 +165,7 @@ export function get_graphql_fields_from_AST(AST, ABI, account_name = "") {
       queryTypes[table_type] = {
         type: new GraphQLList(
           new GraphQLObjectType({
-            name: gql_account_name + table_type + "_query",
+            name: gql_account_name + table_type + "_query" + chainName,
             fields: buildQGL(table_fields)
           })
         ),
@@ -196,7 +201,7 @@ export function get_graphql_fields_from_AST(AST, ABI, account_name = "") {
         if ($info.object) {
           if (!GQL_MTYPES[type])
             GQL_MTYPES[type] = new GraphQLInputObjectType({
-              name: gql_account_name + "input_" + type,
+              name: gql_account_name + "input_" + type + chainName,
               fields: buildQGL(AST[type])
             });
           acc = { ...acc, [name]: { type: Wrap(GQL_MTYPES[type], $info) } };
@@ -209,7 +214,7 @@ export function get_graphql_fields_from_AST(AST, ABI, account_name = "") {
     if (!mutationTypes[action_type]) {
       mutationTypes[action_type] = {
         type: new GraphQLInputObjectType({
-          name: gql_account_name + action_type,
+          name: gql_account_name + action_type + chainName,
           description: ricardian_contract
             .replace(/(https?|http|ftp):\/\/[^\s$.?#].[^\s]*$/gmu, "")
             .replace(/icon:/gmu, "")

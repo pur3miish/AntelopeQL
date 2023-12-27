@@ -19,7 +19,9 @@ const serialize_transaction = (actions, ast_list) => ({
       type: new GraphQLList(public_key_type)
     }
   },
-  async resolve(_, { available_keys, ...args }, { network }) {
+  async resolve(root, { available_keys, ...args }, getContext, info) {
+    const { network } = getContext(root, { available_keys, ...args }, info);
+
     const { transaction, ...serialized_txn } = await mutation_resolver(
       args,
       network,

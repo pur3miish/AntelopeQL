@@ -21,6 +21,7 @@ import {
 /**
  * Builds GraphQL query and mutation fields from a list of ABIs. These GraphQL fields can readily be consumed by a GraphQL Schema, enabling developers the ability to integrate a varienty of EOSIO based blockchains into their GraphQL service.
  * @param {Array<AccountABI>} abi_list Argument.
+ * @param {String} [typeResolution] Used for GraphQL type resolution.
  * @returns {Object} AntelopeQL fields.
  * @example <caption>`Usage` in a custom GraphQL API.</caption>
  * ```js
@@ -62,14 +63,17 @@ import {
  *   schema,
  *   document,
  *   rootValue: '',
- *   contextValue: { network },
+ *   contextValue: () => ({ network }),
  *   fieldResolver(rootValue, args, ctx, { fieldName }) {
  *     return rootValue[fieldName]
  *   }
  * })
  * ```
  */
-export default function build_graphql_fields_from_abis(abi_list) {
+export default function build_graphql_fields_from_abis(
+  abi_list,
+  typeResolution = ""
+) {
   const contract_query_fields = {};
   const contract_mutation_fields = {};
   const ast_list = {};
@@ -83,17 +87,23 @@ export default function build_graphql_fields_from_abis(abi_list) {
     const { query_fields, mutation_fields } = get_graphql_fields_from_AST(
       AST,
       abi,
-      name
+      name,
+      typeResolution
     );
 
     if (Object.keys(query_fields).length)
       contract_query_fields[name] = {
         name,
         type: new GraphQLObjectType({
-          name: name + "_query",
+          name: `${name}_query${typeResolution}`,
           fields: query_fields
         }),
-        resolve(__, _, { network: { rpc_url, fetch } = {} }, { fieldName }) {
+        resolve(root, arg, getContext, { fieldName, ...info }) {
+          const { network: { rpc_url, fetch } = {} } = getContext(root, arg, {
+            fieldName,
+            ...info
+          });
+
           if (!fetch)
             throw new GraphQLError(
               "No fetch argument found on the context of the GraphQL.execute."
@@ -111,7 +121,7 @@ export default function build_graphql_fields_from_abis(abi_list) {
     if (Object.keys(mutation_fields).length)
       contract_mutation_fields[name] = {
         type: new GraphQLInputObjectType({
-          name,
+          name: name + typeResolution,
           fields: mutation_fields
         })
       };

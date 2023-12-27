@@ -14,10 +14,11 @@ const send_serialized_transaction = {
   args: {
     transaction_header: { type: new GraphQLNonNull(bytes_type) },
     transaction_body: { type: new GraphQLNonNull(bytes_type) },
-    signaures: { type: new GraphQLNonNull(new GraphQLList(signature_type)) }
+    signatures: { type: new GraphQLNonNull(new GraphQLList(signature_type)) }
   },
-  resolve(_, args, ctx) {
-    return send_transaction_rpc(args, ctx.network);
+  resolve(root, args, getContext, info) {
+    const { network } = getContext(root, args, info);
+    return send_transaction_rpc(args, network);
   }
 };
 

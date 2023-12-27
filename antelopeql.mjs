@@ -51,7 +51,8 @@ export default async function AntelopeQL({
   signal
 }) {
   try {
-    if (!fetch) throw new GraphQLError("No fetch implementation provided");
+    if (!fetch)
+      throw new GraphQLError("No fetch implementation found in global scope");
 
     const fetchOptions = {};
     if (headers) fetchOptions.headers = headers;
@@ -66,7 +67,7 @@ export default async function AntelopeQL({
     const queries = new GraphQLObjectType({
       name: "Query",
       description: "Query table data from Antelope blockchains.",
-      fields: { blockchain: blockchain_query_field, ...query_fields }
+      fields: { get_blockchain: blockchain_query_field, ...query_fields }
     });
 
     let mutations;
@@ -102,10 +103,10 @@ export default async function AntelopeQL({
       schema,
       document,
       rootValue: "",
-      contextValue: {
+      contextValue: () => ({
         network: { rpc_url, fetch, ...fetchOptions },
         signTransaction
-      },
+      }),
       variableValues,
       operationName,
       fieldResolver(rootValue, args, ctx, { fieldName }) {

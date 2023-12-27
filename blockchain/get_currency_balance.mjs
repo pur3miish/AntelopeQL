@@ -26,7 +26,11 @@ const currency_balance = {
       type: new GraphQLNonNull(symbol_code_type)
     }
   },
-  async resolve(_, args, { network: { fetch, rpc_url, ...fetchOptions } }) {
+  async resolve(root, args, getContext, info) {
+    const {
+      network: { fetch, rpc_url, ...fetchOptions }
+    } = getContext(root, args, info);
+
     const uri = `${rpc_url}/v1/chain/get_currency_balance`;
     const req = await fetch(uri, {
       method: "POST",

@@ -20,7 +20,11 @@ const deserialize_action_data = {
       type: new GraphQLNonNull(bytes_type)
     }
   },
-  async resolve(_, args, { network: { fetch, rpc_url, ...fetchOptions } }) {
+  async resolve(root, args, getContext, info) {
+    const {
+      network: { fetch, rpc_url, ...fetchOptions }
+    } = getContext(root, args, info);
+
     const uri = `${rpc_url}/v1/chain/abi_bin_to_json`;
     const req = await fetch(uri, {
       method: "POST",

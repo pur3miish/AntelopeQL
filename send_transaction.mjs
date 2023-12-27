@@ -18,7 +18,9 @@ const send_transaction = (actions, ast_list) => ({
       type: configuration_type
     }
   },
-  async resolve(_, args, { network, signTransaction }) {
+  async resolve(root, args, getContext, info) {
+    const { network, signTransaction } = getContext(root, args, info);
+
     const { chain_id, transaction_header, transaction_body, transaction } =
       await mutation_resolver(args, network, ast_list);
 

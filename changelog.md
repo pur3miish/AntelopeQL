@@ -18,6 +18,7 @@
 ## Patch
 
 - Bug fix for EOSIO ABI types.
+- fetch Options added to all fetch requests.
 
 ## 1.1.2
 

@@ -20,7 +20,13 @@ export const packed_transaction_fields = {
   required_keys: {
     type: new GraphQLList(public_key_type),
     description: "List of public keys needed to authorize transaction",
-    async resolve({ available_keys, transaction }, args, { network }) {
+    async resolve({ available_keys, transaction }, args, getContext, info) {
+      const { network } = getContext(
+        { available_keys, transaction },
+        args,
+        info
+      );
+
       if (available_keys?.length) {
         const keys = await Promise.all(available_keys);
 
@@ -38,7 +44,8 @@ export const packed_transaction_fields = {
                 }))
               },
               available_keys: keys
-            })
+            }),
+            ...network.fetchOptions
           }
         ).then((res) => res.json());
 

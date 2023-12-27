@@ -18,17 +18,15 @@ const server = http.createServer((req, res) => {
     const data = await AntelopeQL({
       query,
       variableValues: variables,
-      // eslint-disable-next-line no-unused-vars
       signTransaction: async (hash) => {
-        const wif_private_key = "PVT_K1_...";
-        const sig = await sign_txn({ hash, wif_private_key });
+        const signature_1 = await sign_txn({
+          hash,
+          wif_private_key: "PVT_K1_..."
+        });
 
-        return [sig];
+        return [signature_1];
       },
       contracts: ["eosio", "eosio.token", "relockebanks"],
-      ABIs: [
-        // { abi, account_name: "variant_abi" }
-      ],
       rpc_url: "https://jungle.relocke.io"
     });
 

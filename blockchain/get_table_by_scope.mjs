@@ -68,10 +68,19 @@ const get_table = {
     }
   },
   async resolve(
-    _,
+    root,
     { account_name, table_name, limit, lower_bound, upper_bound },
-    { network: { fetch, rpc_url, ...fetchOptions } }
+    getContext,
+    info
   ) {
+    const {
+      network: { fetch, rpc_url, ...fetchOptions }
+    } = getContext(
+      root,
+      { account_name, table_name, limit, lower_bound, upper_bound },
+      info
+    );
+
     const uri = `${rpc_url}/v1/chain/get_table_by_scope`;
     const data = await fetch(uri, {
       method: "POST",

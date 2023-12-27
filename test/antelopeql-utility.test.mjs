@@ -55,13 +55,13 @@ const AntelopeQL = (query) => {
   return execute({
     schema,
     document,
-    contextValue: {
+    contextValue: () => ({
       network: {
         fetch,
         rpc_url: "https://jungle.relocke.io",
         headers: { "content-type": "application/json" }
       }
-    },
+    }),
     fieldResolver(rootValue, args, ctx, { fieldName }) {
       return rootValue[fieldName];
     }

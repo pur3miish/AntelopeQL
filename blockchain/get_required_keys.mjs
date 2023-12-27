@@ -48,11 +48,11 @@ const get_required_keys = {
       type: new GraphQLList(public_key_type)
     }
   },
-  async resolve(
-    _,
-    { available_keys, transaction },
-    { network: { fetch, rpc_url } }
-  ) {
+  async resolve(root, { available_keys, transaction }, getContext, info) {
+    const {
+      network: { fetch, rpc_url, ...fetchOptions }
+    } = getContext(root, { available_keys, transaction }, info);
+
     const uri = `${rpc_url}/v1/chain/get_required_keys`;
 
     const { actions, ...txn } = transaction;
@@ -68,7 +68,8 @@ const get_required_keys = {
             ...(data ? { data: JSON.parse(data) } : {})
           }))
         }
-      })
+      }),
+      ...fetchOptions
     });
 
     const { required_keys, ...error } = await data.json();

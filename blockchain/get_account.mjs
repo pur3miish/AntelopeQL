@@ -27,7 +27,10 @@ const bandwidth_type = new GraphQLObjectType({
   fields: () => ({
     used: { type: GraphQLString },
     available: { type: GraphQLString },
-    max: { type: GraphQLString }
+    max: { type: GraphQLString },
+    last_usage_update_time: {
+      type: GraphQLString
+    }
   })
 });
 
@@ -194,11 +197,11 @@ const get_account = {
       type: new GraphQLNonNull(name_type)
     }
   },
-  async resolve(
-    _,
-    { account_name },
-    { network: { fetch, rpc_url, ...fetchOptions } }
-  ) {
+  async resolve(root, { account_name }, getContext, info) {
+    const {
+      network: { fetch, rpc_url, ...fetchOptions }
+    } = getContext(root, { account_name }, info);
+
     const uri = `${rpc_url}/v1/chain/get_account`;
     const req = await fetch(uri, {
       method: "POST",
@@ -210,7 +213,6 @@ const get_account = {
     });
 
     const data = await req.json();
-
     if (data.error) throw new GraphQLError(data.message, { extensions: data });
 
     return data;

@@ -8,7 +8,7 @@ export default async (tests) => {
 
     const { data, errors } = await AntelopeQL({
       query: `{
-        blockchain{
+        get_blockchain{
           get_account(account_name: "relockeblock") {
             account_name
           }

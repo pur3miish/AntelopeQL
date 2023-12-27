@@ -56,7 +56,7 @@ const producers = new GraphQLObjectType({
 });
 
 const get_producers = {
-  description: "Return info about Antelope block producers.",
+  description: "Return info about block producers.",
   type: new GraphQLObjectType({
     name: "antelope_producers",
     fields: {
@@ -84,7 +84,11 @@ const get_producers = {
       type: GraphQLString
     }
   },
-  async resolve(_, args, { network: { fetch, rpc_url, ...fetchOptions } }) {
+  async resolve(root, args, getContext, info) {
+    const {
+      network: { fetch, rpc_url, ...fetchOptions }
+    } = getContext(root, args, info);
+
     const uri = `${rpc_url}/v1/chain/get_producers`;
 
     const req = await fetch(uri, {

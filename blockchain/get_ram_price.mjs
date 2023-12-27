@@ -19,11 +19,11 @@ const get_ram_price = {
       description: "Number of bytes of RAM."
     }
   },
-  async resolve(
-    _,
-    { quantity },
-    { network: { fetch, rpc_url, ...fetchOptions } }
-  ) {
+  async resolve(root, { quantity }, getContext, info) {
+    const {
+      network: { fetch, rpc_url, ...fetchOptions }
+    } = getContext(root, { quantity }, info);
+
     const data = await fetch(rpc_url + "/v1/chain/get_table_rows", {
       method: "POST",
       ...fetchOptions,

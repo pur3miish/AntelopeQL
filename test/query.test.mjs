@@ -6,7 +6,7 @@ export default async (tests) => {
   tests.add("Test eosio queries", async () => {
     const query = /* GraphQL */ `
       query test1 {
-        blockchain {
+        get_blockchain {
           get_account(account_name: "eosio") {
             account_name
             ram_quota

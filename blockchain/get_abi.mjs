@@ -148,11 +148,11 @@ const get_abi = {
       type: new GraphQLNonNull(name_type)
     }
   },
-  async resolve(
-    _,
-    { account_name },
-    { network: { fetch, rpc_url, ...fetchOptions } }
-  ) {
+  async resolve(root, { account_name }, getContext, info) {
+    const {
+      network: { fetch, rpc_url, ...fetchOptions }
+    } = getContext(root, { account_name }, info);
+
     const uri = `${rpc_url}/v1/chain/get_abi`;
     const req = await fetch(uri, {
       method: "POST",

@@ -57,11 +57,11 @@ const accounts_by_authorizers = {
       type: new GraphQLList(new GraphQLNonNull(public_key_type))
     }
   },
-  async resolve(
-    _,
-    { accounts = [], keys = [] },
-    { network: { fetch, rpc_url, symbol = "EOS", ...fetchOptions } }
-  ) {
+  async resolve(root, { accounts = [], keys = [] }, getContext, info) {
+    const {
+      network: { fetch, rpc_url, symbol = "EOS", ...fetchOptions }
+    } = getContext(root, { accounts, keys }, info);
+
     const uri = `${rpc_url}/v1/chain/get_accounts_by_authorizers`;
 
     const awaited_keys = await Promise.all(keys);

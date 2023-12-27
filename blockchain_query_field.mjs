@@ -34,7 +34,11 @@ const blockchain_query_field = {
       deserialize_action_data
     }
   }),
-  resolve(_, __, { network: { rpc_url } }) {
+  resolve(root, arg, getContext, info) {
+    const {
+      network: { rpc_url }
+    } = getContext(root, arg, info);
+
     if (!rpc_url)
       throw new GraphQLError("No RPC url supplied to `antelopeql_context`");
 

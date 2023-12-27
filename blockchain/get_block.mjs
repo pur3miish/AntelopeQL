@@ -212,11 +212,11 @@ const get_block = {
       type: new GraphQLNonNull(GraphQLString)
     }
   },
-  async resolve(
-    _,
-    { block_num_or_id },
-    { network: { fetch, rpc_url, ...fetchOptions } }
-  ) {
+  async resolve(root, { block_num_or_id }, getContext, info) {
+    const {
+      network: { fetch, rpc_url, ...fetchOptions }
+    } = getContext(root, { block_num_or_id }, info);
+
     const uri = `${rpc_url}/v1/chain/get_block`;
     const req = await fetch(uri, {
       method: "POST",

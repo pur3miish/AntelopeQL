@@ -78,7 +78,11 @@ const info = {
   description: "Return info about the operational state of the blockchain.",
   type: info_type,
   args: {},
-  async resolve(_, __, { network: { fetch, rpc_url, ...fetchOptions } }) {
+  async resolve(root, args, getContext, info) {
+    const {
+      network: { fetch, rpc_url, ...fetchOptions }
+    } = getContext(root, args, info);
+
     const uri = `${rpc_url}/v1/chain/get_info`;
     const req = await fetch(uri, {
       method: "POST",

@@ -1,11 +1,11 @@
 import { GraphQLInputObjectType, GraphQLList, GraphQLNonNull } from "graphql";
 
-const actions_type = (fields) =>
+const actions_type = (fields, typeResolution = "") =>
   new GraphQLNonNull(
     new GraphQLList(
       new GraphQLNonNull(
         new GraphQLInputObjectType({
-          name: "actions_type",
+          name: "actions_type" + typeResolution,
           fields
         })
       )

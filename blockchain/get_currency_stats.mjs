@@ -34,11 +34,11 @@ const get_currency_stats = {
       type: new GraphQLNonNull(symbol_code_type)
     }
   },
-  async resolve(
-    _,
-    { symbol, ...args },
-    { network: { fetch, rpc_url, ...fetchOptions } }
-  ) {
+  async resolve(root, { symbol, ...args }, getContext, info) {
+    const {
+      network: { fetch, rpc_url, ...fetchOptions }
+    } = getContext(root, args, info);
+
     const uri = `${rpc_url}/v1/chain/get_currency_stats`;
     const req = await fetch(uri, {
       method: "POST",

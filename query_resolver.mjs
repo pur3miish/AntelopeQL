@@ -14,9 +14,11 @@ import { GraphQLError } from "graphql";
 export default async function query_resolver(
   { code },
   { arg },
-  { network },
+  getContext,
   info
 ) {
+  const { network } = getContext({ code }, { arg }, info);
+
   const { fetch, rpc_url, ...fetchOptions } = network;
   const { fieldName: query_name } = info;
   const table = query_name.replace(/_/gmu, ".");

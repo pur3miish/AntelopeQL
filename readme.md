@@ -96,7 +96,7 @@ const { data } = await AntelopeQL({
   signTransaction: async (hash) => {
     const wif_private_key = "PVT_K1_…"; // your private key
     const signature = await sign_txn({ hash, wif_private_key });
-    return [signature]; // signaures must return array
+    return [signature]; // signatures must return array
   },
   rpc_url: "https://eos.relocke.io" // eos blockchain url.
 });

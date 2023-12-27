@@ -1,6 +1,6 @@
 {
   "name": "antelopeql",
-  "version": "2.0.0-rc.15",
+  "version": "2.0.0-rc.28",
   "description": "A GraphQL implementation for interacting with Antelope based blockchains.",
   "repository": "github:pur3miish/antelopeql",
   "bugs": "https://github.com/pur3miish/antelopeql/issues",
@@ -79,7 +79,7 @@
   ],
   "devDependencies": {
     "@types/node": "^18.13.0",
-    "antelope-ecc": "^2.0.0-rc.7",
+    "antelope-ecc": "^2.0.0-rc.12",
     "coverage-node": "^8.0.0",
     "eslint": "^8.34.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
