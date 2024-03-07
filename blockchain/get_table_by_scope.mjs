@@ -1,4 +1,6 @@
+import serializeName from "eosio-wasm-js/name.mjs";
 import {
+  GraphQLEnumType,
   GraphQLError,
   GraphQLInt,
   GraphQLList,
@@ -9,6 +11,13 @@ import {
 
 import name_type from "../eosio_types/name_type.mjs";
 
+function convertNameToSymbol(scope) {
+  return (serializeName(scope).match(/[0-9A-Fa-f]{2}/g) || [])
+    .map((hex) => String.fromCharCode(parseInt(hex, 16)))
+    .filter((x) => !!x.charCodeAt())
+    .join("");
+}
+
 const table_type = new GraphQLObjectType({
   name: "table_type",
   fields: {
@@ -17,7 +26,9 @@ const table_type = new GraphQLObjectType({
         new GraphQLObjectType({
           name: "table_rows_type",
           fields: {
-            scope: { type: name_type },
+            scope: {
+              type: name_type
+            },
             table_name: { type: name_type, resolve: ({ table }) => table },
             ram_payer: {
               type: name_type,
@@ -65,11 +76,21 @@ const get_table = {
       description:
         "Filters results to return the first element that is greater than provided value in the table.",
       type: GraphQLString
+    },
+    scope_type: {
+      defaultValue: 0,
+      type: new GraphQLEnumType({
+        name: "scope_type",
+        values: {
+          name: { value: 0 },
+          symbol_code: { value: 1 }
+        }
+      })
     }
   },
   async resolve(
     root,
-    { account_name, table_name, limit, lower_bound, upper_bound },
+    { account_name, table_name, limit, lower_bound, upper_bound, scope_type },
     getContext,
     info
   ) {
@@ -82,6 +103,7 @@ const get_table = {
     );
 
     const uri = `${rpc_url}/v1/chain/get_table_by_scope`;
+
     const data = await fetch(uri, {
       method: "POST",
       ...fetchOptions,
@@ -97,8 +119,16 @@ const get_table = {
     }).then((req) => req.json());
 
     if (data.error) throw new GraphQLError(data.message, { extensions: data });
+    if (!scope_type) return data;
 
-    return data;
+    if (scope_type == 1)
+      return {
+        ...data,
+        rows: data.rows.map((x) => ({
+          ...x,
+          scope: convertNameToSymbol(x.scope)
+        }))
+      };
   }
 };
 

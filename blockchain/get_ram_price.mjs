@@ -44,12 +44,20 @@ const get_ram_price = {
     if (data.rows) {
       // Connector Balance / (Smart Token’s Outstanding supply × Connector Weight)
       const [RAM] = data.rows;
-      const CORE_TOKEN = RAM.quote.balance.match(/[\sA-Z]+/gmu);
+
+      const CORE_ASSET = RAM.quote.balance;
+      const CORE_TOKEN = CORE_ASSET.match(/[\sA-Z]+/gmu);
+
+      const [, decimal] = String(
+        CORE_ASSET.replace(/[A-Za-z\s]+/gmu, "")
+      ).split(".");
+
+      const precision = decimal?.length ?? 0;
 
       const supply = RAM.base.balance.replace(" RAM", "");
       const total_value = RAM.quote.balance.replace(CORE_TOKEN, "");
       const byte_price = quantity * (total_value / supply);
-      return byte_price + CORE_TOKEN;
+      return parseFloat(byte_price).toFixed(precision) + CORE_TOKEN;
     }
   }
 };

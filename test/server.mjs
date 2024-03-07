@@ -26,8 +26,8 @@ const server = http.createServer((req, res) => {
 
         return [signature_1];
       },
-      contracts: ["eosio", "eosio.token", "relockebanks"],
-      rpc_url: "https://jungle.relocke.io"
+      contracts: ["eosio", "eosio.token"],
+      rpc_url: "https://eos.relocke.io"
     });
 
     res.end(JSON.stringify(data));
