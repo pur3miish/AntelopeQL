@@ -1,5 +1,5 @@
-import legacy_from_public_key from "antelope-ecc/keys/legacy_from_public_key.mjs";
-import public_key_from_wif from "antelope-ecc/keys/public_key_from_wif.mjs";
+import legacy_from_public_key from "antelope-ecc/keys/legacy_from_public_key.js";
+import public_key_from_wif from "antelope-ecc/keys/public_key_from_wif.js";
 import {
   GraphQLError,
   GraphQLList,

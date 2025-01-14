@@ -1,4 +1,4 @@
-import serializeName from "eosio-wasm-js/name.mjs";
+import serializeName from "eosio-wasm-js/name.js";
 import {
   GraphQLEnumType,
   GraphQLError,

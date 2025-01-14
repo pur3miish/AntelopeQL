@@ -3,7 +3,7 @@ import { GraphQLError, GraphQLNonNull, GraphQLString } from "graphql";
 import bytes_type from "../eosio_types/bytes_type.mjs";
 import name_type from "../eosio_types/name_type.mjs";
 
-const deserialize_action_data = {
+const abi_bin_to_json = {
   description: "Returns a JSON object containing deserialized action data.",
   type: GraphQLString,
   args: {
@@ -42,4 +42,4 @@ const deserialize_action_data = {
   }
 };
 
-export default deserialize_action_data;
+export default abi_bin_to_json;

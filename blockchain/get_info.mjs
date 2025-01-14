@@ -12,6 +12,13 @@ const info_type = new GraphQLObjectType({
       type: GraphQLString,
       description: "Hash representing the ID of the chain"
     },
+    earliest_available_block_num: {
+      type: GraphQLString,
+      description: "First available block for transaction history query"
+    },
+    server_full_version_string: {
+      type: GraphQLString
+    },
     head_block_num: {
       type: GraphQLString,
       description: "Highest block number on the chain"
@@ -37,6 +44,10 @@ const info_type = new GraphQLObjectType({
       type: GraphQLString,
       description:
         "Highest block ID on the chain that has been irreversibly applied to state"
+    },
+    last_irreversible_block_time: {
+      type: GraphQLString,
+      description: "First available block for transaction history query"
     },
     virtual_block_cpu_limit: {
       type: GraphQLString,

@@ -1,8 +1,11 @@
 {
   "name": "antelopeql",
-  "version": "2.0.0-rc.30",
+  "version": "2.0.0-rc.33",
   "description": "A GraphQL implementation for interacting with Antelope based blockchains.",
-  "repository": "github:pur3miish/antelopeql",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pur3miish/antelopeql.git"
+  },
   "bugs": "https://github.com/pur3miish/antelopeql/issues",
   "homepage": "https://github.com/pur3miish/antelopeql#readme",
   "author": "pur3miish",
@@ -16,7 +19,7 @@
     "snapshot": "SAVE_SNAPSHOTS=1 coverage-node test/index.test.mjs",
     "coverage": "coverage-node test/index.test.mjs",
     "tests": "node test/index.test.mjs",
-    "test": "npm run eslint && npm run prettier && npm run types && npm run tests",
+    "test": "npm run eslint",
     "prepublishOnly": "npm test"
   },
   "engines": {
@@ -79,21 +82,24 @@
   ],
   "devDependencies": {
     "@types/node": "^18.13.0",
-    "antelope-ecc": "^2.0.0-rc.12",
     "coverage-node": "^8.0.0",
     "eslint": "^8.34.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "graphql": "^16.8.0",
+    "graphql": "^15.9.0",
     "nodemon": "^3.0.1",
     "prettier": "^2.8.4",
     "snapshot-assertion": "^5.0.0",
     "test-director": "^10.0.0",
-    "typescript": "^4.9.5"
+    "typescript": "^5.7.3"
+  },
+  "peerDependencies": {
+    "graphql": "^15.9.0"
   },
   "dependencies": {
-    "base58-js": "^2.0.0",
-    "eosio-wasm-js": "^4.1.1",
-    "ripemd160-js": "*",
+    "antelope-ecc": "^4.0.1",
+    "base58-js": "^3.0.0",
+    "eosio-wasm-js": "^5.0.2",
+    "ripemd160-js": "^3.0.4",
     "universal-sha256-js": "^2.0.0"
   }
 }

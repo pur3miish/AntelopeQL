@@ -1,4 +1,4 @@
-import serialize from "eosio-wasm-js/serialize.mjs";
+import serialize from "eosio-wasm-js/serialize.js";
 
 import { eosio_abi_to_graphql_ast } from "./eosio_abi_to_graphql_ast.mjs";
 

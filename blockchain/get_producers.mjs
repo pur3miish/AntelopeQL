@@ -79,8 +79,6 @@ const get_producers = {
       defaultValue: "10"
     },
     lower_bound: {
-      description:
-        "In conjunction with limit can be used to paginate through the results. For example, limit=10 and lower_bound=10 would be page 2.",
       type: GraphQLString
     }
   },

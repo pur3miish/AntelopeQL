@@ -1,6 +1,6 @@
 import { GraphQLError, GraphQLObjectType } from "graphql";
 
-import deserialize_action_data from "./blockchain/deserialize_action_data.mjs";
+import abi_bin_to_json from "./blockchain/abi_bin_to_json.mjs";
 import get_abi from "./blockchain/get_abi.mjs";
 import get_account from "./blockchain/get_account.mjs";
 import get_accounts_by_authorizers from "./blockchain/get_accounts_by_authorizers.mjs";
@@ -31,7 +31,7 @@ const blockchain_query_field = {
       get_producers,
       get_table,
       get_ram_price,
-      deserialize_action_data
+      abi_bin_to_json
     }
   }),
   resolve(root, arg, getContext, info) {

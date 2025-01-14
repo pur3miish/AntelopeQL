@@ -1,7 +1,7 @@
-import base58_to_binary from "base58-js/base58_to_binary.mjs";
-import binary_to_base58 from "base58-js/binary_to_base58.mjs";
+import base58_to_binary from "base58-js/base58_to_binary";
+import binary_to_base58 from "base58-js/binary_to_base58";
 import { GraphQLScalarType } from "graphql";
-import ripemd160 from "ripemd160-js/ripemd160.mjs";
+import ripemd160 from "ripemd160-js/ripemd160.js";
 
 const public_key_type = new GraphQLScalarType({
   name: "public_key",

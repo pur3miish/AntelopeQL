@@ -62,3 +62,16 @@
  * @property {Boolean} binary_ex
  * @property {Boolean} variant
  */
+
+export const supported_antelope_chain_endpoints = [
+  "get_info",
+  "get_abi",
+  "get_accounts_by_authorizers",
+  "get_block",
+  "get_currency_balance",
+  "get_currency_stats",
+  "get_required_keys",
+  "get_producers",
+  "get_table",
+  "abi_bin_to_json"
+];
