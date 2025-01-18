@@ -30,7 +30,6 @@ export default async function send_transaction_rpc(
   });
 
   const pushed_transaction = await pushed_txn_req.json();
-  console.log(pushed_transaction.error);
 
   if (pushed_transaction.error)
     throw new GraphQLError(pushed_transaction.message, {
