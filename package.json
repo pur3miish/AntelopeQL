@@ -1,6 +1,6 @@
 {
   "name": "antelopeql",
-  "version": "2.0.0-rc.33",
+  "version": "3.0.0-alpha.2",
   "description": "A GraphQL implementation for interacting with Antelope based blockchains.",
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "test": "npm run eslint",
     "prepublishOnly": "npm test"
   },
+  "type": "module",
   "engines": {
     "node": ">= 18.0.0"
   },
@@ -93,7 +94,7 @@
     "typescript": "^5.7.3"
   },
   "peerDependencies": {
-    "graphql": "^15.9.0"
+    "graphql": "^16"
   },
   "dependencies": {
     "antelope-ecc": "^4.0.1",
