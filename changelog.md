@@ -1,5 +1,14 @@
 # AntelopeQL changelog
 
+## 3.0.0
+
+ts
+
+### Major
+
+- Introducing ts support.
+- GraphQL minimum support 16.
+
 ## 2.0.0
 
 ### Major
