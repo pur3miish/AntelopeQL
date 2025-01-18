@@ -8,9 +8,9 @@ import {
 } from "graphql";
 import { createRequire } from "module";
 
-import build_graphql_fields_from_abis from "../build_graphql_fields_from_abis.mjs";
 import actions from "../graphql_input_types/actions.mjs";
-import serialize_transaction from "../serialize_transaction.mjs";
+import build_graphql_fields_from_abis from "../src/build_graphql_fields_from_abis.mjs";
+import serialize_transaction from "../src/serialize_transaction.mjs";
 
 /* Importing the ABIs into a list */
 const require = createRequire(import.meta.url);

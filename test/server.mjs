@@ -1,9 +1,10 @@
+/* eslint-disable */
 import legacy_to_private_key from "antelope-ecc/keys/legacy_to_private_key.js";
 import private_key_to_wif from "antelope-ecc/keys/private_key_to_wif.js";
 import sign from "antelope-ecc/sign.js";
 import http from "http";
 
-import AntelopeQL from "../antelopeql.mjs";
+import AntelopeQL from "../src/antelopeql.mjs";
 
 const server = http.createServer((req, res) => {
   let body = "";
