@@ -222,7 +222,7 @@ const get_block = {
       method: "POST",
       ...fetchOptions,
       body: JSON.stringify({
-        block_num_or_id,
+        block_num_or_id: Number(block_num_or_id),
         json: true
       })
     });

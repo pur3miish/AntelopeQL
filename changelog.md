@@ -23,6 +23,7 @@ ts
 - Added get required Keys function to the blockchain api
 - Added required keys parameter to the serialised transaction mutation
 - Fixed to `get_accounts_by_authorizers` keys query.
+- get_block now passes number as argument instead of string.
 
 ## Patch
 
