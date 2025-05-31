@@ -2,12 +2,16 @@
 
 ## 3.0.0
 
-ts
-
 ### Major
 
 - Introducing ts support.
 - GraphQL minimum support 16.
+- ABI types can be lists
+
+### Minor
+
+- Added reverse options for table queries.
+- Added index_position int argument for querying secondary indexes greater than the current primary and secondary keys.
 
 ## 2.0.0
 

@@ -1,17 +1,10 @@
 import {
+  GraphQLBoolean,
   GraphQLEnumType,
   GraphQLInputObjectType,
   GraphQLInt,
   GraphQLString
 } from "graphql";
-
-const index_position_enum_type = new GraphQLEnumType({
-  name: "index_position_enum_type",
-  values: {
-    primary: { value: "primary" },
-    secondary: { value: "secondary" }
-  }
-});
 
 const key_type_enum_type = new GraphQLEnumType({
   name: "key_type_enum",
@@ -48,9 +41,9 @@ const query_arg_fields = new GraphQLInputObjectType({
       defaultValue: ""
     },
     index_position: {
-      type: index_position_enum_type,
-      description: "Position of the index used.",
-      defaultValue: "primary"
+      type: GraphQLInt,
+      description: "Position of the multiindex table used.",
+      defaultValue: 1
     },
     key_type: {
       type: key_type_enum_type,
@@ -75,6 +68,9 @@ const query_arg_fields = new GraphQLInputObjectType({
     limit: {
       type: GraphQLInt,
       description: "The maximum number of items to return"
+    },
+    reverse: {
+      type: GraphQLBoolean
     }
   }
 });

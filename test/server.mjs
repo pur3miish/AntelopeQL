@@ -4,7 +4,7 @@ import private_key_to_wif from "antelope-ecc/keys/private_key_to_wif.js";
 import sign from "antelope-ecc/sign.js";
 import http from "http";
 
-import AntelopeQL from "../src/antelopeql.mjs";
+import AntelopeQL from "../antelopeql.mjs";
 
 const server = http.createServer((req, res) => {
   let body = "";
@@ -22,6 +22,7 @@ const server = http.createServer((req, res) => {
 
       const data = await AntelopeQL({
         query,
+        contracts: ["eosio"],
         operationName,
         variableValues: variables,
         signTransaction: async (hash) => {
@@ -29,15 +30,19 @@ const server = http.createServer((req, res) => {
             hash,
             wif_private_key: await private_key_to_wif(
               await legacy_to_private_key(
-                "5JAhQyfuFRCndLisxEy9EHo3f6pLfqQ9CYA8e5QwYsQXpDqztwa"
+                "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
               )
             )
           });
 
           return [signature_1];
         },
-        contracts: ["eosio.token"],
-        rpc_url: "https://jungle.eosusa.io"
+        contracts: ["eosio"],
+        // rpc_url: "https://eos.greymass.com/"
+        // rpc_url: "https://eos.eosusa.io"
+        // rpc_url: "https://mainnet.genereos.io"
+        rpc_url: "https://jungle.relocke.io"
+        // rpc_url: "http://192.168.64.10:8888"
       });
 
       // Send the response body after all processing

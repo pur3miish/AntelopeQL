@@ -1,6 +1,6 @@
 import assertSnapshot from "snapshot-assertion";
 
-import AntelopeQL from "../src/antelopeql.mjs";
+import AntelopeQL from "../antelopeql.mjs";
 
 export default async (tests) => {
   tests.add("Test eosio queries", async () => {

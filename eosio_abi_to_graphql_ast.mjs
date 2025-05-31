@@ -31,7 +31,7 @@ function handleBaseFields(base, structs) {
  * @param {Object} structs ABI structs
  * @returns {Object} Struct AST that will be consumed by [eosio_abi_to_graphql_ast](./eosio_abi_to_graphql_ast.mjs).
  */
-function handleStructs(structs) {
+function handleStructs(structs, type_alias) {
   let graphql_ast_structs = {};
 
   for (const struct of structs) {
@@ -47,6 +47,8 @@ function handleStructs(structs) {
       const variant = !!field.type.match(/@/gmu);
       const list = !!field.type.match(/\[\]/gmu);
       let type = field.type.replace(/[[\]?$@]/gmu, "");
+      type = type_alias[type] ?? type;
+
       const object = !eosio_types[type];
       ast_fields[i] = {
         name: field.name,
@@ -67,6 +69,7 @@ function handleStructs(structs) {
  */
 export function eosio_abi_to_graphql_ast(abi) {
   const { types, variants, structs } = abi;
+  const type_alias = {};
   const new_structs = structs;
 
   if (variants?.length)
@@ -78,14 +81,35 @@ export function eosio_abi_to_graphql_ast(abi) {
       });
 
   if (types?.length) {
-    for (const { type: real_type, new_type_name } of types)
+    for (const { type: real_type, new_type_name } of types) {
+      if (eosio_types[real_type]) {
+        type_alias[new_type_name] = real_type;
+        continue;
+      }
+
+      if (real_type.endsWith("[]")) {
+        new_structs.push({
+          name: new_type_name,
+          base: "",
+          fields: [
+            {
+              name: real_type.replace("[]", ""),
+              type: real_type
+            }
+          ]
+        });
+
+        continue;
+      }
+
       new_structs.push({
         ...new_structs.find((x) => x.name == real_type),
         name: new_type_name
       });
+    }
   }
 
-  const structs_ast = handleStructs(new_structs);
+  const structs_ast = handleStructs(new_structs, type_alias);
 
   return Object.freeze(structs_ast);
 }

@@ -1,6 +1,6 @@
 {
   "name": "antelopeql",
-  "version": "3.0.0-alpha.3",
+  "version": "3.0.0-alpha.6",
   "description": "A GraphQL implementation for interacting with Antelope based blockchains.",
   "repository": {
     "type": "git",
@@ -32,6 +32,7 @@
     "graphql_input_types/*.mjs",
     "graphql_object_types/*.mjs",
     "antelopeql.mjs",
+    "antelopeql.d.ts",
     "blockchain_query_field.mjs",
     "build_graphql_fields_from_abis.mjs",
     "eosio_abi_to_graphql_ast.mjs",
@@ -48,11 +49,14 @@
   ],
   "sideEffects": false,
   "exports": {
+    "./antelopeql.mjs": {
+      "import": "./antelopeql.mjs",
+      "types": "./antelopeql.d.ts"
+    },
     "./blockchain/*.mjs": "./blockchain/*.mjs",
     "./eosio_types/*.mjs": "./eosio_types/*.mjs",
     "./graphql_input_types/*.mjs": "./graphql_input_types/*.mjs",
     "./graphql_object_types/*.mjs": "./graphql_object_types/*.mjs",
-    "./antelopeql.mjs": "./antelopeql.mjs",
     "./blockchain_query_field.mjs": "./blockchain_query_field.mjs",
     "./build_graphql_fields_from_abis.mjs": "./build_graphql_fields_from_abis.mjs",
     "./eosio_abi_to_graphql_ast.mjs": "./eosio_abi_to_graphql_ast.mjs",
@@ -86,18 +90,15 @@
     "coverage-node": "^8.0.0",
     "eslint": "^8.34.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "graphql": "^15.9.0",
+    "graphql": "^16.11.0",
     "nodemon": "^3.0.1",
     "prettier": "^2.8.4",
     "snapshot-assertion": "^5.0.0",
     "test-director": "^10.0.0",
     "typescript": "^5.7.3"
   },
-  "peerDependencies": {
-    "graphql": "^16"
-  },
   "dependencies": {
-    "antelope-ecc": "^4.0.1",
+    "antelope-ecc": "^5.0.0-rc.2",
     "base58-js": "^3.0.0",
     "eosio-wasm-js": "^5.0.2",
     "ripemd160-js": "^3.0.4",

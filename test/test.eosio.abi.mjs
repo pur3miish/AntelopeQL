@@ -1,6 +1,6 @@
 import { deepStrictEqual } from "assert";
 
-import build_graphql_fields_from_abis from "../src/build_graphql_fields_from_abis.mjs";
+import build_graphql_fields_from_abis from "../build_graphql_fields_from_abis.mjs";
 
 const abi = {
   version: "eosio::abi/1.2",
