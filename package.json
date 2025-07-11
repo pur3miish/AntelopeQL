@@ -74,7 +74,6 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "antelope-ecc": "^5.0.0-rc.2",
     "antelope-ecc": "^5.0.0",
     "base58-js": "^3.0.3",
     "eosio-wasm-js": "^5.0.2",
