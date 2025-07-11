@@ -16,7 +16,7 @@ import { symbol_code_type as symbol_code } from "./antelope_types/symbol_code_ty
 import { symbol_type as symbol } from "./antelope_types/symbol_type.js";
 import { time_point_sec_type as time_point_sec } from "./antelope_types/time_point_sec_type.js";
 import { time_point_type as time_point } from "./antelope_types/time_point_type.js";
-import { varuint32_type as varint32 } from "./antelope_types/varint32_type.js";
+import { varint32_type as varint32 } from "./antelope_types/varint32_type.js";
 import { varuint32_type as varuint32 } from "./antelope_types/varuint32_type.js";
 
 type GraphQLTypeAny =

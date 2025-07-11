@@ -1,6 +1,6 @@
 import { GraphQLScalarType, GraphQLError } from "graphql";
 
-export const varuint32_type = new GraphQLScalarType({
+export const varint32_type = new GraphQLScalarType({
   name: "varint32",
   description: `
 \`varint32\`

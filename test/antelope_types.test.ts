@@ -16,7 +16,7 @@ import { symbol_code_type as symbol_code } from "../src/antelope_types/symbol_co
 import { symbol_type as symbol } from "../src/antelope_types/symbol_type.js";
 import { time_point_sec_type as time_point_sec } from "../src/antelope_types/time_point_sec_type.js";
 import { time_point_type as time_point } from "../src/antelope_types/time_point_type.js";
-import { varuint32_type as varint32 } from "../src/antelope_types/varint32_type.js";
+import { varint32_type as varint32 } from "../src/antelope_types/varint32_type.js";
 import { varuint32_type as varuint32 } from "../src/antelope_types/varuint32_type.js";
 
 describe("Antelope types - validating parse values", () => {
