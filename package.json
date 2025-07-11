@@ -29,7 +29,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -59,7 +61,6 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^18.19.118",
     "chai": "^5.2.1",
-    "coverage-node": "^8.0.0",
     "eslint": "^8.34.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "graphql": "^16.11.0",
@@ -74,6 +75,7 @@
   },
   "dependencies": {
     "antelope-ecc": "^5.0.0-rc.2",
+    "antelope-ecc": "^5.0.0",
     "base58-js": "^3.0.3",
     "eosio-wasm-js": "^5.0.2",
     "ripemd160-js": "^3.0.4"
