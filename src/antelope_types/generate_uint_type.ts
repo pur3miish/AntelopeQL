@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType, GraphQLError } from "graphql";
 
 /**
  * Generates a GraphQL scalar unsigned integer type of size `bits`.
@@ -21,18 +21,18 @@ Unsigned integer range is between 0 - ${size.toString()}`,
         typeof value !== "number" &&
         typeof value !== "bigint"
       ) {
-        throw new TypeError("Value must be a string, number, or bigint");
+        throw new GraphQLError("Value must be a string, number, or bigint");
       }
 
       let uintVal: bigint;
       try {
         uintVal = BigInt(value);
       } catch {
-        throw new TypeError("Value cannot be converted to BigInt");
+        throw new GraphQLError("Value cannot be converted to BigInt");
       }
 
       if (uintVal >= size || uintVal < 0n) {
-        throw new RangeError(`Integer range is outside uint${bits}.`);
+        throw new GraphQLError(`Integer range is outside uint${bits}.`);
       }
 
       return uintVal.toString();

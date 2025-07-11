@@ -3,6 +3,7 @@ import serialize from "eosio-wasm-js/serialize.js";
 // @ts-ignore
 import serialize_transaction_header from "eosio-wasm-js/transaction_header.js";
 import { GraphQLError } from "graphql";
+import { type NetworkContext } from "./types/Context.js";
 
 interface ActionData {
   authorization?: any[];
@@ -54,12 +55,6 @@ interface MutationConfiguration {
   expireSeconds?: number;
   max_net_usage_words?: number;
   max_cpu_usage_ms?: number;
-}
-
-interface NetworkContext {
-  fetch: typeof fetch;
-  rpc_url: string;
-  [key: string]: any; // other fetch options
 }
 
 interface GetInfoResponse {
@@ -257,7 +252,7 @@ async function mutation_resolver(
       "Invalid max_net_usage_words value (maximum 4,294,967,295)."
     );
 
-  const { fetch, rpc_url, ...fetchOptions } = network;
+  const { rpc_url, fetchOptions } = network;
   const { transaction_body, ...transaction_list } = await get_transaction_body(
     actions,
     ast_list

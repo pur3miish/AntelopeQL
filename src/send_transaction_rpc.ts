@@ -1,16 +1,10 @@
 import { GraphQLError } from "graphql";
+import { type NetworkContext } from "./types/Context.js";
 
 interface SendTransactionArgs {
   transaction_header: string;
   transaction_body: string;
   signatures: string[];
-}
-
-interface NetworkContext {
-  fetch: typeof fetch;
-  rpc_url: string;
-  headers?: Record<string, string>;
-  [key: string]: any; // other fetch options
 }
 
 interface PushedTransactionResponse {
@@ -30,7 +24,7 @@ export default async function send_transaction_rpc(
   network: NetworkContext
 ): Promise<PushedTransactionResponse> {
   const { transaction_header, transaction_body, signatures } = args;
-  const { fetch, rpc_url, ...fetchOptions } = network;
+  const { rpc_url, fetchOptions } = network;
 
   const pushed_txn_req = await fetch(`${rpc_url}/v1/chain/send_transaction`, {
     method: "POST",

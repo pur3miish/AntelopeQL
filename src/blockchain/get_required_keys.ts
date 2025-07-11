@@ -67,6 +67,18 @@ const transaction_type = new GraphQLInputObjectType({
   }
 });
 
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
+  };
+  signTransaction?: (transaction: any) => Promise<any>;
+}
+
 const get_required_keys: GraphQLFieldConfig<unknown, any, GetRequiredKeysArgs> =
   {
     description: "Retrieve the required keys for a transaction.",
@@ -82,12 +94,14 @@ const get_required_keys: GraphQLFieldConfig<unknown, any, GetRequiredKeysArgs> =
     async resolve(
       root,
       { available_keys = [], transaction },
-      getContext,
+      context: Context,
       info
     ) {
-      const {
-        network: { fetch, rpc_url, ...fetchOptions }
-      } = getContext(root, { available_keys, transaction }, info);
+      const { rpc_url, fetchOptions } = context.network(
+        root,
+        { available_keys, transaction },
+        info
+      );
 
       const uri = `${rpc_url}/v1/chain/get_required_keys`;
 

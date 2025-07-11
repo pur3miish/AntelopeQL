@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType, GraphQLError } from "graphql";
 
 const extended_asset_type = new GraphQLScalarType({
   name: "extended_asset",
@@ -16,7 +16,7 @@ example:
   `,
   parseValue(value: unknown): string {
     if (typeof value !== "string") {
-      throw new TypeError("Extended asset must be a string");
+      throw new GraphQLError("Extended asset must be a string");
     }
     // Optionally add validation here if needed
     const [symbol, contract] = value.split("@");

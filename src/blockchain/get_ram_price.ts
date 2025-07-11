@@ -31,6 +31,18 @@ interface GetRamPriceArgs {
   quantity?: string;
 }
 
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
+  };
+  signTransaction?: (transaction: any) => Promise<any>;
+}
+
 const get_ram_price: GraphQLFieldConfig<unknown, any, GetRamPriceArgs> = {
   description: "RAM quote (bytes)",
   type: RAM_quote_type,
@@ -40,10 +52,8 @@ const get_ram_price: GraphQLFieldConfig<unknown, any, GetRamPriceArgs> = {
       description: "Number of bytes of RAM."
     }
   },
-  async resolve(root, { quantity = "1" }, getContext, info) {
-    const {
-      network: { fetch, rpc_url, ...fetchOptions }
-    } = getContext(root, { quantity }, info);
+  async resolve(root, { quantity = "1" }, context: Context, info) {
+    const { rpc_url, fetchOptions } = context.network(root, quantity, info);
 
     const response = await fetch(`${rpc_url}/v1/chain/get_table_rows`, {
       method: "POST",

@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType, GraphQLError } from "graphql";
 
 /**
  * Generates a GraphQL scalar Float type of `size`.
@@ -12,7 +12,7 @@ export default function generate_float_type(size: number): GraphQLScalarType {
 
     parseValue(value: unknown): number {
       if (typeof value !== "number" && typeof value !== "string") {
-        throw new TypeError(`Float${size} value must be a number or string`);
+        throw new GraphQLError(`Float${size} value must be a number or string`);
       }
       // Just return it as-is, cast to any to avoid TS error
       return value as any;

@@ -105,6 +105,18 @@ interface GetProducersArgs {
   lower_bound?: string;
 }
 
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
+  };
+  signTransaction?: (transaction: any) => Promise<any>;
+}
+
 const get_producers: GraphQLFieldConfig<unknown, any, GetProducersArgs> = {
   description: "Return info about block producers.",
   type: producers_type,
@@ -118,10 +130,8 @@ const get_producers: GraphQLFieldConfig<unknown, any, GetProducersArgs> = {
       type: GraphQLString
     }
   },
-  async resolve(root, args, getContext, info) {
-    const {
-      network: { fetch, rpc_url, ...fetchOptions }
-    } = getContext(root, args, info);
+  async resolve(root, args, context: Context, info) {
+    const { rpc_url, fetchOptions } = context.network(root, args, info);
 
     const uri = `${rpc_url}/v1/chain/get_producers`;
 

@@ -9,19 +9,12 @@ import bytes_type from "./antelope_types/bytes_type.js";
 import signature_type from "./antelope_types/signature_type.js";
 import transaction_receipt from "./graphql_object_types/transaction_receipt.js";
 import send_transaction_rpc from "./send_transaction_rpc.js";
+import { type Context } from "./types/Context.js";
 
 interface SendSerializedTransactionArgs {
   transaction_header: any; // type for bytes_type — adjust if you have a specific type
   transaction_body: any; // same here
   signatures: any[]; // array of signature_type instances (adjust if you have a better type)
-}
-
-interface Context {
-  network: {
-    fetch: typeof fetch;
-    rpc_url: string;
-    [key: string]: any;
-  };
 }
 
 /**
@@ -45,8 +38,7 @@ const send_serialized_transaction: GraphQLFieldConfig<
     context: Context,
     info: GraphQLResolveInfo
   ) {
-    const { network } = context;
-    return send_transaction_rpc(args, network);
+    return send_transaction_rpc(args, context.network(root, args, info));
   }
 };
 

@@ -33,6 +33,18 @@ interface GetSmartContractArgs {
   account_name: string;
 }
 
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
+  };
+  signTransaction?: (transaction: any) => Promise<any>;
+}
+
 const get_smart_contract: GraphQLFieldConfig<
   unknown,
   any,
@@ -46,10 +58,12 @@ const get_smart_contract: GraphQLFieldConfig<
       type: new GraphQLNonNull(name_type)
     }
   },
-  async resolve(root, { account_name }, getContext, info) {
-    const {
-      network: { fetch, rpc_url, ...fetchOptions }
-    } = getContext(root, { account_name }, info);
+  async resolve(root, { account_name }, context: Context, info) {
+    const { rpc_url, fetchOptions } = context.network(
+      root,
+      { account_name },
+      info
+    );
 
     const uri = `${rpc_url}/v1/chain/get_raw_code_and_abi`;
 

@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType, GraphQLError } from "graphql";
 
 const name_type = new GraphQLScalarType({
   name: "name",
@@ -18,12 +18,12 @@ Names are unique identifiers on the blockchain.
 `,
   parseValue(value: unknown): string {
     if (typeof value !== "string") {
-      throw new TypeError("Name must be a string.");
+      throw new GraphQLError("Name must be a string.");
     }
     if (value === "") return value;
 
     if (!/^[1-5a-z.]{0,11}[1-5a-z]{1}$/gmu.test(value)) {
-      throw new TypeError(`Invalid name “${value}”.`);
+      throw new GraphQLError(`Invalid name “${value}”.`);
     }
 
     return value;

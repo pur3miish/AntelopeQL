@@ -1,16 +1,16 @@
 import { GraphQLError } from "graphql";
+import type { Abi } from "./blockchain/get_abi.js";
 
 interface FetchOptions extends RequestInit {}
 
 interface GetAbisParams {
-  fetch: typeof fetch;
-  rpc_url: string;
+  rpc_url: string | URL | Request;
   fetchOptions?: FetchOptions;
 }
 
-interface AbiResponse {
+export interface AbiResponse {
   account_name: string;
-  abi?: any; // Replace with your ABI type if known
+  abi?: Abi[];
   error?: {
     details?: Array<{ message?: string }>;
     message?: string;
@@ -25,7 +25,7 @@ interface GraphQLErrorExtensions {
 
 export default async function get_abis(
   contracts: string[] = [],
-  { fetch, rpc_url, fetchOptions = {} }: GetAbisParams
+  { rpc_url, fetchOptions = {} }: GetAbisParams
 ): Promise<AbiResponse[]> {
   if (!contracts.length) return [];
 

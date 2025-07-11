@@ -68,6 +68,18 @@ const scopeTypeEnum = new GraphQLEnumType({
   }
 });
 
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
+  };
+  signTransaction?: (transaction: any) => Promise<any>;
+}
+
 const get_table: GraphQLFieldConfig<
   unknown,
   any,
@@ -122,14 +134,19 @@ const get_table: GraphQLFieldConfig<
       upper_bound,
       scope_type = 0
     },
-    getContext,
+    context: Context,
     info
   ): Promise<TableData> {
-    const {
-      network: { fetch, rpc_url, ...fetchOptions }
-    } = getContext(
+    const { rpc_url, fetchOptions } = context.network(
       root,
-      { account_name, table_name, limit, lower_bound, upper_bound },
+      {
+        account_name,
+        table_name,
+        limit,
+        lower_bound,
+        upper_bound,
+        scope_type
+      },
       info
     );
 

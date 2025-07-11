@@ -1,68 +1,18 @@
 import {
-  GraphQLError,
   GraphQLInputObjectType,
   GraphQLObjectType,
   GraphQLFieldConfigMap,
   GraphQLInputFieldConfigMap,
   GraphQLResolveInfo
 } from "graphql";
-
+import type { Abi } from "./blockchain/get_abi.js";
 import {
+  ABI,
   abi_to_graphql_ast,
   get_graphql_fields_from_AST
 } from "./abi_to_graphql_ast.js";
 
-interface AbiVariant {
-  name?: string;
-  types?: string[];
-}
-
-interface AbiRicardianClause {
-  id?: string;
-  body?: string;
-}
-
-interface AbiTable {
-  name?: string;
-  index_type?: string;
-  type?: string;
-  key_names?: string[];
-  key_types?: string[];
-}
-
-interface AbiAction {
-  name?: string;
-  type?: string;
-  ricardian_contract?: string;
-}
-
-interface AbiType {
-  new_type_name?: string;
-  type?: string;
-}
-
-interface AbiField {
-  name?: string;
-  type?: string;
-}
-
-interface AbiStruct {
-  name?: string;
-  base?: string;
-  fields?: AbiField[];
-}
-
-export interface Abi {
-  actions?: AbiAction[];
-  ricardian_clauses?: AbiRicardianClause[];
-  structs?: AbiStruct[];
-  types?: AbiType[];
-  tables?: AbiTable[];
-  variants?: AbiVariant[];
-  version?: string;
-}
-
-interface AccountABI {
+export interface AccountABI {
   abi: Abi;
   account_name: string;
 }
@@ -97,6 +47,18 @@ interface BuildGraphQLFieldsResult {
   ast_list: ASTList;
 }
 
+interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
+  };
+  signTransaction?: (transaction: any) => Promise<any>;
+}
+
 export default function build_graphql_fields_from_abis(
   abi_list: AccountABI[],
   typeResolution = ""
@@ -107,7 +69,7 @@ export default function build_graphql_fields_from_abis(
 
   for (const { abi, account_name } of abi_list) {
     const name = account_name.replace(/\./g, "_");
-    const AST = abi_to_graphql_ast(abi);
+    const AST = abi_to_graphql_ast(abi as ABI);
 
     ast_list[name] = AST; // For use in serializing data in mutation resolver.
 
@@ -121,23 +83,7 @@ export default function build_graphql_fields_from_abis(
           name: `${name}_query${typeResolution}`,
           fields: query_fields
         }),
-        resolve(root, arg, getContext, info) {
-          const { network: { rpc_url, fetch } = {} } = getContext(
-            root,
-            arg,
-            info
-          );
-
-          if (!fetch)
-            throw new GraphQLError(
-              "No fetch argument found on the context of the GraphQL.execute."
-            );
-
-          if (!rpc_url)
-            throw new GraphQLError(
-              "No rpc_url argument found on the context of the GraphQL.execute."
-            );
-
+        resolve(root, arg, context: Context, info) {
           return { code: info.fieldName.replace(/_/g, ".") };
         }
       };

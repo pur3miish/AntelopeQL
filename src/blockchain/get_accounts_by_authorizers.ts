@@ -55,13 +55,16 @@ const accounts_by_authorizers_type =
 
 // --- Context interface ---
 
-interface Context {
-  network: {
-    fetch: typeof fetch;
-    rpc_url: string;
-    symbol?: string;
-    [key: string]: any;
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
   };
+  signTransaction?: (transaction: any) => Promise<any>;
 }
 
 // --- GraphQL FieldConfig for accounts_by_authorizers ---
@@ -77,9 +80,11 @@ const accounts_by_authorizers: GraphQLFieldConfig<
     keys: { type: new GraphQLList(new GraphQLNonNull(public_key_type)) }
   },
   async resolve(root, { accounts = [], keys = [] }, context, info) {
-    const {
-      network: { fetch, rpc_url, symbol = "EOS", ...fetchOptions }
-    } = context;
+    const { rpc_url, fetchOptions } = context.network(
+      root,
+      { accounts, keys },
+      info
+    );
 
     const uri = `${rpc_url}/v1/chain/get_accounts_by_authorizers`;
 

@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType, GraphQLError } from "graphql";
 
 /**
  * Generates a GraphQL scalar type for checksum of `size`.
@@ -14,17 +14,17 @@ Represented as a hexadecimal string of ${size * 2} characters.
 `,
     parseValue(value: unknown): string {
       if (typeof value !== "string") {
-        throw new TypeError("Checksum value must be a string");
+        throw new GraphQLError("Checksum value must be a string");
       }
       // Optionally validate length and hex format here
       // e.g. length check:
       if (value.length !== size * 2) {
-        throw new TypeError(
+        throw new GraphQLError(
           `Checksum must be exactly ${size * 2} hex characters long`
         );
       }
       if (!/^[A-Fa-f0-9]+$/g.test(value)) {
-        throw new TypeError("Checksum must be a hexadecimal string");
+        throw new GraphQLError("Checksum must be a hexadecimal string");
       }
       return value;
     }

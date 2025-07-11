@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType, GraphQLError } from "graphql";
 
 /**
  * Generates a GraphQL scalar signed integer type of size `bits`.
@@ -22,7 +22,7 @@ Signed integer range is between ${min} - ${max}`,
         typeof value !== "number" &&
         typeof value !== "bigint"
       ) {
-        throw new TypeError("Value must be a string, number, or bigint");
+        throw new GraphQLError("Value must be a string, number, or bigint");
       }
 
       // Convert value to BigInt safely
@@ -30,11 +30,11 @@ Signed integer range is between ${min} - ${max}`,
       try {
         intVal = BigInt(value);
       } catch {
-        throw new TypeError("Value cannot be converted to BigInt");
+        throw new GraphQLError("Value cannot be converted to BigInt");
       }
 
       if (intVal > max || intVal < min) {
-        throw new RangeError(`Integer range is outside int${bits}.`);
+        throw new GraphQLError(`Integer range is outside int${bits}.`);
       }
 
       return intVal.toString();

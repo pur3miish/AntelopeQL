@@ -34,6 +34,18 @@ const currency_stats_type = new GraphQLObjectType({
   })
 });
 
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
+  };
+  signTransaction?: (transaction: any) => Promise<any>;
+}
+
 const get_currency_stats = {
   description: "Retrieve currency stats.",
   type: currency_stats_type,
@@ -48,20 +60,11 @@ const get_currency_stats = {
   async resolve(
     root: unknown,
     args: GetCurrencyStatsArgs,
-    getContext: (
-      root: unknown,
-      args: GetCurrencyStatsArgs,
-      info: unknown
-    ) => {
-      network: { fetch: typeof fetch; rpc_url: string; [key: string]: any };
-    },
+    context: Context,
     info: unknown
   ): Promise<CurrencyStats> {
     const { symbol, ...restArgs } = args;
-
-    const {
-      network: { fetch, rpc_url, ...fetchOptions }
-    } = getContext(root, { symbol, ...restArgs }, info);
+    const { rpc_url, fetchOptions } = context.network(root, args, info);
 
     const uri = `${rpc_url}/v1/chain/get_currency_stats`;
     const req = await fetch(uri, {

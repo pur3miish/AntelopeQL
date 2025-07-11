@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType, GraphQLError } from "graphql";
 
 const asset_type = new GraphQLScalarType({
   description: `
@@ -21,16 +21,16 @@ An \`asset\` type describes a blockchain asset and includes a quantity and a sym
   name: "asset",
   parseValue(value: unknown): string {
     if (typeof value !== "string") {
-      throw new TypeError("Asset value must be a string.");
+      throw new GraphQLError("Asset value must be a string.");
     }
 
     if (value == "") return "";
 
     if (!value.match(/^\d+(\.\d+)?\s[A-Z]{1,7}$/gmu))
-      throw new TypeError("Invalid asset type supplied.");
+      throw new GraphQLError("Invalid asset type supplied.");
 
     if (value.replace(/[A-Z.\s]/gmu, "").length > 21)
-      throw new RangeError("Invalid asset size, maximum (2 ^ 62) - 1");
+      throw new GraphQLError("Invalid asset size, maximum (2 ^ 62) - 1");
 
     return value;
   }

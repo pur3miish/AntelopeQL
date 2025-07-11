@@ -6,6 +6,7 @@ import transaction_receipt from "./graphql_object_types/transaction_receipt.js";
 import mutation_resolver from "./mutation_resolver.js";
 import send_transaction_rpc from "./send_transaction_rpc.js";
 import type { GraphQLResolveInfo } from "graphql";
+import type { Context } from "./types/Context.ts";
 
 type GraphQLFieldConfig<
   TSource,
@@ -67,15 +68,15 @@ const send_transaction = (
   async resolve(
     root: any,
     args: SendTransactionArgs,
-    getContext: (
-      root: any,
-      args: SendTransactionArgs,
-      info: GraphQLResolveInfo
-    ) => SignTransactionContext,
+    context: Context,
     info: GraphQLResolveInfo
   ) {
-    const { network, signTransaction } = getContext(root, args, info);
+    interface NetworkContext {
+      rpc_url: string;
+      fetchOptions?: RequestInit;
+    }
 
+    const network = context.network(root, args, info);
     const { chain_id, transaction_header, transaction_body, transaction } =
       await mutation_resolver(args, network, ast_list);
 
@@ -93,14 +94,17 @@ const send_transaction = (
       )
     );
 
-    const signatures = await signTransaction(hash_to_sign, {
-      serilaised_txn: {
+    const signatures = await context?.signTransaction?.(
+      hash_to_sign,
+      {
         chain_id,
         transaction_header,
         transaction_body
       },
       transaction
-    });
+    );
+
+    if (!signatures) throw new Error("No signatures available");
 
     return send_transaction_rpc(
       { transaction_body, transaction_header, signatures },

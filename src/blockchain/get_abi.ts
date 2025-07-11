@@ -148,12 +148,16 @@ const abi_type = new GraphQLObjectType<Abi>({
 
 // --- Context Type ---
 
-interface Context {
-  network: {
-    fetch: typeof fetch;
-    rpc_url: string;
-    [key: string]: any;
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
   };
+  signTransaction?: (transaction: any) => Promise<any>;
 }
 
 // --- GraphQL Field Config for get_abi ---
@@ -169,9 +173,7 @@ const get_abi: GraphQLFieldConfig<unknown, Context, { account_name: string }> =
       }
     },
     async resolve(root, args, context, info): Promise<Abi> {
-      const {
-        network: { fetch, rpc_url, ...fetchOptions }
-      } = context;
+      const { rpc_url, fetchOptions } = context.network(root, args, info);
 
       const uri = `${rpc_url}/v1/chain/get_abi`;
       const res = await fetch(uri, {

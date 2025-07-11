@@ -24,6 +24,18 @@ export interface PackedTransaction {
   };
 }
 
+interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
+  };
+  signTransaction?: (transaction: any) => Promise<any>;
+}
+
 export const packed_transaction_fields: GraphQLFieldConfigMap<
   PackedTransaction,
   any
@@ -43,8 +55,13 @@ export const packed_transaction_fields: GraphQLFieldConfigMap<
   required_keys: {
     type: new GraphQLList(public_key_type),
     description: "List of public keys needed to authorize transaction",
-    async resolve({ available_keys, transaction }, args, getContext, info) {
-      const { network } = getContext(
+    async resolve(
+      { available_keys, transaction },
+      args,
+      context: Context,
+      info
+    ) {
+      const { rpc_url, fetchOptions } = context.network(
         { available_keys, transaction },
         args,
         info
@@ -52,24 +69,20 @@ export const packed_transaction_fields: GraphQLFieldConfigMap<
 
       if (available_keys?.length) {
         const keys = await Promise.all(available_keys);
-
-        const req = await fetch(
-          network.rpc_url + "/v1/chain/get_required_keys",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              transaction: {
-                ...transaction,
-                actions: transaction.actions.map(({ hex_data, ...action }) => ({
-                  ...action,
-                  data: hex_data
-                }))
-              },
-              available_keys: keys
-            }),
-            ...network.fetchOptions
-          }
-        ).then((res) => res.json());
+        const req = await fetch(rpc_url + "/v1/chain/get_required_keys", {
+          method: "POST",
+          body: JSON.stringify({
+            transaction: {
+              ...transaction,
+              actions: transaction?.actions.map(({ hex_data, ...action }) => ({
+                ...action,
+                data: hex_data
+              }))
+            },
+            available_keys: keys
+          }),
+          ...fetchOptions
+        }).then((res) => res.json());
 
         if (req.error) {
           throw new GraphQLError(req.message || "Unknown error", {

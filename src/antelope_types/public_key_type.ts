@@ -1,6 +1,6 @@
 import base58_to_binary from "base58-js/base58_to_binary.js";
 import binary_to_base58 from "base58-js/binary_to_base58.js";
-import { GraphQLScalarType } from "graphql";
+import { GraphQLError, GraphQLScalarType } from "graphql";
 import ripemd160 from "ripemd160-js/ripemd160.js";
 
 const public_key_type = new GraphQLScalarType({
@@ -9,7 +9,7 @@ const public_key_type = new GraphQLScalarType({
   async parseValue(value: unknown): Promise<string> {
     if (value === "") return "";
     if (typeof value !== "string") {
-      throw new TypeError("Public key must be a string");
+      throw new GraphQLError("Public key must be a string");
     }
 
     if (
@@ -18,7 +18,7 @@ const public_key_type = new GraphQLScalarType({
       !value.startsWith("PUB_WA_") &&
       !value.startsWith("EOS")
     ) {
-      throw new RangeError(
+      throw new GraphQLError(
         "Public keys must be either K1, R1, WA or legacy keys."
       );
     }
@@ -28,7 +28,7 @@ const public_key_type = new GraphQLScalarType({
 
   async serialize(key: unknown): Promise<string> {
     if (typeof key !== "string") {
-      throw new TypeError("Public key must be a string");
+      throw new GraphQLError("Public key must be a string");
     }
 
     if (key.startsWith("EOS")) {

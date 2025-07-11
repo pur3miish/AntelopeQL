@@ -14,6 +14,18 @@ interface CurrencyBalanceArgs {
   symbol: string;
 }
 
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
+  };
+  signTransaction?: (transaction: any) => Promise<any>;
+}
+
 const currency_balance = {
   description: "Retrieve current balance.",
   type: new GraphQLList(GraphQLString),
@@ -35,18 +47,10 @@ const currency_balance = {
   async resolve(
     root: unknown,
     args: CurrencyBalanceArgs,
-    getContext: (
-      root: unknown,
-      args: CurrencyBalanceArgs,
-      info: unknown
-    ) => {
-      network: { fetch: typeof fetch; rpc_url: string; [key: string]: any };
-    },
+    context: Context,
     info: unknown
   ): Promise<string[]> {
-    const {
-      network: { fetch, rpc_url, ...fetchOptions }
-    } = getContext(root, args, info);
+    const { rpc_url, fetchOptions } = context.network(root, args, info);
 
     const uri = `${rpc_url}/v1/chain/get_currency_balance`;
     const req = await fetch(uri, {

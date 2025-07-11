@@ -111,14 +111,24 @@ const info_type = new GraphQLObjectType<InfoData>({
   })
 });
 
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
+  };
+  signTransaction?: (transaction: any) => Promise<any>;
+}
+
 const info: GraphQLFieldConfig<unknown, any> = {
   description: "Return info about the operational state of the blockchain.",
   type: info_type,
   args: {},
-  async resolve(root, args, getContext, info) {
-    const {
-      network: { fetch, rpc_url, ...fetchOptions }
-    } = getContext(root, args, info);
+  async resolve(root, args, context: Context, info) {
+    const { rpc_url, fetchOptions } = context.network(root, args, info);
 
     const uri = `${rpc_url}/v1/chain/get_info`;
     const req = await fetch(uri, {

@@ -9,12 +9,16 @@ interface AbiBinToJsonArgs {
   binargs: string;
 }
 
-interface NetworkContext {
-  network: {
-    fetch: typeof fetch;
-    rpc_url: string;
-    [key: string]: any;
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
   };
+  signTransaction?: (transaction: any) => Promise<any>;
 }
 
 const abi_bin_to_json = {
@@ -37,16 +41,10 @@ const abi_bin_to_json = {
   resolve: async (
     root: unknown,
     args: AbiBinToJsonArgs,
-    getContext: (
-      root: unknown,
-      args: AbiBinToJsonArgs,
-      info: any
-    ) => NetworkContext,
+    context: Context,
     info: any
   ): Promise<string> => {
-    const {
-      network: { fetch, rpc_url, ...fetchOptions }
-    } = getContext(root, args, info);
+    const { rpc_url, fetchOptions } = context.network(root, args, info);
 
     const uri = `${rpc_url}/v1/chain/abi_bin_to_json`;
     const req = await fetch(uri, {

@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType, GraphQLError } from "graphql";
 
 const signature_type = new GraphQLScalarType({
   name: "signature",
@@ -10,7 +10,7 @@ Antelope based signature, K1, R1 WA.
   parseValue(value: unknown): string {
     if (value === "") return "";
     if (typeof value !== "string") {
-      throw new TypeError("Expected signature to be a string");
+      throw new GraphQLError("Expected signature to be a string");
     }
     return value;
   }

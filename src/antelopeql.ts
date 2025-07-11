@@ -10,24 +10,25 @@ import {
 } from "graphql";
 
 import blockchain_query_field from "./blockchain_query_field.js";
-import build_graphql_fields_from_abis from "./build_graphql_fields_from_abis.js";
+import build_graphql_fields_from_abis, {
+  type AccountABI
+} from "./build_graphql_fields_from_abis.js";
 import get_abis from "./get_abis.js";
 import actions from "./graphql_input_types/actions.js";
 import send_serialized_transaction from "./send_serialized_transaction.js";
 import send_transaction from "./send_transaction.js";
 import serialize_transaction from "./serialize_transaction.js";
+import { type SignTransactionContext } from "./types/Context.js";
 
-// Argument and return type definitions
 export interface AntelopeQLArgument {
   query: string;
-  rpc_url: string;
   variableValues?: Record<string, any>;
   operationName?: string;
   contracts?: string[];
-  ABIs?: any[];
-  signTransaction?: (transaction: any) => Promise<any>;
-  headers?: HeadersInit;
-  signal?: AbortSignal;
+  ABIs?: AccountABI[];
+  signTransaction?: SignTransactionContext;
+  rpc_url: string | URL | Request;
+  fetchOptions?: RequestInit;
 }
 
 export interface AntelopeQLResult {
@@ -43,26 +44,24 @@ export default async function AntelopeQL({
   variableValues,
   operationName,
   signTransaction,
-  contracts = [],
-  ABIs = [],
+  contracts,
+  ABIs,
   rpc_url,
-  headers,
-  signal
+  fetchOptions
 }: AntelopeQLArgument): Promise<ExecutionResult> {
   try {
-    if (typeof fetch !== "function") {
-      throw new GraphQLError("No fetch implementation found in global scope");
+    const abis = ABIs?.length ? ABIs : ([] as AccountABI | any);
+
+    if (contracts?.length) {
+      const abi_from_contracts = await get_abis(contracts, {
+        rpc_url,
+        fetchOptions
+      });
+      abi_from_contracts.map((abi) => abis.push(abi));
     }
 
-    const fetchOptions: RequestInit = {};
-    if (headers) fetchOptions.headers = headers;
-    if (signal) fetchOptions.signal = signal;
-
     const { mutation_fields, query_fields, ast_list } =
-      build_graphql_fields_from_abis([
-        ...ABIs,
-        ...(await get_abis(contracts, { fetch, rpc_url, fetchOptions }))
-      ]);
+      build_graphql_fields_from_abis(abis);
 
     const queries = new GraphQLObjectType({
       name: "Query",
@@ -88,16 +87,20 @@ export default async function AntelopeQL({
 
     const document = parse(new Source(query));
     const queryErrors = validate(schema, document);
+
     if (queryErrors.length > 0) return { errors: queryErrors };
 
     return execute({
       schema,
       document,
       rootValue: "",
-      contextValue: () => ({
-        network: { rpc_url, fetch, ...fetchOptions },
+      contextValue: {
+        network: (root: any, args: any, info: any) => ({
+          rpc_url,
+          fetchOptions
+        }),
         signTransaction
-      }),
+      },
       variableValues,
       operationName,
       fieldResolver(rootValue, args, ctx, { fieldName }) {
@@ -105,6 +108,8 @@ export default async function AntelopeQL({
       }
     });
   } catch (err) {
+    console.log(err);
+
     return { errors: [err as GraphQLError] };
   }
 }

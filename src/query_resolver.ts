@@ -1,11 +1,5 @@
 import { GraphQLError, GraphQLResolveInfo } from "graphql";
-
-/** Network config with fetch and rpc_url */
-interface AntelopeQLRPC {
-  fetch: typeof fetch;
-  rpc_url: string;
-  [key: string]: any; // additional fetch options like headers, signal, etc.
-}
+import { type Context } from "./types/Context.js";
 
 /** Arguments passed to the resolver */
 interface QueryArg {
@@ -13,12 +7,6 @@ interface QueryArg {
   encode_type?: string;
   lower_bound?: string;
   [key: string]: any; // other possible query arguments
-}
-
-/** Context returned by getContext */
-interface Context {
-  network: AntelopeQLRPC;
-  [key: string]: any;
 }
 
 /** Root object received by resolver */
@@ -42,14 +30,13 @@ interface Args {
 export default async function query_resolver(
   root: Root,
   args: Args,
-  getContext: (root: Root, args: Args, info: GraphQLResolveInfo) => Context,
+  context: Context,
   info: GraphQLResolveInfo
 ): Promise<any[]> {
   const { code } = root;
   const { arg } = args;
-  const { network } = getContext(root, args, info);
+  const { rpc_url, fetchOptions } = context.network(root, args, info);
 
-  const { fetch, rpc_url, ...fetchOptions } = network;
   const { fieldName: query_name } = info;
   const table = query_name.replace(/_/g, ".");
 

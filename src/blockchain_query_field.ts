@@ -1,4 +1,4 @@
-import { GraphQLError, GraphQLObjectType, GraphQLFieldConfig } from "graphql";
+import { GraphQLObjectType, GraphQLFieldConfig } from "graphql";
 
 import abi_bin_to_json from "./blockchain/abi_bin_to_json.js";
 import get_abi from "./blockchain/get_abi.js";
@@ -13,19 +13,6 @@ import get_ram_price from "./blockchain/get_ram_price.js";
 import get_required_keys from "./blockchain/get_required_keys.js";
 import get_smart_contract from "./blockchain/get_smart_contract.js";
 import get_table from "./blockchain/get_table_by_scope.js";
-
-interface Context {
-  network: {
-    rpc_url?: string;
-  };
-}
-
-interface NetworkContext {
-  network: {
-    rpc_url: string;
-    fetch: typeof fetch;
-  };
-}
 
 const blockchain_query_field: GraphQLFieldConfig<any, any> = {
   type: new GraphQLObjectType({
@@ -47,19 +34,7 @@ const blockchain_query_field: GraphQLFieldConfig<any, any> = {
       abi_bin_to_json
     }
   }),
-  resolve(
-    root: any,
-    arg: any,
-    getContext: (root: any, args: any, info: any) => Context,
-    info: any
-  ): {} {
-    const {
-      network: { rpc_url }
-    } = getContext(root, arg, info);
-
-    if (!rpc_url)
-      throw new GraphQLError("No RPC url supplied to `antelopeql_context`");
-
+  resolve() {
     return {};
   }
 };

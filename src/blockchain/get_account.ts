@@ -282,12 +282,16 @@ const account_type = new GraphQLObjectType<Account>({
 
 // --- Context Type ---
 
-interface Context {
-  network: {
-    fetch: typeof fetch;
-    rpc_url: string;
-    [key: string]: any;
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
   };
+  signTransaction?: (transaction: any) => Promise<any>;
 }
 
 // --- get_account GraphQLFieldConfig ---
@@ -304,9 +308,11 @@ const get_account: GraphQLFieldConfig<
     }
   },
   async resolve(root, { account_name }, context, info) {
-    const {
-      network: { fetch, rpc_url, ...fetchOptions }
-    } = context;
+    const { rpc_url, fetchOptions } = context.network(
+      root,
+      { account_name },
+      info
+    );
 
     const uri = `${rpc_url}/v1/chain/get_account`;
     const req = await fetch(uri, {

@@ -216,6 +216,18 @@ const block_type = new GraphQLObjectType<Block>({
   })
 });
 
+export interface Context {
+  network(
+    root: any,
+    args: any,
+    info: any
+  ): {
+    rpc_url: string | URL | Request;
+    fetchOptions: RequestInit;
+  };
+  signTransaction?: (transaction: any) => Promise<any>;
+}
+
 const get_block = {
   type: block_type,
   args: {
@@ -227,18 +239,10 @@ const get_block = {
   async resolve(
     root: unknown,
     args: { block_num_or_id: string },
-    getContext: (
-      root: unknown,
-      args: { block_num_or_id: string },
-      info: any
-    ) => {
-      network: { fetch: typeof fetch; rpc_url: string; [key: string]: any };
-    },
+    context: Context,
     info: unknown
   ): Promise<Block> {
-    const {
-      network: { fetch, rpc_url, ...fetchOptions }
-    } = getContext(root, args, info);
+    const { rpc_url, fetchOptions } = context.network(root, args, info);
 
     const uri = `${rpc_url}/v1/chain/get_block`;
     const req = await fetch(uri, {

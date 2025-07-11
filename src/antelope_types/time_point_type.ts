@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from "graphql";
+import { GraphQLScalarType, GraphQLError } from "graphql";
 
 const time_point_type = new GraphQLScalarType({
   name: "time_point",
@@ -15,12 +15,14 @@ Number of milliseconds since epoch (Unix time).
     if (typeof value === "string") {
       // Optionally validate string is numeric
       if (!/^\d+$/.test(value)) {
-        throw new TypeError("time_point string value must be numeric.");
+        throw new GraphQLError("time_point string value must be numeric.");
       }
       return value;
     }
 
-    throw new TypeError("time_point value must be a number or numeric string.");
+    throw new GraphQLError(
+      "time_point value must be a number or numeric string."
+    );
   }
 });
 
