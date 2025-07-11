@@ -1,0 +1,62 @@
+import { GraphQLList, GraphQLNonNull } from "graphql";
+
+import public_key_type from "./antelope_types/public_key_type.js";
+import configuration_type from "./graphql_input_types/configuration.js";
+import packed_transaction_type from "./graphql_object_types/packed_transaction.js";
+import mutation_resolver from "./mutation_resolver.js";
+
+interface SerializeTransactionArgs {
+  actions: any; // Replace `any` with the actual GraphQL type of `actions` if available
+  configuration?: any; // Replace `any` with the type of configuration_type if known
+  available_keys?: string[]; // assuming public keys as strings, change if different
+}
+
+interface Context {
+  network: any; // Replace with your actual network context type
+}
+
+const serialize_transaction = (
+  actions: any, // type of actions GraphQL input
+  ast_list: any // AST type, adjust as needed
+): {
+  description: string;
+  type: GraphQLNonNull<typeof packed_transaction_type>;
+  args: {
+    actions: { type: any };
+    configuration: { type: any };
+    available_keys: { type: GraphQLList<typeof public_key_type> };
+  };
+  resolve: (
+    root: any,
+    args: SerializeTransactionArgs,
+    getContext: (root: any, args: any, info: any) => Context,
+    info: any
+  ) => Promise<any>;
+} => ({
+  description: "Serialize a list of actions into an atomic binary instruction.",
+  type: new GraphQLNonNull(packed_transaction_type),
+  args: {
+    actions: {
+      type: actions
+    },
+    configuration: {
+      type: configuration_type
+    },
+    available_keys: {
+      type: new GraphQLList(public_key_type)
+    }
+  },
+  async resolve(root, { available_keys, ...args }, getContext, info) {
+    const { network } = getContext(root, { available_keys, ...args }, info);
+
+    const { transaction, ...serialized_txn } = await mutation_resolver(
+      args,
+      network,
+      ast_list
+    );
+
+    return { ...serialized_txn, available_keys, transaction };
+  }
+});
+
+export default serialize_transaction;

@@ -1,0 +1,43 @@
+import { GraphQLError, GraphQLObjectType } from "graphql";
+import abi_bin_to_json from "./blockchain/abi_bin_to_json.js";
+import get_abi from "./blockchain/get_abi.js";
+import get_account from "./blockchain/get_account.js";
+import get_accounts_by_authorizers from "./blockchain/get_accounts_by_authorizers.js";
+import get_block from "./blockchain/get_block.js";
+import get_currency_balance from "./blockchain/get_currency_balance.js";
+import get_currency_stats from "./blockchain/get_currency_stats.js";
+import get_info from "./blockchain/get_info.js";
+import get_producers from "./blockchain/get_producers.js";
+import get_ram_price from "./blockchain/get_ram_price.js";
+import get_required_keys from "./blockchain/get_required_keys.js";
+import get_smart_contract from "./blockchain/get_smart_contract.js";
+import get_table from "./blockchain/get_table_by_scope.js";
+const blockchain_query_field = {
+    type: new GraphQLObjectType({
+        name: "blockchain_type",
+        description: `Retrieve infomation about the blockchain, cryptocurrency and accounts.`,
+        fields: {
+            get_account,
+            get_abi,
+            get_accounts_by_authorizers,
+            get_block,
+            get_currency_balance,
+            get_currency_stats,
+            get_required_keys,
+            get_smart_contract,
+            get_info,
+            get_producers,
+            get_table,
+            get_ram_price,
+            abi_bin_to_json
+        }
+    }),
+    resolve(root, arg, getContext, info) {
+        const { network: { rpc_url } } = getContext(root, arg, info);
+        if (!rpc_url)
+            throw new GraphQLError("No RPC url supplied to `antelopeql_context`");
+        return {};
+    }
+};
+export default blockchain_query_field;
+//# sourceMappingURL=blockchain_query_field.js.map

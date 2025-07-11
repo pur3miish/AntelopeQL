@@ -11,6 +11,9 @@
   "author": "pur3miish",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
+    "mocha": "mocha -r ts-node/register 'test/**/*.ts'",
+    "test": "mocha --require tsx 'test/**/*.ts'",
     "eslint": "eslint .",
     "prettier": "prettier -c .",
     "prettier:readme": "prettier --write readme.md",
@@ -18,8 +21,6 @@
     "types": "tsc -p jsconfig.json",
     "snapshot": "SAVE_SNAPSHOTS=1 coverage-node test/index.test.mjs",
     "coverage": "coverage-node test/index.test.mjs",
-    "tests": "node test/index.test.mjs",
-    "test": "npm run eslint",
     "prepublishOnly": "npm test"
   },
   "type": "module",
@@ -77,29 +78,39 @@
   "keywords": [
     "blockchain",
     "graphql",
+    "Antelope",
+    "Vaulta",
+    "WAX",
+    "Telos",
+    "XPR",
     "smart",
     "contract",
-    "bitcoin",
     "eosio",
     "eos",
     "query",
     "language"
   ],
   "devDependencies": {
-    "@types/node": "^18.13.0",
+    "@types/chai": "^5.2.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^18.19.118",
+    "chai": "^5.2.1",
     "coverage-node": "^8.0.0",
     "eslint": "^8.34.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "graphql": "^16.11.0",
+    "mocha": "^11.7.1",
     "nodemon": "^3.0.1",
     "prettier": "^2.8.4",
     "snapshot-assertion": "^5.0.0",
     "test-director": "^10.0.0",
-    "typescript": "^5.7.3"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "antelope-ecc": "^5.0.0-rc.2",
-    "base58-js": "^3.0.0",
+    "base58-js": "^3.0.3",
     "eosio-wasm-js": "^5.0.2",
     "ripemd160-js": "^3.0.4",
     "universal-sha256-js": "^2.0.0"
