@@ -22,16 +22,16 @@ interface AbiRicardianClause {
 }
 
 interface AbiTable {
-  name?: string;
+  name: string;
   index_type?: string;
-  type?: string;
+  type: string;
   key_names?: string[];
   key_types?: string[];
 }
 
 interface AbiAction {
-  name?: string;
-  type?: string;
+  name: string;
+  type: string;
   ricardian_contract?: string;
 }
 

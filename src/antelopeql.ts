@@ -95,7 +95,7 @@ export default async function AntelopeQL({
       document,
       rootValue: "",
       contextValue: {
-        network: (root: any, args: any, info: any) => ({
+        network: () => ({
           rpc_url,
           fetchOptions
         }),
@@ -108,7 +108,7 @@ export default async function AntelopeQL({
       }
     });
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
 
     return { errors: [err as GraphQLError] };
   }

@@ -6,8 +6,7 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
-  GraphQLFieldConfig,
-  GraphQLResolveInfo
+  GraphQLFieldConfig
 } from "graphql";
 
 import name_type from "../antelope_types/name_type.js";
@@ -97,7 +96,7 @@ const accounts_by_authorizers: GraphQLFieldConfig<
         if (key.startsWith("PUB_K1")) {
           // Convert WIF to public key and then legacy
           const pubKey = public_key_from_wif(key);
-          return legacy_from_public_key(pubKey, symbol);
+          return legacy_from_public_key(pubKey, "EOS");
         }
         return key;
       })

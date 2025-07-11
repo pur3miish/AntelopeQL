@@ -224,7 +224,7 @@ export function get_graphql_fields_from_AST(
   query_fields: GraphQLFieldConfigMap<any, any>;
   mutation_fields: GraphQLInputFieldConfigMap;
 } {
-  const { tables, actions } = ABI;
+  const { tables = [], actions = [] } = ABI;
   const gql_account_name = account_name.replace(/\./g, "_") + "_";
 
   const query_fields: GraphQLFieldConfigMap<any, any> = {};

@@ -22,7 +22,7 @@ const server = http.createServer((req, res) => {
 
       const data = await AntelopeQL({
         query,
-        contracts: ["eosio"],
+        contracts: ["eosio", "eosio.token"],
         operationName,
         variableValues: variables,
         signTransaction: async (hash) => {
@@ -37,7 +37,7 @@ const server = http.createServer((req, res) => {
 
           return [signature_1];
         },
-        contracts: ["eosio"],
+        contracts: ["eosio", "eosio.token"],
         // rpc_url: "https://eos.greymass.com/"
         // rpc_url: "https://eos.eosusa.io"
         // rpc_url: "https://mainnet.genereos.io"
