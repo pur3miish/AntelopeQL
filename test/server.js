@@ -4,7 +4,7 @@ import private_key_to_wif from "antelope-ecc/keys/private_key_to_wif.js";
 import sign from "antelope-ecc/sign.js";
 import http from "http";
 
-import AntelopeQL from "../dist/antelopeql.js";
+import { AntelopeQL } from "../dist/antelopeql.js";
 
 const server = http.createServer((req, res) => {
   let body = "";

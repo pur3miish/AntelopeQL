@@ -12,7 +12,6 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "mocha": "mocha -r ts-node/register 'test/**/*.ts'",
     "test": "mocha --require tsx 'test/**/*.ts'",
     "eslint": "eslint .",
     "prettier": "prettier -c .",
@@ -29,9 +28,7 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "exports": {
     ".": {
       "import": "./dist/index.js",
