@@ -12,8 +12,6 @@ As a GraphQL client library, AntelopeQL simplifies the process of building and e
 
 With AntelopeQL, developers can focus on building the frontend and business logic of their DApps, while relying on the library to handle the complexities of interacting with multiple blockchains in the Antelope ecosystem.
 
-**For a live example of AntelopeQL GUI see: [antelopeql.relocke.io](https://antelopeql.relocke.io).**
-
 ![antelopeql screenshot](https://raw.githubusercontent.com/pur3miish/antelopeql/main/static/antelopeql-screen.png)
 
 ## Installation
@@ -31,7 +29,7 @@ See the examples folder on how to run AntelopeQL as a [Node.js](https://nodejs.o
 ### Query a blockchain account
 
 ```js
-import AntelopeQL from "antelopeql/antelopeql.mjs";
+import { AntelopeQL } from "antelopeql";
 
 const { data } = await AntelopeQL({
   query: /*GraphQL*/ `{
@@ -69,8 +67,8 @@ console.log(data);
 ### Transfer EOS cryptocurrency
 
 ```js
-import AntelopeQL from "antelopeql/antelopeql.mjs";
-import sign_txn from "antelopeql-ecc/sign_txn.mjs";
+import { AntelopeQL } from "antelopeql";
+import sign_txn from "antelopeql-ecc/sign_txn.js";
 
 const { data } = await AntelopeQL({
   query: /*GraphQL*/ `
@@ -106,26 +104,9 @@ console.log(data);
 
 > Logged output includes transaction_id and block_num
 
-### Ways to require in CJS
-
-> **Note**
->
-> As this package is [ESM](https://nodejs.org/docs/latest-v16.x/api/esm.html) if you need to require it in a [Common JS](https://nodejs.org/docs/latest-v16.x/api/modules.html) package, then you can import like this:
-
-```js
-(async function () {
-  const { default: AntelopeQL } = await import("antelopeql/antelopeql.mjs");
-  const { data } = await AntelopeQL({…})
-})();
-```
-
 ## Requirements
 
 Supported runtime environments:
 
 - [Node.js](https://nodejs.org) versions `>=18.0.0`.
 - Browsers matching the [Browserslist](https://browsersl.ist) query [`> 0.5%, not OperaMini all, not dead`](https://browsersl.ist/?q=%3E+0.5%25%2C+not+OperaMini+all%2C+not+dead).
-
-## Exports
-
-The [npm](https://npmjs.com) package [`AntelopeQL`](https://npm.im/antelopeql) features [optimal JavaScript module design](https://jaydenseric.com/blog/optimal-javascript-module-design). It doesn’t have a main index module, so use deep imports from the ECMAScript modules that are exported via the [`package.json`](./package.json) field [`exports`](https://nodejs.org/api/packages.html#exports):
