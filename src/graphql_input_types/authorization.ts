@@ -1,5 +1,5 @@
 import { GraphQLInputObjectType, GraphQLNonNull } from "graphql";
-import name_type from "../antelope_types/name_type.js";
+import { name_type } from "../antelope_types/name_type.js";
 
 /**
  * Authorization type for action validation.
@@ -11,7 +11,7 @@ export interface Authorization {
   permission?: string;
 }
 
-const authorization_type = new GraphQLInputObjectType({
+export const authorization_type = new GraphQLInputObjectType({
   name: "authorization",
   description: "Authorization object type.",
   fields: () => ({
@@ -26,5 +26,3 @@ const authorization_type = new GraphQLInputObjectType({
     }
   })
 });
-
-export default authorization_type;

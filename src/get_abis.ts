@@ -23,7 +23,7 @@ interface GraphQLErrorExtensions {
   [key: string]: any;
 }
 
-export default async function get_abis(
+export async function get_abis(
   contracts: string[] = [],
   { rpc_url, fetchOptions = {} }: GetAbisParams
 ): Promise<AbiResponse[]> {

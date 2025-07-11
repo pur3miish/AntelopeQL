@@ -1,6 +1,6 @@
 import { GraphQLScalarType, GraphQLError } from "graphql";
 
-const varuint32_type = new GraphQLScalarType({
+export const varuint32_type = new GraphQLScalarType({
   name: "varint32",
   description: `
 \`varint32\`
@@ -16,5 +16,3 @@ A Signed LEB128 variable-length integer, limited to 32 bits (i.e., the values [-
     return value;
   }
 });
-
-export default varuint32_type;

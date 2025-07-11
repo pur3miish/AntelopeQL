@@ -5,8 +5,8 @@ import {
   GraphQLString
 } from "graphql";
 
-import name_type from "../antelope_types/name_type.js";
-import symbol_code_type from "../antelope_types/symbol_code_type.js";
+import { name_type } from "../antelope_types/name_type.js";
+import { symbol_code_type } from "../antelope_types/symbol_code_type.js";
 
 interface CurrencyBalanceArgs {
   code?: string; // defaults to "eosio.token"
@@ -26,7 +26,7 @@ export interface Context {
   signTransaction?: (transaction: any) => Promise<any>;
 }
 
-const currency_balance = {
+export const currency_balance = {
   description: "Retrieve current balance.",
   type: new GraphQLList(GraphQLString),
   args: {
@@ -69,5 +69,3 @@ const currency_balance = {
     return data as string[];
   }
 };
-
-export default currency_balance;

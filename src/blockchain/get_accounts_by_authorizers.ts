@@ -9,9 +9,9 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import name_type from "../antelope_types/name_type.js";
-import public_key_type from "../antelope_types/public_key_type.js";
-import authorizing_account_type from "../graphql_object_types/authorizing_account_type.js";
+import { name_type } from "../antelope_types/name_type.js";
+import { public_key_type } from "../antelope_types/public_key_type.js";
+import { authorizing_account_type } from "../graphql_object_types/authorizing_account_type.js";
 
 // --- TypeScript interfaces ---
 
@@ -68,7 +68,7 @@ export interface Context {
 
 // --- GraphQL FieldConfig for accounts_by_authorizers ---
 
-const accounts_by_authorizers: GraphQLFieldConfig<
+export const accounts_by_authorizers: GraphQLFieldConfig<
   unknown,
   Context,
   { accounts?: string[]; keys?: string[] }
@@ -119,5 +119,3 @@ const accounts_by_authorizers: GraphQLFieldConfig<
     return data as AccountsByAuthorizersData;
   }
 };
-
-export default accounts_by_authorizers;

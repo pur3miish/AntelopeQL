@@ -8,8 +8,8 @@ import {
   GraphQLString
 } from "graphql";
 
-import name_type from "../antelope_types/name_type.js";
-import authorizing_account_type from "./authorization.js";
+import { name_type } from "../antelope_types/name_type.js";
+import { authorization_type as authorizing_account_type } from "./authorization.js";
 
 // -----------------------------
 // TypeScript Interfaces
@@ -138,7 +138,7 @@ const action_trace_type: GraphQLObjectType<ActionTrace> = new GraphQLObjectType(
   }
 );
 
-const transaction_receipt_type: GraphQLObjectType<TransactionReceipt> =
+export const transaction_receipt_type: GraphQLObjectType<TransactionReceipt> =
   new GraphQLObjectType({
     name: "transaction_receipt",
     description:
@@ -182,5 +182,3 @@ const transaction_receipt_type: GraphQLObjectType<TransactionReceipt> =
       }
     })
   });
-
-export default transaction_receipt_type;

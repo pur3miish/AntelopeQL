@@ -1,6 +1,6 @@
 import { GraphQLScalarType, GraphQLError } from "graphql";
 
-const signature_type = new GraphQLScalarType({
+export const signature_type = new GraphQLScalarType({
   name: "signature",
   description: `
 \`Signature type\`
@@ -15,5 +15,3 @@ Antelope based signature, K1, R1 WA.
     return value;
   }
 });
-
-export default signature_type;

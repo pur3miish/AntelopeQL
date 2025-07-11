@@ -7,8 +7,8 @@ import {
   GraphQLString
 } from "graphql";
 
-import bytes_type from "../antelope_types/bytes_type.js";
-import authorization_type from "../graphql_object_types/authorization.js";
+import { bytes_type } from "../antelope_types/bytes_type.js";
+import { authorization_type } from "../graphql_object_types/authorization.js";
 
 interface Action {
   account?: string;
@@ -228,7 +228,7 @@ export interface Context {
   signTransaction?: (transaction: any) => Promise<any>;
 }
 
-const get_block = {
+export const get_block = {
   type: block_type,
   args: {
     block_num_or_id: {
@@ -261,5 +261,3 @@ const get_block = {
     return data;
   }
 };
-
-export default get_block;

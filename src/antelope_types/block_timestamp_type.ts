@@ -1,6 +1,6 @@
 import { GraphQLScalarType, GraphQLError } from "graphql";
 
-const block_timestamp_type = new GraphQLScalarType({
+export const block_timestamp_type = new GraphQLScalarType({
   name: "block_timestamp_type",
   description: "`Block timestamp type`",
   parseValue(value: unknown): string {
@@ -14,5 +14,3 @@ const block_timestamp_type = new GraphQLScalarType({
     return value;
   }
 });
-
-export default block_timestamp_type;

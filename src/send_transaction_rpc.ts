@@ -19,7 +19,7 @@ interface PushedTransactionResponse {
  * @param args Object containing transaction_header, transaction_body, signatures
  * @param network Network context with fetch and rpc_url
  */
-export default async function send_transaction_rpc(
+export async function send_transaction_rpc(
   args: SendTransactionArgs,
   network: NetworkContext
 ): Promise<PushedTransactionResponse> {

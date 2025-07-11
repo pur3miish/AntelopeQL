@@ -1,4 +1,4 @@
-import AntelopeQL from "../src/antelopeql.js";
+import { AntelopeQL } from "../src/antelopeql.js";
 
 describe("testing v1/chain/", () => {
   it("get_account", async () => {

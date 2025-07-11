@@ -6,10 +6,10 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import bytes_type from "../antelope_types/bytes_type.js";
-import name_type from "../antelope_types/name_type.js";
-import public_key_type from "../antelope_types/public_key_type.js";
-import authorization_type from "../graphql_input_types/authorization.js";
+import { bytes_type } from "../antelope_types/bytes_type.js";
+import { name_type } from "../antelope_types/name_type.js";
+import { public_key_type } from "../antelope_types/public_key_type.js";
+import { authorization_type } from "../graphql_input_types/authorization.js";
 
 interface ActionInput {
   account?: string;
@@ -79,63 +79,64 @@ export interface Context {
   signTransaction?: (transaction: any) => Promise<any>;
 }
 
-const get_required_keys: GraphQLFieldConfig<unknown, any, GetRequiredKeysArgs> =
-  {
-    description: "Retrieve the required keys for a transaction.",
-    type: new GraphQLList(public_key_type),
-    args: {
-      transaction: {
-        type: transaction_type
-      },
-      available_keys: {
-        type: new GraphQLList(public_key_type)
-      }
+export const get_required_keys: GraphQLFieldConfig<
+  unknown,
+  any,
+  GetRequiredKeysArgs
+> = {
+  description: "Retrieve the required keys for a transaction.",
+  type: new GraphQLList(public_key_type),
+  args: {
+    transaction: {
+      type: transaction_type
     },
-    async resolve(
-      root,
-      { available_keys = [], transaction },
-      context: Context,
-      info
-    ) {
-      const { rpc_url, fetchOptions } = context.network(
-        root,
-        { available_keys, transaction },
-        info
-      );
-
-      const uri = `${rpc_url}/v1/chain/get_required_keys`;
-
-      if (!transaction) {
-        throw new GraphQLError("Transaction argument is required.");
-      }
-
-      const { actions = [], ...txn } = transaction;
-
-      const data = await fetch(uri, {
-        method: "POST",
-        ...fetchOptions,
-        body: JSON.stringify({
-          available_keys: await Promise.all(available_keys),
-          transaction: {
-            ...txn,
-            actions: actions.map(({ data, ...object }) => ({
-              ...object,
-              ...(data ? { data: JSON.parse(data) } : {})
-            }))
-          }
-        })
-      });
-
-      const response: GetRequiredKeysResponse = await data.json();
-
-      if (response.error) {
-        throw new GraphQLError(response.message || "Unknown error", {
-          extensions: response.error
-        });
-      }
-
-      return response.required_keys;
+    available_keys: {
+      type: new GraphQLList(public_key_type)
     }
-  };
+  },
+  async resolve(
+    root,
+    { available_keys = [], transaction },
+    context: Context,
+    info
+  ) {
+    const { rpc_url, fetchOptions } = context.network(
+      root,
+      { available_keys, transaction },
+      info
+    );
 
-export default get_required_keys;
+    const uri = `${rpc_url}/v1/chain/get_required_keys`;
+
+    if (!transaction) {
+      throw new GraphQLError("Transaction argument is required.");
+    }
+
+    const { actions = [], ...txn } = transaction;
+
+    const data = await fetch(uri, {
+      method: "POST",
+      ...fetchOptions,
+      body: JSON.stringify({
+        available_keys: await Promise.all(available_keys),
+        transaction: {
+          ...txn,
+          actions: actions.map(({ data, ...object }) => ({
+            ...object,
+            ...(data ? { data: JSON.parse(data) } : {})
+          }))
+        }
+      })
+    });
+
+    const response: GetRequiredKeysResponse = await data.json();
+
+    if (response.error) {
+      throw new GraphQLError(response.message || "Unknown error", {
+        extensions: response.error
+      });
+    }
+
+    return response.required_keys;
+  }
+};

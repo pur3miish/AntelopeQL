@@ -27,7 +27,7 @@ interface Args {
  * @param info GraphQL resolver info object
  * @returns Data rows from the queried table
  */
-export default async function query_resolver(
+export async function query_resolver(
   root: Root,
   args: Args,
   context: Context,

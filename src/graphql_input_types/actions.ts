@@ -5,7 +5,7 @@ import {
   GraphQLInputFieldConfigMap
 } from "graphql";
 
-const actions_type = (
+export const actions_type = (
   fields: GraphQLInputFieldConfigMap,
   typeResolution = ""
 ): GraphQLNonNull<GraphQLList<GraphQLNonNull<GraphQLInputObjectType>>> =>
@@ -19,5 +19,3 @@ const actions_type = (
       )
     )
   );
-
-export default actions_type;

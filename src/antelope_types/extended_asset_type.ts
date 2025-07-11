@@ -1,6 +1,6 @@
 import { GraphQLScalarType, GraphQLError } from "graphql";
 
-const extended_asset_type = new GraphQLScalarType({
+export const extended_asset_type = new GraphQLScalarType({
   name: "extended_asset",
   description: `
 \`Extended_asset\`
@@ -24,5 +24,3 @@ example:
     return value;
   }
 });
-
-export default extended_asset_type;

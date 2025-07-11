@@ -5,10 +5,10 @@ import {
   GraphQLResolveInfo
 } from "graphql";
 
-import bytes_type from "./antelope_types/bytes_type.js";
-import signature_type from "./antelope_types/signature_type.js";
-import transaction_receipt from "./graphql_object_types/transaction_receipt.js";
-import send_transaction_rpc from "./send_transaction_rpc.js";
+import { bytes_type } from "./antelope_types/bytes_type.js";
+import { signature_type } from "./antelope_types/signature_type.js";
+import { transaction_receipt_type as transaction_receipt } from "./graphql_object_types/transaction_receipt.js";
+import { send_transaction_rpc } from "./send_transaction_rpc.js";
 import { type Context } from "./types/Context.js";
 
 interface SendSerializedTransactionArgs {
@@ -20,7 +20,7 @@ interface SendSerializedTransactionArgs {
 /**
  * Push transaction type.
  */
-const send_serialized_transaction: GraphQLFieldConfig<
+export const send_serialized_transaction: GraphQLFieldConfig<
   any, // source/root type (usually unused here)
   any, // context type
   SendSerializedTransactionArgs
@@ -41,5 +41,3 @@ const send_serialized_transaction: GraphQLFieldConfig<
     return send_transaction_rpc(args, context.network(root, args, info));
   }
 };
-
-export default send_serialized_transaction;

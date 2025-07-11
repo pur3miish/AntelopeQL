@@ -1,6 +1,6 @@
 import { GraphQLScalarType } from "graphql";
 
-const boolean_type = new GraphQLScalarType({
+export const boolean_type = new GraphQLScalarType({
   name: "bool",
   description: "`Boolean type` true=1 or false=0",
 
@@ -17,5 +17,3 @@ const boolean_type = new GraphQLScalarType({
     return Boolean(value);
   }
 });
-
-export default boolean_type;

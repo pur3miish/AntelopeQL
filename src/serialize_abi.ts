@@ -191,9 +191,7 @@ const AST: AST = abi_to_graphql_ast(ABI as ABI);
  * @param abi - Antelope ABI object to serialize
  * @returns hex string of serialized ABI
  */
-export default async function serialize_abi(
-  abi: Partial<AbiDef>
-): Promise<string> {
+export async function serialize_abi(abi: Partial<AbiDef>): Promise<string> {
   let JSON_ABI = { ...abi };
 
   // Ensure array fields exist on ABI.structs[9] (abi_def fields)

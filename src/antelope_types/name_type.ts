@@ -1,6 +1,6 @@
 import { GraphQLScalarType, GraphQLError } from "graphql";
 
-const name_type = new GraphQLScalarType({
+export const name_type = new GraphQLScalarType({
   name: "name",
   description: `
 \`Name type\`
@@ -29,5 +29,3 @@ Names are unique identifiers on the blockchain.
     return value;
   }
 });
-
-export default name_type;

@@ -123,7 +123,7 @@ export interface Context {
   signTransaction?: (transaction: any) => Promise<any>;
 }
 
-const info: GraphQLFieldConfig<unknown, any> = {
+export const info: GraphQLFieldConfig<unknown, any> = {
   description: "Return info about the operational state of the blockchain.",
   type: info_type,
   args: {},
@@ -146,5 +146,3 @@ const info: GraphQLFieldConfig<unknown, any> = {
     return data;
   }
 };
-
-export default info;

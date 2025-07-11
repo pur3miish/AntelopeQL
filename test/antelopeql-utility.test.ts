@@ -6,9 +6,9 @@ import {
   Source,
   validate
 } from "graphql";
-import build_graphql_fields_from_abis from "../src/build_graphql_fields_from_abis.js";
-import actions from "../src/graphql_input_types/actions.js";
-import serialize_transaction from "../src/serialize_transaction.js";
+import {build_graphql_fields_from_abis as build_graphql_fields_from_abis} from "../src/build_graphql_fields_from_abis.js";
+import {actions_type as actions} from "../src/graphql_input_types/actions.js";
+import {serialize_transaction} from "../src/serialize_transaction.js";
 
 /* Importing the ABIs into a list */
 import eosio_abi from "./abis/eosio.json" with { type: "json" };

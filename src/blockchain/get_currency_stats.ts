@@ -5,8 +5,8 @@ import {
   GraphQLString
 } from "graphql";
 
-import name_type from "../antelope_types/name_type.js";
-import symbol_code_type from "../antelope_types/symbol_code_type.js";
+import { name_type } from "../antelope_types/name_type.js";
+import { symbol_code_type } from "../antelope_types/symbol_code_type.js";
 
 interface CurrencyStats {
   supply: string;
@@ -46,7 +46,7 @@ export interface Context {
   signTransaction?: (transaction: any) => Promise<any>;
 }
 
-const get_currency_stats = {
+export const get_currency_stats = {
   description: "Retrieve currency stats.",
   type: currency_stats_type,
   args: {
@@ -84,5 +84,3 @@ const get_currency_stats = {
     return data[symbol] as CurrencyStats;
   }
 };
-
-export default get_currency_stats;

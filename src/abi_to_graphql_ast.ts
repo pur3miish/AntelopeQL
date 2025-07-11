@@ -9,10 +9,10 @@ import {
   GraphQLResolveInfo
 } from "graphql";
 
-import antelope_types from "./antelope_types.js";
-import authorization_type from "./graphql_input_types/authorization.js";
-import query_argument_fields from "./graphql_input_types/query_argument_fields.js";
-import resolve from "./query_resolver.js";
+import { antelope_types } from "./antelope_types.js";
+import { authorization_type } from "./graphql_input_types/authorization.js";
+import { query_arg_fields as query_argument_fields } from "./graphql_input_types/query_argument_fields.js";
+import { query_resolver as resolve } from "./query_resolver.js";
 import type { Abi } from "./blockchain/get_abi.js";
 
 interface BaseFieldInfo {

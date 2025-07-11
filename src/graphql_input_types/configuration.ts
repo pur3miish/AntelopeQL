@@ -16,7 +16,7 @@ export const configuration_default_value: ConfigurationType = {
   delay_sec: 0
 };
 
-const configuration_type = new GraphQLInputObjectType({
+export const configuration_type = new GraphQLInputObjectType({
   name: "configuration_type",
   description:
     "Configuration input to control various aspects of the transaction.",
@@ -45,5 +45,3 @@ const configuration_type = new GraphQLInputObjectType({
     }
   })
 });
-
-export default configuration_type;

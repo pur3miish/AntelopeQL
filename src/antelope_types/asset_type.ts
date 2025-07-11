@@ -1,6 +1,6 @@
 import { GraphQLScalarType, GraphQLError } from "graphql";
 
-const asset_type = new GraphQLScalarType({
+export const asset_type = new GraphQLScalarType({
   description: `
 \`Asset type\`
 
@@ -35,5 +35,3 @@ An \`asset\` type describes a blockchain asset and includes a quantity and a sym
     return value;
   }
 });
-
-export default asset_type;

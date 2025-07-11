@@ -1,6 +1,6 @@
 import { GraphQLScalarType } from "graphql";
 
-const symbol_type = new GraphQLScalarType({
+export const symbol_type = new GraphQLScalarType({
   name: "symbol",
   description: `
 \`Symbol type\`
@@ -36,5 +36,3 @@ An eosio symbol is an all uppercase string of 7 or less characters from [A-Z].
     return value;
   }
 });
-
-export default symbol_type;

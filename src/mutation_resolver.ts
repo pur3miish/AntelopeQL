@@ -240,7 +240,7 @@ interface MutationResolverResult {
   };
 }
 
-async function mutation_resolver(
+export async function mutation_resolver(
   { actions, configuration = default_config }: MutationResolverArgs,
   network: NetworkContext,
   ast_list: ASTList
@@ -301,5 +301,3 @@ async function mutation_resolver(
     }
   };
 }
-
-export default mutation_resolver;

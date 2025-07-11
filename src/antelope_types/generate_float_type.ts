@@ -5,7 +5,7 @@ import { GraphQLScalarType, GraphQLError } from "graphql";
  * @param size Size of the float; typically 32, 64 or 128.
  * @returns GraphQLScalarType representing the float type.
  */
-export default function generate_float_type(size: number): GraphQLScalarType {
+export function generate_float_type(size: number): GraphQLScalarType {
   return new GraphQLScalarType({
     name: `float${size}`,
     description: `\`Float${size} type\``,

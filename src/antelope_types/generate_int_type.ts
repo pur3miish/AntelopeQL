@@ -5,7 +5,7 @@ import { GraphQLScalarType, GraphQLError } from "graphql";
  * @param bits Size of the integer in bits.
  * @returns GraphQLScalarType representing the signed integer type.
  */
-function generate_int_type(bits: number): GraphQLScalarType {
+export function generate_int_type(bits: number): GraphQLScalarType {
   const bitsBigInt = BigInt(bits);
   const max = 2n ** (bitsBigInt - 1n) - 1n;
   const min = -(2n ** (bitsBigInt - 1n));
@@ -41,5 +41,3 @@ Signed integer range is between ${min} - ${max}`,
     }
   });
 }
-
-export default generate_int_type;

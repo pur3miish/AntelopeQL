@@ -1,6 +1,6 @@
 import { GraphQLScalarType, GraphQLError } from "graphql";
 
-const time_point_type = new GraphQLScalarType({
+export const time_point_type = new GraphQLScalarType({
   name: "time_point",
   description: `
 \`time point\`
@@ -25,5 +25,3 @@ Number of milliseconds since epoch (Unix time).
     );
   }
 });
-
-export default time_point_type;

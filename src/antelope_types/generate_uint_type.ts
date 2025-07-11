@@ -5,7 +5,7 @@ import { GraphQLScalarType, GraphQLError } from "graphql";
  * @param bits Size of the unsigned int in bits.
  * @returns GraphQLScalarType representing the unsigned integer type.
  */
-function generate_uint_type(bits: number): GraphQLScalarType {
+export function generate_uint_type(bits: number): GraphQLScalarType {
   const size = 2n ** BigInt(bits);
 
   return new GraphQLScalarType({
@@ -39,5 +39,3 @@ Unsigned integer range is between 0 - ${size.toString()}`,
     }
   });
 }
-
-export default generate_uint_type;

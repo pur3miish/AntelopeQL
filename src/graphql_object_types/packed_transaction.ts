@@ -4,10 +4,10 @@ import {
   GraphQLList,
   GraphQLObjectType
 } from "graphql";
-import sha256 from "../utils/sha256.js";
+import { sha256 } from "../utils/sha256.js";
 
-import bytes_type from "../antelope_types/bytes_type.js";
-import public_key_type from "../antelope_types/public_key_type.js";
+import { bytes_type } from "../antelope_types/bytes_type.js";
+import { public_key_type } from "../antelope_types/public_key_type.js";
 
 // Define the input structure expected for resolve functions
 export interface PackedTransaction {
@@ -121,10 +121,10 @@ export const packed_transaction_fields: GraphQLFieldConfigMap<
   }
 };
 
-const packed_transaction_type = new GraphQLObjectType<PackedTransaction>({
-  name: "packed_transaction",
-  description: "Packed transaction, chain ID and transaction header",
-  fields: packed_transaction_fields
-});
-
-export default packed_transaction_type;
+export const packed_transaction_type = new GraphQLObjectType<PackedTransaction>(
+  {
+    name: "packed_transaction",
+    description: "Packed transaction, chain ID and transaction header",
+    fields: packed_transaction_fields
+  }
+);

@@ -11,7 +11,7 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import name_type from "../antelope_types/name_type.js";
+import { name_type } from "../antelope_types/name_type.js";
 
 function convertNameToSymbol(scope: string): string {
   return (serializeName(scope).match(/[0-9A-Fa-f]{2}/g) || [])
@@ -80,7 +80,7 @@ export interface Context {
   signTransaction?: (transaction: any) => Promise<any>;
 }
 
-const get_table: GraphQLFieldConfig<
+export const get_table: GraphQLFieldConfig<
   unknown,
   any,
   {
@@ -189,5 +189,3 @@ const get_table: GraphQLFieldConfig<
     return data;
   }
 };
-
-export default get_table;

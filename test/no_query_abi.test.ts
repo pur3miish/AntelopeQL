@@ -1,6 +1,6 @@
 import { ok } from "assert";
 
-import AntelopeQL from "../src/antelopeql.js";
+import { AntelopeQL } from "../src/antelopeql.js";
 
 describe("Serialize ABI test", () => {
   it("Validate parsed values", async () => {

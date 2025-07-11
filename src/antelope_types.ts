@@ -1,23 +1,23 @@
 import { GraphQLScalarType, GraphQLObjectType, GraphQLString } from "graphql";
 
-import asset from "./antelope_types/asset_type.js";
-import block_timestamp_type from "./antelope_types/block_timestamp_type.js";
-import bool from "./antelope_types/boolean_type.js";
-import bytes from "./antelope_types/bytes_type.js";
-import extended_asset from "./antelope_types/extended_asset_type.js";
-import generate_checksum from "./antelope_types/generate_checksum_type.js";
-import generate_float_type from "./antelope_types/generate_float_type.js";
-import generate_int_type from "./antelope_types/generate_int_type.js";
-import generate_uint_type from "./antelope_types/generate_uint_type.js";
-import name from "./antelope_types/name_type.js";
-import public_key from "./antelope_types/public_key_type.js";
-import signature from "./antelope_types/signature_type.js";
-import symbol_code from "./antelope_types/symbol_code_type.js";
-import symbol from "./antelope_types/symbol_type.js";
-import time_point_sec from "./antelope_types/time_point_sec_type.js";
-import time_point from "./antelope_types/time_point_type.js";
-import varint32 from "./antelope_types/varint32_type.js";
-import varuint32 from "./antelope_types/varuint32_type.js";
+import { asset_type as asset } from "./antelope_types/asset_type.js";
+import { block_timestamp_type } from "./antelope_types/block_timestamp_type.js";
+import { boolean_type as bool } from "./antelope_types/boolean_type.js";
+import { bytes_type as bytes } from "./antelope_types/bytes_type.js";
+import { extended_asset_type as extended_asset } from "./antelope_types/extended_asset_type.js";
+import { generate_checksum } from "./antelope_types/generate_checksum_type.js";
+import { generate_float_type } from "./antelope_types/generate_float_type.js";
+import { generate_int_type } from "./antelope_types/generate_int_type.js";
+import { generate_uint_type } from "./antelope_types/generate_uint_type.js";
+import { name_type as name } from "./antelope_types/name_type.js";
+import { public_key_type as public_key } from "./antelope_types/public_key_type.js";
+import { signature_type as signature } from "./antelope_types/signature_type.js";
+import { symbol_code_type as symbol_code } from "./antelope_types/symbol_code_type.js";
+import { symbol_type as symbol } from "./antelope_types/symbol_type.js";
+import { time_point_sec_type as time_point_sec } from "./antelope_types/time_point_sec_type.js";
+import { time_point_type as time_point } from "./antelope_types/time_point_type.js";
+import { varuint32_type as varint32 } from "./antelope_types/varint32_type.js";
+import { varuint32_type as varuint32 } from "./antelope_types/varuint32_type.js";
 
 type GraphQLTypeAny =
   | GraphQLScalarType
@@ -28,7 +28,7 @@ type GraphQLTypeAny =
 /**
  * An object containing EOSIO native GraphQL types.
  */
-const eosio_types: Record<string, GraphQLTypeAny> = {
+export const antelope_types: Record<string, GraphQLTypeAny> = {
   asset,
   block_timestamp_type,
   bool,
@@ -61,5 +61,3 @@ const eosio_types: Record<string, GraphQLTypeAny> = {
   varint32,
   varuint32
 };
-
-export default eosio_types;

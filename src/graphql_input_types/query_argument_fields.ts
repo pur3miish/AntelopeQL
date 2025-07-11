@@ -58,7 +58,7 @@ const encode_type_enum_type = new GraphQLEnumType({
   }
 });
 
-const query_arg_fields = new GraphQLInputObjectType({
+export const query_arg_fields = new GraphQLInputObjectType({
   name: "arguments",
   fields: {
     scope: {
@@ -100,5 +100,3 @@ const query_arg_fields = new GraphQLInputObjectType({
     }
   }
 });
-
-export default query_arg_fields;

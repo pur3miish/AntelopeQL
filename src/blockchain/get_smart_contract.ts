@@ -6,7 +6,7 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import name_type from "../antelope_types/name_type.js";
+import { name_type } from "../antelope_types/name_type.js";
 
 interface SmartContractData {
   wasm: string;
@@ -45,7 +45,7 @@ export interface Context {
   signTransaction?: (transaction: any) => Promise<any>;
 }
 
-const get_smart_contract: GraphQLFieldConfig<
+export const get_smart_contract: GraphQLFieldConfig<
   unknown,
   any,
   GetSmartContractArgs
@@ -87,5 +87,3 @@ const get_smart_contract: GraphQLFieldConfig<
     return data;
   }
 };
-
-export default get_smart_contract;

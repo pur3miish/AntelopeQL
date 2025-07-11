@@ -1,6 +1,6 @@
 import { GraphQLScalarType, GraphQLError } from "graphql";
 
-const symbol_code_type = new GraphQLScalarType({
+export const symbol_code_type = new GraphQLScalarType({
   name: "symbol_code",
   description: "`Symbol code type`",
   parseValue(value: unknown): string {
@@ -13,5 +13,3 @@ const symbol_code_type = new GraphQLScalarType({
     return value;
   }
 });
-
-export default symbol_code_type;

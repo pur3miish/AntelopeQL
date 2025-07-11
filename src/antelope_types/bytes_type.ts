@@ -1,6 +1,6 @@
 import { GraphQLScalarType, GraphQLError } from "graphql";
 
-const bytes_type = new GraphQLScalarType({
+export const bytes_type = new GraphQLScalarType({
   name: "bytes",
   description: "Hexadecimal text string type.",
   parseValue(value: unknown): string {
@@ -17,5 +17,3 @@ const bytes_type = new GraphQLScalarType({
     return value;
   }
 });
-
-export default bytes_type;

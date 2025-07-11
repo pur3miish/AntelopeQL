@@ -7,8 +7,8 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import key_type from "../antelope_types/key_type.js";
-import public_key_type from "../antelope_types/public_key_type.js";
+import { Antelope_key_type as key_type } from "../antelope_types/key_type.js";
+import { public_key_type } from "../antelope_types/public_key_type.js";
 
 interface ProducerAuthority {
   threshold: number;
@@ -117,39 +117,38 @@ export interface Context {
   signTransaction?: (transaction: any) => Promise<any>;
 }
 
-const get_producers: GraphQLFieldConfig<unknown, any, GetProducersArgs> = {
-  description: "Return info about block producers.",
-  type: producers_type,
-  args: {
-    limit: {
-      description: "total number of producers to retrieve",
-      type: GraphQLString,
-      defaultValue: "10"
+export const get_producers: GraphQLFieldConfig<unknown, any, GetProducersArgs> =
+  {
+    description: "Return info about block producers.",
+    type: producers_type,
+    args: {
+      limit: {
+        description: "total number of producers to retrieve",
+        type: GraphQLString,
+        defaultValue: "10"
+      },
+      lower_bound: {
+        type: GraphQLString
+      }
     },
-    lower_bound: {
-      type: GraphQLString
-    }
-  },
-  async resolve(root, args, context: Context, info) {
-    const { rpc_url, fetchOptions } = context.network(root, args, info);
+    async resolve(root, args, context: Context, info) {
+      const { rpc_url, fetchOptions } = context.network(root, args, info);
 
-    const uri = `${rpc_url}/v1/chain/get_producers`;
+      const uri = `${rpc_url}/v1/chain/get_producers`;
 
-    const req = await fetch(uri, {
-      method: "POST",
-      body: JSON.stringify({ ...args, json: true }),
-      ...fetchOptions
-    });
-
-    const data: ProducersResult = await req.json();
-
-    if (data.error)
-      throw new GraphQLError(data.message || "Unknown error", {
-        extensions: data as Record<string, any>
+      const req = await fetch(uri, {
+        method: "POST",
+        body: JSON.stringify({ ...args, json: true }),
+        ...fetchOptions
       });
 
-    return data;
-  }
-};
+      const data: ProducersResult = await req.json();
 
-export default get_producers;
+      if (data.error)
+        throw new GraphQLError(data.message || "Unknown error", {
+          extensions: data as Record<string, any>
+        });
+
+      return data;
+    }
+  };

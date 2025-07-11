@@ -9,15 +9,16 @@ import {
   ExecutionResult
 } from "graphql";
 
-import blockchain_query_field from "./blockchain_query_field.js";
-import build_graphql_fields_from_abis, {
+import { blockchain_query_field } from "./blockchain_query_field.js";
+import {
+  build_graphql_fields_from_abis,
   type AccountABI
 } from "./build_graphql_fields_from_abis.js";
-import get_abis from "./get_abis.js";
-import actions from "./graphql_input_types/actions.js";
-import send_serialized_transaction from "./send_serialized_transaction.js";
-import send_transaction from "./send_transaction.js";
-import serialize_transaction from "./serialize_transaction.js";
+import { get_abis } from "./get_abis.js";
+import { actions_type as actions } from "./graphql_input_types/actions.js";
+import { send_serialized_transaction } from "./send_serialized_transaction.js";
+import { send_transaction } from "./send_transaction.js";
+import { serialize_transaction } from "./serialize_transaction.js";
 import { type SignTransactionContext } from "./types/Context.js";
 
 export interface AntelopeQLArgument {
@@ -39,7 +40,7 @@ export interface AntelopeQLResult {
 /**
  * AntelopeQL for interacting with Antelope-based blockchains.
  */
-export default async function AntelopeQL({
+export async function AntelopeQL({
   query,
   variableValues,
   operationName,

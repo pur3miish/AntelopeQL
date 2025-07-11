@@ -1,6 +1,6 @@
 import { ok } from "assert";
 
-import serialize_abi from "../src/serialize_abi.js";
+import { serialize_abi } from "../src/serialize_abi.js";
 
 describe("Serialize ABI test", () => {
   it("Validate parsed values", async () => {

@@ -1,9 +1,8 @@
-import base58_to_binary from "base58-js/base58_to_binary.js";
-import binary_to_base58 from "base58-js/binary_to_base58.js";
+import { binary_to_base58, base58_to_binary } from "base58-js";
 import { GraphQLError, GraphQLScalarType } from "graphql";
 import ripemd160 from "ripemd160-js/ripemd160.js";
 
-const public_key_type = new GraphQLScalarType({
+export const public_key_type = new GraphQLScalarType({
   name: "public_key",
 
   async parseValue(value: unknown): Promise<string> {
@@ -48,5 +47,3 @@ const public_key_type = new GraphQLScalarType({
     return key;
   }
 });
-
-export default public_key_type;

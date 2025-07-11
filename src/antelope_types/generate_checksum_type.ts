@@ -5,7 +5,7 @@ import { GraphQLScalarType, GraphQLError } from "graphql";
  * @param size Size of the checksum in bytes.
  * @returns GraphQLScalarType representing the checksum.
  */
-function generate_checksum(size: number): GraphQLScalarType {
+export function generate_checksum(size: number): GraphQLScalarType {
   return new GraphQLScalarType({
     name: `checksum${size * 8}`,
     description: `\`Checksum${size * 8} type\`
@@ -30,5 +30,3 @@ Represented as a hexadecimal string of ${size * 2} characters.
     }
   });
 }
-
-export default generate_checksum;

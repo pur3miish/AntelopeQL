@@ -59,7 +59,7 @@ interface Context {
   signTransaction?: (transaction: any) => Promise<any>;
 }
 
-export default function build_graphql_fields_from_abis(
+export function build_graphql_fields_from_abis(
   abi_list: AccountABI[],
   typeResolution = ""
 ): BuildGraphQLFieldsResult {

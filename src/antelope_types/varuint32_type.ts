@@ -1,6 +1,6 @@
 import { GraphQLScalarType, GraphQLError } from "graphql";
 
-const varuint32_type = new GraphQLScalarType({
+export const varuint32_type = new GraphQLScalarType({
   name: "varuint32",
   description: `
 \`varuint32\`
@@ -34,5 +34,3 @@ A LEB128 variable-length integer, limited to 32 bits (i.e., the values [0, 2^32-
     throw new TypeError("varuint32 must be a number or numeric string.");
   }
 });
-
-export default varuint32_type;

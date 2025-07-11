@@ -7,7 +7,7 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import name_type from "../antelope_types/name_type.js";
+import { name_type } from "../antelope_types/name_type.js";
 
 // --- TypeScript Interfaces for Antelope ABI ---
 
@@ -162,36 +162,36 @@ export interface Context {
 
 // --- GraphQL Field Config for get_abi ---
 
-const get_abi: GraphQLFieldConfig<unknown, Context, { account_name: string }> =
-  {
-    description: "Retrieve an application binary interface (ABI).",
-    type: abi_type,
-    args: {
-      account_name: {
-        description: "Account name of the smart contract holder.",
-        type: new GraphQLNonNull(name_type)
-      }
-    },
-    async resolve(root, args, context, info): Promise<Abi> {
-      const { rpc_url, fetchOptions } = context.network(root, args, info);
-
-      const uri = `${rpc_url}/v1/chain/get_abi`;
-      const res = await fetch(uri, {
-        method: "POST",
-        ...fetchOptions,
-        body: JSON.stringify({
-          account_name: args.account_name,
-          json: true
-        })
-      });
-
-      const data = await res.json();
-
-      if (data.error)
-        throw new GraphQLError(data.message, { extensions: data });
-
-      return data.abi as Abi;
+export const get_abi: GraphQLFieldConfig<
+  unknown,
+  Context,
+  { account_name: string }
+> = {
+  description: "Retrieve an application binary interface (ABI).",
+  type: abi_type,
+  args: {
+    account_name: {
+      description: "Account name of the smart contract holder.",
+      type: new GraphQLNonNull(name_type)
     }
-  };
+  },
+  async resolve(root, args, context, info): Promise<Abi> {
+    const { rpc_url, fetchOptions } = context.network(root, args, info);
 
-export default get_abi;
+    const uri = `${rpc_url}/v1/chain/get_abi`;
+    const res = await fetch(uri, {
+      method: "POST",
+      ...fetchOptions,
+      body: JSON.stringify({
+        account_name: args.account_name,
+        json: true
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.error) throw new GraphQLError(data.message, { extensions: data });
+
+    return data.abi as Abi;
+  }
+};

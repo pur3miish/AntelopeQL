@@ -1,4 +1,4 @@
-export default async function sha256(data: Uint8Array): Promise<Uint8Array> {
+export async function sha256(data: Uint8Array): Promise<Uint8Array> {
   // Browser or Edge Runtime
   if (typeof crypto !== "undefined" && crypto.subtle) {
     const digest = await crypto.subtle.digest("SHA-256", data);

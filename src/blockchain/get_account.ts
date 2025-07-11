@@ -9,9 +9,9 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import asset_type from "../antelope_types/asset_type.js";
-import Antelope_key_type from "../antelope_types/key_type.js";
-import name_type from "../antelope_types/name_type.js";
+import { asset_type } from "../antelope_types/asset_type.js";
+import { Antelope_key_type } from "../antelope_types/key_type.js";
+import { name_type } from "../antelope_types/name_type.js";
 
 // --- TypeScript Interfaces ---
 
@@ -296,7 +296,7 @@ export interface Context {
 
 // --- get_account GraphQLFieldConfig ---
 
-const get_account: GraphQLFieldConfig<
+export const get_account: GraphQLFieldConfig<
   unknown,
   Context,
   { account_name: string }
@@ -331,5 +331,3 @@ const get_account: GraphQLFieldConfig<
     return data as Account;
   }
 };
-
-export default get_account;

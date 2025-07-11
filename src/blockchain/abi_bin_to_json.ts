@@ -1,7 +1,7 @@
 import { GraphQLError, GraphQLNonNull, GraphQLString } from "graphql";
 
-import bytes_type from "../antelope_types/bytes_type.js";
-import name_type from "../antelope_types/name_type.js";
+import { bytes_type } from "../antelope_types/bytes_type.js";
+import { name_type } from "../antelope_types/name_type.js";
 
 interface AbiBinToJsonArgs {
   code: string;
@@ -21,7 +21,7 @@ export interface Context {
   signTransaction?: (transaction: any) => Promise<any>;
 }
 
-const abi_bin_to_json = {
+export const abi_bin_to_json = {
   description: "Returns a JSON object containing deserialized action data.",
   type: GraphQLString,
   args: {
@@ -65,5 +65,3 @@ const abi_bin_to_json = {
     return JSON.stringify(data.args);
   }
 };
-
-export default abi_bin_to_json;

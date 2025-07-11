@@ -1,9 +1,9 @@
 import { GraphQLList, GraphQLNonNull } from "graphql";
 
-import public_key_type from "./antelope_types/public_key_type.js";
-import configuration_type from "./graphql_input_types/configuration.js";
-import packed_transaction_type from "./graphql_object_types/packed_transaction.js";
-import mutation_resolver from "./mutation_resolver.js";
+import { public_key_type } from "./antelope_types/public_key_type.js";
+import { configuration_type } from "./graphql_input_types/configuration.js";
+import { packed_transaction_type } from "./graphql_object_types/packed_transaction.js";
+import { mutation_resolver } from "./mutation_resolver.js";
 import { type Context } from "./types/Context.js";
 
 interface SerializeTransactionArgs {
@@ -12,7 +12,7 @@ interface SerializeTransactionArgs {
   available_keys?: string[]; // assuming public keys as strings, change if different
 }
 
-const serialize_transaction = (
+export const serialize_transaction = (
   actions: any, // type of actions GraphQL input
   ast_list: any // AST type, adjust as needed
 ): {
@@ -59,5 +59,3 @@ const serialize_transaction = (
     return { ...serialized_txn, available_keys, transaction };
   }
 });
-
-export default serialize_transaction;
