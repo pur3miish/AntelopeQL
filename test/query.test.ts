@@ -33,6 +33,7 @@ describe("testing v1/chain/", () => {
         }
       }
     `;
+
     const data = await AntelopeQL({
       query,
       rpc_url: "https://jungle.relocke.io"
@@ -40,5 +41,3 @@ describe("testing v1/chain/", () => {
     console.log(data);
   });
 });
-
-// assertSnapshot(JSON.stringify(data), "test/snapshots/test1.json");

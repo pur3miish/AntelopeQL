@@ -50,15 +50,14 @@ export default async function AntelopeQL({
   fetchOptions
 }: AntelopeQLArgument): Promise<ExecutionResult> {
   try {
-    const abis = ABIs?.length ? ABIs : ([] as AccountABI | any);
+    const abis = (ABIs?.length ? ABIs : []) as AccountABI | any;
 
-    if (contracts?.length) {
-      const abi_from_contracts = await get_abis(contracts, {
-        rpc_url,
-        fetchOptions
-      });
-      abi_from_contracts.map((abi) => abis.push(abi));
-    }
+    const abi_from_contracts = await get_abis(contracts, {
+      rpc_url,
+      fetchOptions
+    });
+
+    abi_from_contracts.map((abi) => abis.push(abi));
 
     const { mutation_fields, query_fields, ast_list } =
       build_graphql_fields_from_abis(abis);
@@ -71,14 +70,25 @@ export default async function AntelopeQL({
 
     const action_fields = actions(mutation_fields);
 
-    const mutations = new GraphQLObjectType({
-      name: "Mutation",
-      fields: {
-        send_transaction: send_transaction(action_fields, ast_list),
-        serialize_transaction: serialize_transaction(action_fields, ast_list),
-        send_serialized_transaction
-      }
-    });
+    let mutations;
+
+    if (Object.keys(mutation_fields).length) {
+      const action_fields = actions(mutation_fields);
+      mutations = new GraphQLObjectType({
+        name: "Mutation",
+        fields: {
+          send_transaction: send_transaction(action_fields, ast_list),
+          serialize_transaction: serialize_transaction(action_fields, ast_list),
+          send_serialized_transaction
+        }
+      });
+    } else
+      mutations = new GraphQLObjectType({
+        name: "Mutation",
+        fields: {
+          send_serialized_transaction
+        }
+      });
 
     const schema = new GraphQLSchema({
       query: queries,
@@ -108,7 +118,7 @@ export default async function AntelopeQL({
       }
     });
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
 
     return { errors: [err as GraphQLError] };
   }
