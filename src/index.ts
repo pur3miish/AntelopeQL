@@ -14,8 +14,11 @@ export { send_serialized_transaction } from "./send_serialized_transaction.js";
 export { query_resolver } from "./query_resolver.js";
 export { mutation_resolver } from "./mutation_resolver.js";
 
-export { get_abis } from "./get_abis.js";
-export { build_graphql_fields_from_abis } from "./build_graphql_fields_from_abis.js";
+export { get_abis, type AbiResponse } from "./get_abis.js";
+export {
+  build_graphql_fields_from_abis,
+  type AccountABI
+} from "./build_graphql_fields_from_abis.js";
 export { blockchain_query_field } from "./blockchain_query_field.js";
 export { antelope_types } from "./antelope_types.js";
 export { abi_to_graphql_ast } from "./abi_to_graphql_ast.js";

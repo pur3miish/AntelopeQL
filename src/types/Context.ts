@@ -1,4 +1,5 @@
 // src/types/Context.ts
+import { GraphQLResolveInfo } from "graphql";
 
 export type NetworkContext = {
   rpc_url: string;
@@ -15,6 +16,6 @@ export type SignTransactionContext = (
 ) => Promise<string[]>;
 
 export type Context = {
-  network(root: any, args: any, info: any): NetworkContext;
+  network(root: any, args: any, info: GraphQLResolveInfo): NetworkContext;
   signTransaction?: SignTransactionContext;
 };
