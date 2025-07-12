@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
 import { type NetworkContext } from "./types/Context.js";
 
-interface SendTransactionArgs {
+export interface SendTransactionArgs {
   transaction_header: string;
   transaction_body: string;
   signatures: string[];

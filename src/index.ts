@@ -1,8 +1,14 @@
 export { AntelopeQL } from "./antelopeql.js";
 export { serialize_transaction } from "./serialize_transaction.js";
 export { serialize_abi } from "./serialize_abi.js";
-export { send_transaction } from "./send_transaction.js";
-export { send_transaction_rpc } from "./send_transaction_rpc.js";
+export {
+  send_transaction,
+  type SerializedTransaction
+} from "./send_transaction.js";
+export {
+  send_transaction_rpc,
+  type SendTransactionArgs
+} from "./send_transaction_rpc.js";
 export { send_serialized_transaction } from "./send_serialized_transaction.js";
 
 export { query_resolver } from "./query_resolver.js";
@@ -44,3 +50,11 @@ export { time_point_sec_type } from "./antelope_types/time_point_sec_type.js";
 export { time_point_type } from "./antelope_types/time_point_type.js";
 export { varint32_type } from "./antelope_types/varint32_type.js";
 export { varuint32_type } from "./antelope_types/varuint32_type.js";
+
+// Ts Types
+export type {
+  NetworkContext,
+  SignTransactionContext,
+  Context
+} from "./types/Context.js";
+export type { Abi } from "./blockchain/get_abi.js";

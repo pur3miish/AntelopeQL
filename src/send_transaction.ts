@@ -24,25 +24,11 @@ type GraphQLFieldConfig<
   ) => any;
 };
 
-interface SerializedTransaction {
+export interface SerializedTransaction {
   chain_id: string;
   transaction_header: string;
   transaction_body: string;
   transaction: Record<string, any>;
-}
-
-interface SignTransactionContext {
-  signTransaction: (
-    hash: Uint8Array,
-    context: {
-      serilaised_txn: Pick<
-        SerializedTransaction,
-        "chain_id" | "transaction_header" | "transaction_body"
-      >;
-      transaction: Record<string, any>;
-    }
-  ) => Promise<string[]>;
-  network: any; // Better to type network based on your NetworkContext interface if available
 }
 
 interface SendTransactionArgs {
@@ -71,11 +57,6 @@ export const send_transaction = (
     context: Context,
     info: GraphQLResolveInfo
   ) {
-    interface NetworkContext {
-      rpc_url: string;
-      fetchOptions?: RequestInit;
-    }
-
     const network = context.network(root, args, info);
     const { chain_id, transaction_header, transaction_body, transaction } =
       await mutation_resolver(args, network, ast_list);
