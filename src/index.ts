@@ -1,4 +1,10 @@
-export { AntelopeQL } from "./antelopeql.js";
+export {
+  AntelopeQL,
+  default_rpc_urls,
+  type AntelopeQLRequest,
+  type APIOptionsType,
+  type AntelopeQLResult
+} from "./antelopeql.js";
 export { serialize_transaction } from "./serialize_transaction.js";
 export { serialize_abi } from "./serialize_abi.js";
 export {

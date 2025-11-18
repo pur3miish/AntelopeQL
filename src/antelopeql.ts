@@ -25,7 +25,7 @@ import {
   GraphQLFieldConfigMap
 } from "graphql";
 
-interface GraphQLRequest {
+export interface AntelopeQLRequest {
   query: string;
   operationName?: string | null;
   variables?: Record<string, any> | null;
@@ -45,7 +45,7 @@ declare type ChainsType =
 /**
  * Lists you smart contracts across the various Antelope chains.
  */
-declare type Contracts = {
+declare type ContractsType = {
   [key in ChainsType]?: string[];
 };
 
@@ -61,16 +61,16 @@ declare type ExtendQueryType = {
   };
 };
 
-declare type APIOptionsType = {
+export declare type APIOptionsType = {
   signTransaction?: SignTransactionContext;
-  contracts?: Contracts;
+  contracts?: ContractsType;
   chains?: { [chain_name in ChainsType]: URL | string };
   fetchOptions?: RequestInit;
   abiFetchOptions?: RequestInit;
   extendQuery?: ExtendQueryType;
 };
 
-declare type AntelopeQLResult = {
+export declare type AntelopeQLResult = {
   data?: any;
   errors?: ReadonlyArray<GraphQLError>;
 };
@@ -83,16 +83,21 @@ const defaultChains = [
   "jungle"
 ] as ChainsType[];
 
-const default_rpc_urls = {
-  vaulta: "https://eos.relocke.io", // "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906",
-  telos: "https://telos.relocke.io", // "4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11"
-  xpr: "https://proton.relocke.io", // "384da888112027f0321850a169f737c33e53b388aad48b5adace4bab97f437e0"
-  wax: "https://wax.relocke.io", // "1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4"
-  jungle: "https://jungle.relocke.io" // "73e4385a2708e6d7048834fbc1079f2fabb17b3c125b146af438971e90716c4d",
+export const default_rpc_urls = {
+  // Chain - aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906
+  vaulta: "https://eos.relocke.io",
+  // Chain - 4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11
+  telos: "https://telos.relocke.io",
+  // chain - 384da888112027f0321850a169f737c33e53b388aad48b5adace4bab97f437e0
+  xpr: "https://proton.relocke.io",
+  // chain - 1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4
+  wax: "https://wax.relocke.io",
+  // Chain - 73e4385a2708e6d7048834fbc1079f2fabb17b3c125b146af438971e90716c4d
+  jungle: "https://jungle.relocke.io"
 } as { [chain in ChainsType]: string | URL };
 
 export async function AntelopeQL(
-  { query, variables, operationName }: GraphQLRequest,
+  { query, variables, operationName }: AntelopeQLRequest,
   options?: APIOptionsType
 ): Promise<AntelopeQLResult> {
   const build_chains = new Set(defaultChains);
