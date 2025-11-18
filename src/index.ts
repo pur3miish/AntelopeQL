@@ -3,7 +3,8 @@ export {
   default_rpc_urls,
   type AntelopeQLRequest,
   type APIOptionsType,
-  type AntelopeQLResult
+  type AntelopeQLResult,
+  type ContractsType
 } from "./antelopeql.js";
 export { serialize_transaction } from "./serialize_transaction.js";
 export { serialize_abi } from "./serialize_abi.js";

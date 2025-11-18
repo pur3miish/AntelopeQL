@@ -45,7 +45,7 @@ declare type ChainsType =
 /**
  * Lists you smart contracts across the various Antelope chains.
  */
-declare type ContractsType = {
+export declare type ContractsType = {
   [key in ChainsType]?: string[];
 };
 
