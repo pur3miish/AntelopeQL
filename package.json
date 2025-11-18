@@ -1,67 +1,41 @@
 {
   "name": "antelopeql",
-  "version": "2.0.0-rc.30",
+  "version": "3.0.0",
   "description": "A GraphQL implementation for interacting with Antelope based blockchains.",
-  "repository": "github:pur3miish/antelopeql",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pur3miish/antelopeql.git"
+  },
   "bugs": "https://github.com/pur3miish/antelopeql/issues",
   "homepage": "https://github.com/pur3miish/antelopeql#readme",
   "author": "pur3miish",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
+    "test": "mocha --require tsx 'test/**/*.ts'",
     "eslint": "eslint .",
     "prettier": "prettier -c .",
     "prettier:readme": "prettier --write readme.md",
-    "server": "nodemon test/server.mjs",
+    "server": "node test/server.js",
     "types": "tsc -p jsconfig.json",
-    "snapshot": "SAVE_SNAPSHOTS=1 coverage-node test/index.test.mjs",
-    "coverage": "coverage-node test/index.test.mjs",
-    "tests": "node test/index.test.mjs",
-    "test": "npm run eslint && npm run prettier && npm run types && npm run tests",
-    "prepublishOnly": "npm test"
+    "prepublishOnly": "npm run build && npm run test"
   },
   "engines": {
     "node": ">= 18.0.0"
   },
-  "files": [
-    "blockchain/*.mjs",
-    "eosio_types/*.mjs",
-    "graphql_input_types/*.mjs",
-    "graphql_object_types/*.mjs",
-    "antelopeql.mjs",
-    "blockchain_query_field.mjs",
-    "build_graphql_fields_from_abis.mjs",
-    "eosio_abi_to_graphql_ast.mjs",
-    "eosio_types.mjs",
-    "get_abis.mjs",
-    "mutation_resolver.mjs",
-    "query_resolver.mjs",
-    "send_serialized_transaction.mjs",
-    "send_transaction_rpc.mjs",
-    "send_transaction.mjs",
-    "serialize_abi.mjs",
-    "serialize_transaction.mjs",
-    "types.mjs"
-  ],
   "sideEffects": false,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "exports": {
-    "./blockchain/*.mjs": "./blockchain/*.mjs",
-    "./eosio_types/*.mjs": "./eosio_types/*.mjs",
-    "./graphql_input_types/*.mjs": "./graphql_input_types/*.mjs",
-    "./graphql_object_types/*.mjs": "./graphql_object_types/*.mjs",
-    "./antelopeql.mjs": "./antelopeql.mjs",
-    "./blockchain_query_field.mjs": "./blockchain_query_field.mjs",
-    "./build_graphql_fields_from_abis.mjs": "./build_graphql_fields_from_abis.mjs",
-    "./eosio_abi_to_graphql_ast.mjs": "./eosio_abi_to_graphql_ast.mjs",
-    "./eosio_types.mjs": "./eosio_types.mjs",
-    "./get_abis.mjs": "./get_abis.mjs",
-    "./mutation_resolver.mjs": "./mutation_resolver.mjs",
-    "./query_resolver.mjs": "./query_resolver.mjs",
-    "./send_serialized_transaction.mjs": "./send_serialized_transaction.mjs",
-    "./send_transaction_rpc.mjs": "./send_transaction_rpc.mjs",
-    "./send_transaction.mjs": "./send_transaction.mjs",
-    "./serialize_abi.mjs": "./serialize_abi.mjs",
-    "./serialize_transaction.mjs": "./serialize_transaction.mjs",
-    "./types.mjs": "./types.mjs"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "browserslist": [
     "> 0.5%, not OperaMini all, not IE > 0, not dead"
@@ -69,31 +43,38 @@
   "keywords": [
     "blockchain",
     "graphql",
+    "Antelope",
+    "Vaulta",
+    "WAX",
+    "Telos",
+    "XPR",
     "smart",
     "contract",
-    "bitcoin",
     "eosio",
     "eos",
     "query",
     "language"
   ],
   "devDependencies": {
-    "@types/node": "^18.13.0",
-    "antelope-ecc": "^2.0.0-rc.12",
-    "coverage-node": "^8.0.0",
+    "@types/chai": "^5.2.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^18.19.118",
+    "chai": "^5.2.1",
     "eslint": "^8.34.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "graphql": "^16.8.0",
+    "graphql": "^16.11.0",
+    "mocha": "^11.7.1",
     "nodemon": "^3.0.1",
     "prettier": "^2.8.4",
     "snapshot-assertion": "^5.0.0",
-    "test-director": "^10.0.0",
-    "typescript": "^4.9.5"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "base58-js": "^2.0.0",
-    "eosio-wasm-js": "^4.1.1",
-    "ripemd160-js": "*",
-    "universal-sha256-js": "^2.0.0"
+    "antelope-ecc": "^5.0.0",
+    "base58-js": "^3.0.3",
+    "eosio-wasm-js": "^5.0.2",
+    "ripemd160-js": "^3.0.4"
   }
 }

@@ -1,5 +1,19 @@
 # AntelopeQL changelog
 
+## 3.0.0
+
+### Major
+
+- Multi-chain support added to AntelopeQL.
+- Extensible schema via the new options object.
+- Full control over RequestInit, enabling request caching and ABI-fetch customization.
+- Complete TypeScript support, including default chain definitions.
+- Custom Antelope chains can now be added or overridden, allowing full modification of existing RPC URLs.
+
+## Patch
+
+- Dependency updates.
+
 ## 2.0.0
 
 ### Major
