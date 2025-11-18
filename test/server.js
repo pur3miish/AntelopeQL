@@ -20,30 +20,34 @@ const server = http.createServer((req, res) => {
     try {
       const { query, variables, operationName } = JSON.parse(body);
 
-      const data = await AntelopeQL({
-        query,
-        contracts: ["eosio", "eosio.token"],
-        operationName,
-        variableValues: variables,
-        signTransaction: async (hash) => {
-          const signature_1 = await sign({
-            hash,
-            wif_private_key: await private_key_to_wif(
-              await legacy_to_private_key(
-                "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
-              )
-            )
-          });
-
-          return [signature_1];
+      const data = await AntelopeQL(
+        {
+          query,
+          operationName,
+          variables
         },
-        contracts: ["eosio", "eosio.token"],
-        // rpc_url: "https://eos.greymass.com/"
-        // rpc_url: "https://eos.eosusa.io"
-        // rpc_url: "https://mainnet.genereos.io"
-        rpc_url: "https://jungle.relocke.io"
-        // rpc_url: "http://192.168.64.10:8888"
-      });
+        {
+          contracts: {
+            jungle: ["eosio.token"]
+          },
+          signTransaction: async (hash) => {
+            const signature_1 = await sign({
+              hash,
+              wif_private_key: await private_key_to_wif(
+                await legacy_to_private_key(
+                  "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
+                )
+              )
+            });
+
+            return [signature_1];
+          },
+          chains: {
+            pungle: "https://jungle.relocke.io",
+            jungle: "https://jungle.relocke.io"
+          }
+        }
+      );
 
       // Send the response body after all processing
       res.end(JSON.stringify(data));

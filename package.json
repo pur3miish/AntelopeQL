@@ -1,6 +1,6 @@
 {
   "name": "antelopeql",
-  "version": "3.0.0-rc.7",
+  "version": "3.0.0-rc.9",
   "description": "A GraphQL implementation for interacting with Antelope based blockchains.",
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
     "eslint": "eslint .",
     "prettier": "prettier -c .",
     "prettier:readme": "prettier --write readme.md",
-    "server": "nodemon test/server.mjs",
+    "server": "node test/server.js",
     "types": "tsc -p jsconfig.json",
     "prepublishOnly": "npm run build && npm run test"
   },
@@ -28,7 +28,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -65,7 +67,6 @@
     "nodemon": "^3.0.1",
     "prettier": "^2.8.4",
     "snapshot-assertion": "^5.0.0",
-    "test-director": "^10.0.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
