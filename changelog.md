@@ -1,5 +1,16 @@
 # AntelopeQL changelog
 
+## 3.0.1
+
+### Patch
+
+- Removed usage of `import("node:crypto")` which caused `UnhandledSchemeError` in Next.js / Webpack.
+- Replaced Node-only SHA256 implementation with **universal WebCrypto-based version** compatible with:
+  - Browser
+  - Edge Runtime
+  - Node 18+ (`globalThis.crypto.subtle`)
+- Fully resolved TypeScript type errors related to:
+
 ## 3.0.0
 
 ### Major
