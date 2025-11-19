@@ -1,6 +1,6 @@
 {
   "name": "antelopeql",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A GraphQL implementation for interacting with Antelope based blockchains.",
   "repository": {
     "type": "git",
