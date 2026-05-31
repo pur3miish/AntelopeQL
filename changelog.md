@@ -1,5 +1,12 @@
 # AntelopeQL changelog
 
+## 3.0.2
+
+### Patch
+
+- Fixed empty `bytes` fields in transaction serialization, allowing actions such as `eosio::setcode` to pass `code: ""`.
+- Added regression coverage for serializing empty `bytes` fields in mutation actions.
+
 ## 3.0.1
 
 ### Patch

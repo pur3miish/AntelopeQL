@@ -84,6 +84,11 @@ const validate_actions = (): never => {
   });
 };
 
+const serialize_value = async (type: string, value: any): Promise<string> => {
+  if (type === "bytes" && value === "") return "00";
+  return serialize[type](await value);
+};
+
 async function get_transaction_body(
   actions: Array<Record<string, Record<string, any>>>,
   ast_list: ASTList
@@ -177,7 +182,7 @@ async function get_transaction_body(
     ).then(async (list) => {
       let hex_string = "";
       for await (const { type, value } of list)
-        hex_string += await serialize[type](await value);
+        hex_string += await serialize_value(type, value);
       return hex_string;
     });
 
