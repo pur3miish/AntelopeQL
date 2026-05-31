@@ -1,7 +1,7 @@
 import { GraphQLError, GraphQLNonNull, GraphQLString } from "graphql";
 
-import { bytes_type } from "../antelope_types/bytes_type.js";
-import { name_type } from "../antelope_types/name_type.js";
+import { bytes_type } from "../relocke_types/bytes_type.js";
+import { name_type } from "../relocke_types/name_type.js";
 
 interface AbiBinToJsonArgs {
   code: string;
@@ -26,11 +26,11 @@ export const abi_bin_to_json = {
   type: GraphQLString,
   args: {
     code: {
-      description: "Account name that holds the Antelope smart contract.",
+      description: "Account name that holds the Relocke smart contract.",
       type: new GraphQLNonNull(name_type)
     },
     action: {
-      description: "Action name on the Antelope smart contract.",
+      description: "Action name on the Relocke smart contract.",
       type: new GraphQLNonNull(name_type)
     },
     binargs: {

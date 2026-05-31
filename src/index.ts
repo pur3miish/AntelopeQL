@@ -1,11 +1,11 @@
 export {
-  AntelopeQL,
+  RelockeQL,
   default_rpc_urls,
-  type AntelopeQLRequest,
+  type RelockeQLRequest,
   type APIOptionsType,
-  type AntelopeQLResult,
+  type RelockeQLResult,
   type ContractsType
-} from "./antelopeql.js";
+} from "./relockeql.js";
 export { serialize_transaction } from "./serialize_transaction.js";
 export { serialize_abi } from "./serialize_abi.js";
 export {
@@ -27,7 +27,7 @@ export {
   type AccountABI
 } from "./build_graphql_fields_from_abis.js";
 export { blockchain_query_field } from "./blockchain_query_field.js";
-export { antelope_types } from "./antelope_types.js";
+export { relocke_types } from "./relocke_types.js";
 export { abi_to_graphql_ast } from "./abi_to_graphql_ast.js";
 
 export { authorization_type } from "./graphql_object_types/authorization.js";
@@ -40,26 +40,26 @@ export { authorization_type as authorization_input_type } from "./graphql_input_
 export { configuration_type } from "./graphql_input_types/configuration.js";
 export { query_arg_fields } from "./graphql_input_types/query_argument_fields.js";
 
-export { asset_type } from "./antelope_types/asset_type.js";
+export { asset_type } from "./relocke_types/asset_type.js";
 
-export { block_timestamp_type } from "./antelope_types/block_timestamp_type.js";
-export { boolean_type } from "./antelope_types/boolean_type.js";
-export { bytes_type } from "./antelope_types/bytes_type.js";
-export { extended_asset_type } from "./antelope_types/extended_asset_type.js";
-export { generate_checksum } from "./antelope_types/generate_checksum_type.js";
-export { generate_float_type } from "./antelope_types/generate_float_type.js";
-export { generate_int_type } from "./antelope_types/generate_int_type.js";
-export { generate_uint_type } from "./antelope_types/generate_uint_type.js";
-export { Antelope_key_type } from "./antelope_types/key_type.js";
-export { name_type } from "./antelope_types/name_type.js";
-export { public_key_type } from "./antelope_types/public_key_type.js";
-export { signature_type } from "./antelope_types/signature_type.js";
-export { symbol_code_type } from "./antelope_types/symbol_code_type.js";
-export { symbol_type } from "./antelope_types/symbol_type.js";
-export { time_point_sec_type } from "./antelope_types/time_point_sec_type.js";
-export { time_point_type } from "./antelope_types/time_point_type.js";
-export { varint32_type } from "./antelope_types/varint32_type.js";
-export { varuint32_type } from "./antelope_types/varuint32_type.js";
+export { block_timestamp_type } from "./relocke_types/block_timestamp_type.js";
+export { boolean_type } from "./relocke_types/boolean_type.js";
+export { bytes_type } from "./relocke_types/bytes_type.js";
+export { extended_asset_type } from "./relocke_types/extended_asset_type.js";
+export { generate_checksum } from "./relocke_types/generate_checksum_type.js";
+export { generate_float_type } from "./relocke_types/generate_float_type.js";
+export { generate_int_type } from "./relocke_types/generate_int_type.js";
+export { generate_uint_type } from "./relocke_types/generate_uint_type.js";
+export { Relocke_key_type } from "./relocke_types/key_type.js";
+export { name_type } from "./relocke_types/name_type.js";
+export { public_key_type } from "./relocke_types/public_key_type.js";
+export { signature_type } from "./relocke_types/signature_type.js";
+export { symbol_code_type } from "./relocke_types/symbol_code_type.js";
+export { symbol_type } from "./relocke_types/symbol_type.js";
+export { time_point_sec_type } from "./relocke_types/time_point_sec_type.js";
+export { time_point_type } from "./relocke_types/time_point_type.js";
+export { varint32_type } from "./relocke_types/varint32_type.js";
+export { varuint32_type } from "./relocke_types/varuint32_type.js";
 
 // Ts Types
 export type {

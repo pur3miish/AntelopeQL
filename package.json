@@ -1,13 +1,13 @@
 {
-  "name": "antelopeql",
-  "version": "3.0.2",
-  "description": "A GraphQL implementation for interacting with Antelope based blockchains.",
+  "name": "relockeql",
+  "version": "1.0.0",
+  "description": "A GraphQL implementation for interacting with Relocke based blockchains.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pur3miish/antelopeql.git"
+    "url": "git+https://github.com/pur3miish/RelockeQL.git"
   },
-  "bugs": "https://github.com/pur3miish/antelopeql/issues",
-  "homepage": "https://github.com/pur3miish/antelopeql#readme",
+  "bugs": "https://github.com/pur3miish/RelockeQL/issues",
+  "homepage": "https://github.com/pur3miish/RelockeQL#readme",
   "author": "pur3miish",
   "license": "MIT",
   "scripts": {
@@ -35,6 +35,14 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./relockeql": {
+      "import": "./dist/relockeql.js",
+      "types": "./dist/relockeql.d.ts"
+    },
+    "./relockeql.js": {
+      "import": "./dist/relockeql.js",
+      "types": "./dist/relockeql.d.ts"
     }
   },
   "browserslist": [
@@ -43,7 +51,7 @@
   "keywords": [
     "blockchain",
     "graphql",
-    "Antelope",
+    "Relocke",
     "Vaulta",
     "WAX",
     "Telos",
@@ -72,9 +80,11 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "antelope-ecc": "^5.0.0",
     "base58-js": "^3.0.3",
     "eosio-wasm-js": "^5.0.2",
     "ripemd160-js": "^3.0.4"
+  },
+  "peerDependencies": {
+    "graphql": "^16.11.0"
   }
 }

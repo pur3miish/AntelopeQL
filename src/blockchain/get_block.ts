@@ -7,7 +7,7 @@ import {
   GraphQLString
 } from "graphql";
 
-import { bytes_type } from "../antelope_types/bytes_type.js";
+import { bytes_type } from "../relocke_types/bytes_type.js";
 import { authorization_type } from "../graphql_object_types/authorization.js";
 
 interface Action {
@@ -44,7 +44,7 @@ const producer_type = new GraphQLObjectType<Producer>({
     producer_name: { type: GraphQLString },
     block_signing_key: {
       type: GraphQLString,
-      description: `Base58 encoded Antelope public key.`
+      description: `Base58 encoded Relocke public key.`
     }
   })
 });
@@ -191,7 +191,7 @@ const block_type = new GraphQLObjectType<Block>({
     },
     producer_signature: {
       type: GraphQLString,
-      description: `Base58 encoded Antelope cryptographic signature.`
+      description: `Base58 encoded Relocke cryptographic signature.`
     },
     transactions: {
       type: new GraphQLList(transactions_type),

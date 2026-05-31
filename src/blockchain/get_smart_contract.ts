@@ -6,7 +6,7 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import { name_type } from "../antelope_types/name_type.js";
+import { name_type } from "../relocke_types/name_type.js";
 
 interface SmartContractData {
   wasm: string;

@@ -28,7 +28,7 @@ interface InfoData {
 
 const info_type = new GraphQLObjectType<InfoData>({
   name: "info_type",
-  description: "Returns various details about the Antelope blockchain",
+  description: "Returns various details about the Relocke blockchain",
   fields: () => ({
     server_version: {
       type: GraphQLString,

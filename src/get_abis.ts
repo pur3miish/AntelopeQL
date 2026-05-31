@@ -59,7 +59,7 @@ export async function get_abis(
   });
 
   if (errors.length)
-    throw new GraphQLError("Invalid Antelope smart contracts provided.", {
+    throw new GraphQLError("Invalid Relocke smart contracts provided.", {
       extensions: errors as unknown as GraphQLErrorExtensions
     });
 

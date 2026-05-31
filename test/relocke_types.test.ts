@@ -1,25 +1,25 @@
 import { deepStrictEqual, ok, rejects, strictEqual, throws } from "assert";
 
-import { asset_type } from "../src/antelope_types/asset_type.js";
-import { block_timestamp_type as block_time_stamp } from "../src/antelope_types/block_timestamp_type.js";
-import { boolean_type as bool } from "../src/antelope_types/boolean_type.js";
-import { bytes_type as bytes } from "../src/antelope_types/bytes_type.js";
-import { extended_asset_type as extended_asset } from "../src/antelope_types/extended_asset_type.js";
-import { generate_checksum } from "../src/antelope_types/generate_checksum_type.js";
-import { generate_float_type } from "../src/antelope_types/generate_float_type.js";
-import { generate_int_type } from "../src/antelope_types/generate_int_type.js";
-import { generate_uint_type } from "../src/antelope_types/generate_uint_type.js";
-import { name_type as name } from "../src/antelope_types/name_type.js";
-import { public_key_type as public_key } from "../src/antelope_types/public_key_type.js";
-import { signature_type as signature } from "../src/antelope_types/signature_type.js";
-import { symbol_code_type as symbol_code } from "../src/antelope_types/symbol_code_type.js";
-import { symbol_type as symbol } from "../src/antelope_types/symbol_type.js";
-import { time_point_sec_type as time_point_sec } from "../src/antelope_types/time_point_sec_type.js";
-import { time_point_type as time_point } from "../src/antelope_types/time_point_type.js";
-import { varint32_type as varint32 } from "../src/antelope_types/varint32_type.js";
-import { varuint32_type as varuint32 } from "../src/antelope_types/varuint32_type.js";
+import { asset_type } from "../src/relocke_types/asset_type.js";
+import { block_timestamp_type as block_time_stamp } from "../src/relocke_types/block_timestamp_type.js";
+import { boolean_type as bool } from "../src/relocke_types/boolean_type.js";
+import { bytes_type as bytes } from "../src/relocke_types/bytes_type.js";
+import { extended_asset_type as extended_asset } from "../src/relocke_types/extended_asset_type.js";
+import { generate_checksum } from "../src/relocke_types/generate_checksum_type.js";
+import { generate_float_type } from "../src/relocke_types/generate_float_type.js";
+import { generate_int_type } from "../src/relocke_types/generate_int_type.js";
+import { generate_uint_type } from "../src/relocke_types/generate_uint_type.js";
+import { name_type as name } from "../src/relocke_types/name_type.js";
+import { public_key_type as public_key } from "../src/relocke_types/public_key_type.js";
+import { signature_type as signature } from "../src/relocke_types/signature_type.js";
+import { symbol_code_type as symbol_code } from "../src/relocke_types/symbol_code_type.js";
+import { symbol_type as symbol } from "../src/relocke_types/symbol_type.js";
+import { time_point_sec_type as time_point_sec } from "../src/relocke_types/time_point_sec_type.js";
+import { time_point_type as time_point } from "../src/relocke_types/time_point_type.js";
+import { varint32_type as varint32 } from "../src/relocke_types/varint32_type.js";
+import { varuint32_type as varuint32 } from "../src/relocke_types/varuint32_type.js";
 
-describe("Antelope types - validating parse values", () => {
+describe("Relocke types - validating parse values", () => {
   it("Validate parsed values", async () => {
     deepStrictEqual(varint32.parseValue(""), "");
     deepStrictEqual(varuint32.parseValue(""), "");

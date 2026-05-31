@@ -1,5 +1,5 @@
 import { GraphQLInputObjectType, GraphQLNonNull } from "graphql";
-import { name_type } from "../antelope_types/name_type.js";
+import { name_type } from "../relocke_types/name_type.js";
 
 /**
  * Authorization type for action validation.

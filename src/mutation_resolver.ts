@@ -76,9 +76,9 @@ const default_config: Required<MutationConfiguration> = {
 };
 
 const validate_actions = (): never => {
-  throw new GraphQLError(`Invalid AntelopeQL query.`, {
+  throw new GraphQLError(`Invalid RelockeQL query.`, {
     extensions: {
-      why: "AntelopeQL enforces one action per object in the list to preserve the top to bottom execution order.",
+      why: "RelockeQL enforces one action per object in the list to preserve the top to bottom execution order.",
       example: "actions: [{ action1: … }, { action2: … }]"
     }
   });
@@ -86,7 +86,11 @@ const validate_actions = (): never => {
 
 const serialize_value = async (type: string, value: any): Promise<string> => {
   if (type === "bytes" && value === "") return "00";
-  return serialize[type](await value);
+  const serializers = serialize as unknown as Record<
+    string,
+    (value: any) => string | Promise<string>
+  >;
+  return serializers[type](await value);
 };
 
 async function get_transaction_body(

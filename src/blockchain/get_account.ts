@@ -9,9 +9,9 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import { asset_type } from "../antelope_types/asset_type.js";
-import { Antelope_key_type } from "../antelope_types/key_type.js";
-import { name_type } from "../antelope_types/name_type.js";
+import { asset_type } from "../relocke_types/asset_type.js";
+import { Relocke_key_type } from "../relocke_types/key_type.js";
+import { name_type } from "../relocke_types/name_type.js";
 
 // --- TypeScript Interfaces ---
 
@@ -41,7 +41,7 @@ interface AccountsAuth {
 
 interface RequireAuth {
   threshold?: number;
-  keys?: Array<any>; // Should align with Antelope_key_type's TypeScript type if available
+  keys?: Array<any>; // Should align with Relocke_key_type's TypeScript type if available
   accounts?: AccountsAuth[];
 }
 
@@ -165,7 +165,7 @@ const require_auth_type = new GraphQLObjectType<RequireAuth>({
   name: "require_auth_type",
   fields: () => ({
     threshold: { type: GraphQLInt },
-    keys: { type: new GraphQLList(Antelope_key_type) },
+    keys: { type: new GraphQLList(Relocke_key_type) },
     accounts: { type: new GraphQLList(accounts_auth_type) }
   })
 });
@@ -180,7 +180,7 @@ const linked_actions_type = new GraphQLObjectType<LinkedAction>({
 
 const permission_type = new GraphQLObjectType<Permission>({
   name: "permission_type",
-  description: "Antelope account permissions",
+  description: "Relocke account permissions",
   fields: {
     perm_name: { type: name_type },
     parent: { type: name_type },
@@ -267,7 +267,7 @@ const account_type = new GraphQLObjectType<Account>({
     cpu_limit: { type: bandwidth_type },
     ram_usage: { type: GraphQLString },
     permissions: {
-      description: "List of the Antelope `account_name` permissions",
+      description: "List of the Relocke `account_name` permissions",
       type: new GraphQLList(permission_type)
     },
     total_resources: { type: resource_type },

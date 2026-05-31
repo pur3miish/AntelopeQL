@@ -7,9 +7,9 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import { name_type } from "../antelope_types/name_type.js";
+import { name_type } from "../relocke_types/name_type.js";
 
-// --- TypeScript Interfaces for Antelope ABI ---
+// --- TypeScript Interfaces for Relocke ABI ---
 
 interface AbiVariant {
   name?: string;

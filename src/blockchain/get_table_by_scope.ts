@@ -11,7 +11,7 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import { name_type } from "../antelope_types/name_type.js";
+import { name_type } from "../relocke_types/name_type.js";
 
 function convertNameToSymbol(scope: string): string {
   return (serializeName(scope).match(/[0-9A-Fa-f]{2}/g) || [])
