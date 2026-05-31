@@ -1,5 +1,4 @@
-import legacy_from_public_key from "antelope-ecc/keys/legacy_from_public_key.js";
-import public_key_from_wif from "antelope-ecc/keys/public_key_from_wif.js";
+import { base58_to_binary, binary_to_base58 } from "base58-js";
 import {
   GraphQLError,
   GraphQLList,
@@ -8,9 +7,10 @@ import {
   GraphQLString,
   GraphQLFieldConfig
 } from "graphql";
+import ripemd160 from "ripemd160-js/ripemd160.js";
 
-import { name_type } from "../antelope_types/name_type.js";
-import { public_key_type } from "../antelope_types/public_key_type.js";
+import { name_type } from "../relocke_types/name_type.js";
+import { public_key_type } from "../relocke_types/public_key_type.js";
 import { authorizing_account_type } from "../graphql_object_types/authorizing_account_type.js";
 
 // --- TypeScript interfaces ---
@@ -52,6 +52,15 @@ const accounts_by_authorizers_type =
     })
   });
 
+async function public_key_to_legacy(key: string): Promise<string> {
+  if (!key.startsWith("PUB_K1_")) return key;
+
+  const public_key = base58_to_binary(key.replace("PUB_K1_", "")).slice(0, -4);
+  const checksum = (await ripemd160(public_key)).slice(0, 4) as Uint8Array;
+
+  return "EOS" + binary_to_base58(new Uint8Array([...public_key, ...checksum]));
+}
+
 // --- Context interface ---
 
 export interface Context {
@@ -90,16 +99,8 @@ export const accounts_by_authorizers: GraphQLFieldConfig<
     // Await all keys in case they're promises
     const awaited_keys = await Promise.all(keys);
 
-    // Convert K1 keys to legacy format, others left as-is
     const processed_keys = await Promise.all(
-      awaited_keys.map(async (key) => {
-        if (key.startsWith("PUB_K1")) {
-          // Convert WIF to public key and then legacy
-          const pubKey = public_key_from_wif(key);
-          return legacy_from_public_key(pubKey, "EOS");
-        }
-        return key;
-      })
+      awaited_keys.map(public_key_to_legacy)
     );
 
     const response = await fetch(uri, {

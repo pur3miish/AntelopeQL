@@ -41,7 +41,7 @@ export const send_transaction = (
   ast_list: any
 ): GraphQLFieldConfig<any, any, SendTransactionArgs> => ({
   description:
-    "Serialize a list of actions and push them to the blockchain in one step, requires private keys to be supplied to AntelopeQL.",
+    "Serialize a list of actions and push them to the blockchain in one step, requires private keys to be supplied to RelockeQL.",
   type: new GraphQLNonNull(transaction_receipt),
   args: {
     actions: {

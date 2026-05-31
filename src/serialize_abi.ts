@@ -188,7 +188,7 @@ const ABI: { version: string; structs: AbiStruct[] } = {
 const AST: AST = abi_to_graphql_ast(ABI as ABI);
 
 /**
- * @param abi - Antelope ABI object to serialize
+ * @param abi - Relocke ABI object to serialize
  * @returns hex string of serialized ABI
  */
 export async function serialize_abi(abi: Partial<AbiDef>): Promise<string> {

@@ -20,7 +20,7 @@ interface Args {
 }
 
 /**
- * AntelopeQL Query resolver.
+ * RelockeQL Query resolver.
  * @param root GraphQL resolver root query
  * @param args Query arguments object
  * @param getContext Function returning the context object

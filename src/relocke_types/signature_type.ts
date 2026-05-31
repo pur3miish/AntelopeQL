@@ -5,7 +5,7 @@ export const signature_type = new GraphQLScalarType({
   description: `
 \`Signature type\`
 
-Antelope based signature, K1, R1 WA.
+Relocke based signature, K1, R1 WA.
   `,
   parseValue(value: unknown): string {
     if (value === "") return "";

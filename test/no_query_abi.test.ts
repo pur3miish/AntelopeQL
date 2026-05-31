@@ -1,15 +1,17 @@
 import { ok } from "assert";
 
-import { AntelopeQL } from "../src/antelopeql.js";
+import { RelockeQL } from "../src/relockeql.js";
 
 describe("Serialize ABI test", () => {
-  it("Validate parsed values", async () => {
-    const data = await AntelopeQL({
+  it("Validate parsed values", async function () {
+    this.timeout(10000);
+
+    const data = await RelockeQL({
       query: /* GraphQL */ `
         {
           jungle {
             get_blockchain {
-              get_account(account_name: "relockeblock") {
+              get_account(account_name: "eosio") {
                 account_name
               }
             }
@@ -19,8 +21,7 @@ describe("Serialize ABI test", () => {
     });
 
     ok(
-      data.data?.jungle?.get_blockchain?.get_account?.account_name ==
-        "relockeblock",
+      data.data?.jungle?.get_blockchain?.get_account?.account_name == "eosio",
       "Expected account name"
     );
   });

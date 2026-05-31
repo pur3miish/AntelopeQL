@@ -6,9 +6,9 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import { bytes_type } from "../antelope_types/bytes_type.js";
-import { name_type } from "../antelope_types/name_type.js";
-import { public_key_type } from "../antelope_types/public_key_type.js";
+import { bytes_type } from "../relocke_types/bytes_type.js";
+import { name_type } from "../relocke_types/name_type.js";
+import { public_key_type } from "../relocke_types/public_key_type.js";
 import { authorization_type } from "../graphql_input_types/authorization.js";
 
 interface ActionInput {

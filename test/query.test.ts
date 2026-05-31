@@ -1,4 +1,4 @@
-import { AntelopeQL } from "../src/antelopeql.js";
+import { RelockeQL } from "../src/relockeql.js";
 
 describe("testing v1/chain/", () => {
   it("get_account", async () => {
@@ -36,6 +36,6 @@ describe("testing v1/chain/", () => {
       }
     `;
 
-    const { data } = await AntelopeQL({ query });
+    const { data } = await RelockeQL({ query });
   });
 });

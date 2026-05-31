@@ -7,8 +7,8 @@ import {
   GraphQLFieldConfig
 } from "graphql";
 
-import { Antelope_key_type as key_type } from "../antelope_types/key_type.js";
-import { public_key_type } from "../antelope_types/public_key_type.js";
+import { Relocke_key_type as key_type } from "../relocke_types/key_type.js";
+import { public_key_type } from "../relocke_types/public_key_type.js";
 
 interface ProducerAuthority {
   threshold: number;
@@ -85,7 +85,7 @@ const producers = new GraphQLObjectType<Producer>({
 });
 
 const producers_type = new GraphQLObjectType<ProducersResult>({
-  name: "antelope_producers",
+  name: "relocke_producers",
   fields: {
     total_producer_vote_weight: {
       type: GraphQLString

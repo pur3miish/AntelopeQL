@@ -1,10 +1,6 @@
-/* eslint-disable */
-import legacy_to_private_key from "antelope-ecc/keys/legacy_to_private_key.js";
-import private_key_to_wif from "antelope-ecc/keys/private_key_to_wif.js";
-import sign from "antelope-ecc/sign.js";
 import http from "http";
 
-import { AntelopeQL } from "../dist/antelopeql.js";
+import { RelockeQL } from "../dist/relockeql.js";
 
 const server = http.createServer((req, res) => {
   let body = "";
@@ -20,7 +16,7 @@ const server = http.createServer((req, res) => {
     try {
       const { query, variables, operationName } = JSON.parse(body);
 
-      const data = await AntelopeQL(
+      const data = await RelockeQL(
         {
           query,
           operationName,
@@ -29,18 +25,6 @@ const server = http.createServer((req, res) => {
         {
           contracts: {
             jungle: ["eosio.token"]
-          },
-          signTransaction: async (hash) => {
-            const signature_1 = await sign({
-              hash,
-              wif_private_key: await private_key_to_wif(
-                await legacy_to_private_key(
-                  "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
-                )
-              )
-            });
-
-            return [signature_1];
           },
           chains: {
             pungle: "https://jungle.relocke.io",

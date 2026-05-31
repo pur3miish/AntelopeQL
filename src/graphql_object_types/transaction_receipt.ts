@@ -8,7 +8,7 @@ import {
   GraphQLString
 } from "graphql";
 
-import { name_type } from "../antelope_types/name_type.js";
+import { name_type } from "../relocke_types/name_type.js";
 import { authorization_type as authorizing_account_type } from "./authorization.js";
 
 // -----------------------------
@@ -146,7 +146,7 @@ export const transaction_receipt_type: GraphQLObjectType<TransactionReceipt> =
     fields: () => ({
       transaction_id: {
         type: GraphQLID,
-        description: "`Antelope` blockchain transaction id “reciept”"
+        description: "`Relocke` blockchain transaction id “reciept”"
       },
       block_num: {
         type: GraphQLInt,

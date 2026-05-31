@@ -1,37 +1,38 @@
-![antelopeql logo](https://raw.githubusercontent.com/pur3miish/antelopeql/main/static/antelopeql.svg)
+![relockeql logo](https://raw.githubusercontent.com/pur3miish/RelockeQL/main/static/relockeql.svg)
 
-# AntelopeQL
+# RelockeQL
 
-[![NPM Package](https://img.shields.io/npm/v/antelopeql.svg)](https://www.npmjs.org/package/antelopeql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/antelopeql/blob/main/LICENSE)
+[![NPM Package](https://img.shields.io/npm/v/relockeql.svg)](https://www.npmjs.org/package/relockeql) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pur3miish/RelockeQL/blob/main/LICENSE)
 
-AntelopeQL (_Antelope Query Language_).
+RelockeQL.
 
-AntelopeQL is a GraphQL client and server library that allows developers to interact with the Antelope blockchain using GraphQL. It provides a unified interface to communicate with different blockchains within the Antelope ecosystem, enabling developers to leverage the unique features and capabilities of each blockchain while still benefiting from a consistent development experience.
+RelockeQL is a GraphQL client and server library that allows developers to interact with Relocke-based blockchains using GraphQL. It provides a unified interface to communicate with different chains in the ecosystem, enabling developers to leverage the unique features and capabilities of each blockchain while still benefiting from a consistent development experience.
 
-As a GraphQL client library, AntelopeQL simplifies the process of building and executing GraphQL queries and mutations, handling errors, and signing transactions. As a server library, it provides a framework for building GraphQL APIs that can interact with the Antelope blockchain and other data sources.
+As a GraphQL client library, RelockeQL simplifies the process of building and executing GraphQL queries and mutations, handling errors, and signing transactions. As a server library, it provides a framework for building GraphQL APIs that can interact with Relocke-based blockchains and other data sources.
 
-With AntelopeQL, developers can focus on building the frontend and business logic of their DApps, while relying on the library to handle the complexities of interacting with multiple blockchains in the Antelope ecosystem.
+With RelockeQL, developers can focus on building the frontend and business logic of their DApps, while relying on the library to handle the complexities of interacting with multiple blockchains in the ecosystem.
 
 **Live working example can be found [here](https://relocke.io/api/playground).**
 
-![antelopeql screenshot](https://raw.githubusercontent.com/pur3miish/antelopeql/main/static/antelopeql-screen.png)
+![relockeql screenshot](https://raw.githubusercontent.com/pur3miish/RelockeQL/main/static/relockeql-screen.png)
 
 ## Installation
 
-For [Node.js](https://nodejs.org), to install [`AntelopeQL`](https://npm.im/antelopeql) and the peer dependency [`graphql`](https://npm.im/graphql) run:
+For [Node.js](https://nodejs.org), to install [`RelockeQL`](https://npm.im/relockeql) and the peer dependency [`graphql`](https://npm.im/graphql) run:
 
 ```sh
-npm install antelopeql graphql
+npm install relockeql graphql
 ```
 
 ## Examples
 
-See the examples folder on how to run AntelopeQL as a [Node.js](https://nodejs.org) endpoint.
+See the examples folder on how to run RelockeQL as a [Node.js](https://nodejs.org) endpoint.
 
 ### Query a Blockchain Account Info
 
 ```js
-import { AntelopeQL } from "antelopeql";
+import { RelockeQL } from "relockeql";
+import { sign_transaction } from "your-signing-library";
 
 const query = /* GraphQL */ `
   {
@@ -49,7 +50,7 @@ const query = /* GraphQL */ `
   }
 `;
 
-const { data } = await AntelopeQL({ query });
+const { data } = await RelockeQL({ query });
 
 console.log(data);
 ```
@@ -59,8 +60,7 @@ console.log(data);
 ### Transfer Tokens
 
 ```js
-import { AntelopeQL } from "antelopeql";
-import sign_txn from "antelopeql-ecc/sign_txn.js";
+import { RelockeQL } from "relockeql";
 
 const query = /* GraphQL */ `
   mutation {
@@ -87,7 +87,7 @@ const query = /* GraphQL */ `
   }
 `;
 
-const { data } = await AntelopeQL({
+const { data } = await RelockeQL({
   query,
   contracts: {
     // List of your smart contracts accounts for each chains.
@@ -95,7 +95,7 @@ const { data } = await AntelopeQL({
   },
   signTransaction: async (hash) => {
     const wif_private_key = "PVT_K1_…"; // your private key
-    const signature = await sign_txn({ hash, wif_private_key });
+    const signature = await sign_transaction({ hash, wif_private_key });
     return [signature]; // signatures must return array
   }
 });

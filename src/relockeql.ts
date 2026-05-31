@@ -1,16 +1,17 @@
 import {
-  blockchain_query_field,
   build_graphql_fields_from_abis,
-  get_abis,
-  send_serialized_transaction,
-  send_transaction,
-  serialize_transaction,
-  actions_type as actions,
-  type AccountABI,
-  type AbiResponse,
+  type AccountABI
+} from "./build_graphql_fields_from_abis.js";
+import { blockchain_query_field } from "./blockchain_query_field.js";
+import { get_abis, type AbiResponse } from "./get_abis.js";
+import { actions_type as actions } from "./graphql_input_types/actions.js";
+import { send_serialized_transaction } from "./send_serialized_transaction.js";
+import { send_transaction } from "./send_transaction.js";
+import { serialize_transaction } from "./serialize_transaction.js";
+import type {
   Context,
   SignTransactionContext
-} from "antelopeql";
+} from "./types/Context.js";
 import {
   execute,
   GraphQLObjectType,
@@ -22,17 +23,17 @@ import {
   type ResponsePath,
   type GraphQLFieldConfig,
   type GraphQLResolveInfo,
-  GraphQLFieldConfigMap
+  type GraphQLFieldConfigMap
 } from "graphql";
 
-export interface AntelopeQLRequest {
+export interface RelockeQLRequest {
   query: string;
   operationName?: string | null;
   variables?: Record<string, any> | null;
 }
 
 /**
- * List of Antelope chains.
+ * List of Relocke chains.
  */
 declare type ChainsType =
   | "vaulta"
@@ -43,7 +44,7 @@ declare type ChainsType =
   | string;
 
 /**
- * Lists you smart contracts across the various Antelope chains.
+ * Lists you smart contracts across the various Relocke chains.
  */
 export declare type ContractsType = {
   [key in ChainsType]?: string[];
@@ -70,7 +71,7 @@ export declare type APIOptionsType = {
   extendQuery?: ExtendQueryType;
 };
 
-export declare type AntelopeQLResult = {
+export declare type RelockeQLResult = {
   data?: any;
   errors?: ReadonlyArray<GraphQLError>;
 };
@@ -96,10 +97,10 @@ export const default_rpc_urls = {
   jungle: "https://jungle.relocke.io"
 } as { [chain in ChainsType]: string | URL };
 
-export async function AntelopeQL(
-  { query, variables, operationName }: AntelopeQLRequest,
+export async function RelockeQL(
+  { query, variables, operationName }: RelockeQLRequest,
   options?: APIOptionsType
-): Promise<AntelopeQLResult> {
+): Promise<RelockeQLResult> {
   const build_chains = new Set(defaultChains);
 
   if (options?.chains)
